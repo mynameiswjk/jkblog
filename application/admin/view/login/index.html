@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>阿康博客 - 登录</title>
+        <!-- CSS -->
+        <link rel="stylesheet" href="/static/admin/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/admin/assets/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/admin/assets/css/form-elements.css">
+        <link rel="stylesheet" href="/static/admin/assets/css/style.css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="/static/admin/assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/admin/assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/admin/assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/admin/assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="/static/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+    </head>
+    <body>
+
+        <!-- Top content -->
+        <div class="top-content">
+        	
+            <div class="inner-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>Kang</strong> Admin Login</h1>
+                            <div class="description">
+                            	<p>
+	                            	Welcome to the backstage of akon's blog site 
+                            	</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>Log on to my website</h3>
+                            		<p>Enter your username and password to log on:</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<i class="fa fa-key"></i>
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                   <form role="form"  id='login_from' action="{:url('login/index')}" method="post" class="login-form">
+                                 
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-username">Username</label>
+			                        	<input type="text" name="admin_name"  maxlength='36' id='admin_name' placeholder="AdminName..." class="form-username form-control" id="form-username">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">Password</label>
+			                        	<input type="password" name="admin_pass"  maxlength='36' id="admin_pass" placeholder="Password..." class="form-password form-control" id="form-password">
+			                        </div>
+			                        <button type="submit"  id='btn' class="btn">Login</button>
+			                     </form>
+		                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- Javascript -->
+        <script src="/static/admin/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="/static/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/admin/assets/js/jquery.backstretch.min.js"></script>
+        <script src="/static/admin/assets/js/scripts.js"></script>
+        <script src="/static/common/layer/layer.js"></script>
+        <script>
+            $('#btn').on('click',function(){
+                var admin_name  =  $('#admin_name').val();
+                var admin_pass  =  $('#admin_pass').val();
+             
+                if(admin_name.length == 0) {
+                   
+                    return layer.msg('用户名不能为空',{icon:2});
+                } 
+                if(admin_pass.length == 0){
+
+                   return layer.msg('密码不能为空', {icon:2});
+                }
+                $("#login_from").submit( function () {
+                  return false;
+                } );
+                $.post("{url('Login/index')}",{admin_name:admin_name,admin_pass,admin_pass},function(res){
+                            if(res.code == 200) {
+                                layer.msg(res.msg,{icon:1,time:2000},function(){
+                                    location.href = "{:url('Index/index')}";
+                                });
+                            }else{
+                                layer.msg(res.msg,{icon:2});
+                            }
+                },'json');
+            
+            });
+        </script>
+    </body>
+</html>

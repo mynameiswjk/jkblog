@@ -5,7 +5,7 @@
 // | Time: 2018/5/2413:44
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
-use think\validate;
+use think\Validate;
 use think\Controller;
 
 class Login extends Controller

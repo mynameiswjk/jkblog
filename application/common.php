@@ -13,7 +13,8 @@ use think\Config;
 * @return VersionsInfo
 */  
 function getVersionsInfo()
-{
+{		
+
 		$request = Request::instance();
 		//当前域名
 		$data['domain']   = $request->domain();
@@ -29,7 +30,7 @@ function getVersionsInfo()
 		$data['versions'] = PHP_VERSION;
 		//数据库版本
 		$database = Config::get('database');
-		$con = mysql_connect($database['hostname'], $database['username'], $database['password']);
-		$data['mysql_versions'] = mysql_get_server_info($con);
+		$con = mysqli_connect($database['hostname'], $database['username'], $database['password']);
+		$data['mysql_versions'] = mysqli_get_server_info($con);
 		return $data;
 }

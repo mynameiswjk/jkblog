@@ -16,7 +16,56 @@ class Article extends Base
 	{	
 		return view('index');
 	}
+	/** 
+	* 文章添加
+	* @access public 
+	*/ 
+	public function articleAdd()
+	{	
+		//数据入库
+		if(request()->isPost()) {
+			//数据接收
+			$data = input('post.');
+			$userInfo = session('userInfo');
+			//数据补充①作者id
+			$data['article_author']  = $userInfo['admin_id'];
+			$data['article_addtime'] = time();
+			//入库存储
+			if(db('article')->insert($data)) {
+				//添加成功
+				die(json_encode(['code'=>'200','msg'=>'文章添加成功！']));
+			}else{
+				//添加失败
+				die(json_encode(['code'=>'500','msg'=>'文章添加失败！']));
+			}
+		}
 
+		//视图展示
+		return view('add');
+
+	}
+	/** 
+	* 文章编辑
+	* @access public 
+	*/ 
+	public function articleEditUrl()
+	{
+		if(request()->isAjax()) {
+			//数据接收
+			$data = input('post.');
+			$userInfo = session('userInfo');
+			//数据补充①作者id
+			$data['article_author']  = $userInfo['admin_id'];
+			//入库存储
+			if(!db('article')->where(['article_id'=>$data['article_id']])->update($data) === false) {
+				//添加成功
+				die(json_encode(['code'=>'200','msg'=>'文章修改成功！']));
+			}else{
+				//添加失败
+				die(json_encode(['code'=>'500','msg'=>'文章修改失败！']));
+			}
+		}
+	}
 	/** 
 	* 文章列表页通过Ajax请求获取数据
 	* @access public 
@@ -40,7 +89,9 @@ class Article extends Base
 							->order(['article_id'=>'desc'])
 							->select();
 			foreach($ArticleData as $k=>$v) {
-				$ArticleData[$k]['article_type'] = '测试分类';
+				$ArticleData[$k]['article_type']    = '测试分类';
+				$ArticleData[$k]['article_author']  = db('admin')->where(['admin_id'=>$v['article_author']])->value('admin_name');
+				$ArticleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
 			}
 			$data['code']  = 0;
 			$data['msg']   = '';
@@ -55,15 +106,92 @@ class Article extends Base
 	* @access public 
 	* @return ['code','msg']
 	*/ 
-	public function articleDel($article_id)
-	{
+	public function articleDel()
+	{	
+		
 		if(request()->isAjax()) {
-			$res = db('article')->where(['article_id'=>$article_id])->delete();
+			$article_id = $_GET['article_id'];
+			if(is_array($article_id)) {
+				//批量删除
+				$article_id = implode(',',$article_id);
+				$where['article_id']=['in',$article_id];
+
+			}else{
+				//单个删除
+				$where['article_id']=$article_id;
+			}
+			$res = db('article')->where($where)->delete();
 			if($res) {
 				die(json_encode(['code'=>'200','msg'=>'文章删除成功']));
 			}else{
 				die(json_encode(['code'=>'500','msg'=>'文章删除失败']));
 			}
 		}
+	}
+	/** 
+	* 修改文章一些信息
+	* @access public 
+	* @return ['code','msg']
+	*/ 
+	public function updateStick()
+	{
+		if(request()->isAjax()) {
+			$article_id				  = input('param.article_id');
+			$data['article_is_stick'] = input('param.article_is_stick');
+
+			if(db('article')->where(['article_id'=>$article_id])->update($data)){
+				die(json_encode(['code'=>'200','msg'=>'信息修改成功']));
+			}else{
+				die(json_encode(['code'=>'500','msg'=>'信息修改失败']));
+			}
+		}
+	}
+	/** 
+	* 文章封面图上传
+	* @access public 
+	* @return fielUrl
+	*/ 
+	public function uploadArticleSurface()
+	{
+		//获得表单上传文件信息
+		$file = request()->file('file');
+		if(empty($file)) die(json_encode(['code'=>'500','msg'=>'无效的文件']));
+		//移动到框架应用根目录/public/uploads/ 目录下
+  		$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads'); 
+  		if ($info) { 
+  			$file_url =  DS .'uploads'. DS . $info->getSaveName();
+  			$file_url =  str_replace('\\','/',$file_url);
+	     	 die(json_encode([
+	     	 	'code'=>'200',
+	     	 	'msg'=>'文件上传成功',
+	     	 	'file_url'=>$file_url]
+	     	 ));
+	    } else { 
+	      	//上传失败获取错误信息 
+	     	die(json_encode(['code'=>'500','msg'=>'上传文件失败']));
+	    } 
+	}
+	/** 
+	* 接受layedit编辑器上传图片
+	* @access public 
+	*/ 
+	public function uploadArticleLayedit()
+	{
+		//获得表单上传文件信息
+		$file = request()->file('file');
+		if(empty($file)) die(json_encode(['code'=>'500','msg'=>'无效的文件']));
+		//移动到框架应用根目录/public/uploads/ 目录下
+  		$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads'); 
+  		if ($info) { 
+  			$file_url =  DS .'uploads'. DS . $info->getSaveName();
+  			$file_url =  str_replace('\\','/',$file_url);
+	     	$data['code'] = '0';
+	     	$data['msg']  = '';
+	     	$data['data'] = ['src'=>$file_url,'title'=>'文章内容图片'];
+	     	die(json_encode($data));
+	    } else { 
+	      	//上传失败获取错误信息 
+	     	die(json_encode(['code'=>'500','msg'=>'上传文件失败']));
+	    } 
 	}
 }

@@ -10,6 +10,8 @@ return [
 	'view_replace_str' => [
 		'__CSS__'      => '/static/admin/css',
 		'__PUBLIC__'   => '/static/public',
-		'__JS__'       => '/static/admin/js'
+		'__JS__'       => '/static/admin/js',
+		'default_return_type' => 'json', 
+
 	],
 ];

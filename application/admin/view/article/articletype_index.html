@@ -4,13 +4,13 @@
 <div class="my-btn-box">
     <span class="fl">
         <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量删除</a>
-        <a class="layui-btn btn-add btn-default" id="article_add">添加</a>
+        <a class="layui-btn btn-add btn-default" id="article_type_add">添加</a>
         <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
     </span>
     <span class="fr">
         <span class="layui-form-label">搜索条件：</span>
         <div class="layui-input-inline">
-            <input type="text" autocomplete="off" id='search_name' placeholder="请输入文章标题" class="layui-input">
+            <input type="text" autocomplete="off" id='search_name' placeholder="请输入分类名称" class="layui-input">
         </div>
         <button class="layui-btn mgl-20" id="article_search">查询</button>
     </span>
@@ -42,17 +42,15 @@ layui.config({
             , height: vipTable.getFullHeight()    //容器高度
             , cols: [[                  //标题栏
                 {checkbox: true, sort: true, fixed: true, space: true}
-                , {field: 'article_id', title: '文章ID', width: 80}
-                , {field: 'article_title', title: '文章标题', width: 120}
-                , {field: 'article_type', title: '文章分类', width: 120}
-                , {field: 'article_author', title: '文章作者', width: 110,'align':'center'}
-                , {field: 'article_surface', title: '封面图', width: 150,'align':'center',height:50,toolbar: '#article_surface'}
-                , {field: 'article_is_stick',title: '是否置顶', width: 100,align: 'center',toolbar: '#stick'}
-                , {field: 'article_addtime', title: '文章发布时间', width: 200,align:'center'}
-                , {fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+                , {field: 'type_id', title: '分类id', width: 120,align:'center'}
+                , {field: 'type_name', title: '分类名称', width: 150,align:'center'}
+                , {field: 'order', title: '排序', width: 200,align:'center'}
+                , {field: 'is_show',title: '是否显示', width: 100,align: 'center',toolbar: '#is_show'}
+                , {field: 'add_time', title: '添加时间', width: 200,align:'center'}
+                , {fixed: 'right', title: '操作', width: 240, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
             ]]
             , id: 'dataCheck'
-            , url: '{:url("Article/getArticleData")}'
+            , url: '{:url("Article/getArticleTypeData")}'
             , method: 'get'
             , page: true
             , limits: [30, 60, 90, 150, 300]
@@ -72,39 +70,34 @@ layui.config({
             }
         });
     //添加文章
-    function addArticle(edit){
-        if(edit){
-            var tit  = '编辑文章';
-        }else{
-            var tit = '添加文章';
-        }
+    function article_type_add(edit){
+    	if(edit){
+    		tit = '文章分类编辑';
+    	}else{
+    		tit ='文章分类添加';
+    	}
         var index = layui.layer.open({
             title : tit,
             type : 2,
-            content :"{:url('Article/articleAdd')}",
+            content :"{:url('Article/articleTypeAdd')}",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
+                	 body.find('#blockquote').html('文章分类的编辑');
                      body.find("#submit_action").attr('action','edit');
-                     body.find("#submit_action").attr('article_id',edit.article_id);
-                    var checked;
-                    if(edit.article_is_stick == 1)
-                    {
-                        checked='checked';
-                    }else{
-                        checked='';
-                    }
-                    body.find(".article_title").val(edit.article_title);
-                    body.find(".article_abstract").val(edit.article_abstract);
-                    body.find(".thumbImg").attr("src",edit.article_surface);
-                    body.find("#article_content").val(edit.article_content);
-                    body.find(".newsStatus select").val(edit.newsStatus);
-                    body.find(".openness input[name='openness'][title='"+edit.newsLook+"']").prop("checked","checked");
-                    body.find(".article_is_stick input[name='article_is_stick']").prop("checked",checked);
+                     body.find("#submit_action").attr('type_id',edit.type_id);
+                  	  if(edit.is_show == 1){
+                  	  		redio_title='是';
+                  	  }else{
+                  	  		redio_title='否';
+                  	  }
+                    body.find("#type_name").val(edit.type_name);
+                    body.find("#order").val(edit.order);
+                  	body.find(".is_show input[name='is_show'][title='"+redio_title+"']").prop("checked","checked");
                     form.render();
                 }
                 setTimeout(function(){
-                    layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+                    layui.layer.tips('点击此处返回分类列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
                 },500)
@@ -117,8 +110,8 @@ layui.config({
         })
     }
     //触发文章添加方法
-    $('#article_add').on('click',function(){
-        addArticle();
+    $('#article_type_add').on('click',function(){
+        article_type_add();
     });
         // 获取选中行
        /* table.on('checkbox(dataCheck)', function (obj) {
@@ -137,14 +130,14 @@ layui.config({
         $("#btn-delete-all").click(function(){
             var checkStatus = table.checkStatus('dataCheck'),
                 data = checkStatus.data;
-                article_id = [];
+                type_id = [];
             if(data.length > 0) {
                 for (var i in data) {
-                    article_id.push(data[i].article_id);
+                    type_id.push(data[i].type_id);
                 }
-                layer.confirm('确定删除选中的文章？', {icon: 3, title: '批量删除'}, function (index) {
-                   $.get("{:url('Article/articleDel')}",{
-                         article_id : article_id  //将需要删除的newsId作为参数传入
+                layer.confirm('确定删除选中的分类？', {icon: 3, title: '批量删除'}, function (index) {
+                   $.get("{:url('Article/articleTypeDel')}",{
+                         type_id : type_id  //将需要删除的newsId作为参数传入
                      },function(res){
                         if(res.code == 200 ) {
                             layer.msg(res.msg,{icon:1,time:2000},function(){
@@ -159,29 +152,29 @@ layui.config({
                 layer.msg("请选择需要删除的文章");
             }
         })
-         //是否置顶
-        form.on('switch(article_is_stick)', function(data){
+         //是否显示
+        form.on('switch(is_show)', function(data){
             var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
             setTimeout(function(){
                 var elem = $(data.elem);//原始dom对象
-                    article_id = elem.attr('article_id');
+                    type_id = elem.attr('type_id');
                 if(data.elem.checked){
-                    //发送置顶
-                    $.get("{:url('Article/updateStick')}",{article_id:article_id,article_is_stick:1},function(res){
+                    //显示
+                    $.get("{:url('Article/updateIsShow')}",{type_id:type_id,is_show:1},function(res){
                             if(res.code == 200 ){
-                                layer.msg("文章置顶成功！");
+                                layer.msg("分类显示成功！");
                             }else{
-                                layer.msg("文章置顶失败！");
+                                layer.msg("分类显示失败！");
                             }
                     },'json');
                     
                 }else{
-                    //取消置顶
-                    $.get("{:url('Article/updateStick')}",{article_id:article_id,article_is_stick:0},function(res){
+                    //隐藏
+                    $.get("{:url('Article/updateIsShow')}",{type_id:type_id,is_show:0},function(res){
                         if(res.code == 200 ){
-                                layer.msg("取消置顶成功！");
+                                layer.msg("分类已隐藏");
                             }else{
-                                layer.msg("取消置顶失败！");
+                                layer.msg("分类隐藏失败");
                              }
                     },'json');
                     
@@ -194,15 +187,15 @@ layui.config({
             var layEvent = obj.event,
                 data = obj.data;
                 
-            if(layEvent === 'article_edit'){ //编辑
-                addArticle(data);
+            if(layEvent === 'article_type_edit'){ //编辑
+                article_type_add(data);
             } 
         });
         //搜索功能
         $('#article_search').on('click',function () {
         	var search_name = $('#search_name').val();
             if(search_name.length == 0 ){
-                return(layer.msg('请您输入文章标题',{icon:2}));
+                return(layer.msg('请您输入分类标题',{icon:2}));
             }
         	tableIns.reload({
 		        where:{
@@ -214,15 +207,15 @@ layui.config({
        
 
     });
- function article_del(article_id)
+ function type_del(type_id)
  {	
- 	var tit = '删除文章';
+ 	var tit = '删除分类';
 	layer.confirm(
-	 	'确定要删除这篇文章么？', 
+	 	'确定要删除这个分类？', 
 	 	{btn: ['确定', '取消'],icon: 2, title:tit}, 
 		function () {
 		  	//确定删除，发送请求
-		  	$.post('{:url("Article/articleDel")}?article_id='+article_id,function(res){
+		  	$.post('{:url("Article/articleTypeDel")}?type_id='+type_id,function(res){
 		  			if(res.code == 200) {
 		  				layer.msg(res.msg,{icon:1,time:2000},function(){
 		  					$(".layui-laypage-btn")[0].click(); 
@@ -238,22 +231,15 @@ layui.config({
 </script>
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption" >
-    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="article_edit"   >编辑</a>
-    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="article_del('{{d.article_id}}')">删除</a>
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="article_type_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="type_del('{{d.type_id}}')">删除</a>
 </script>
-<script type="text/html" id="article_surface">
-                
-            <img src='{{d.article_surface}}'>
-
-</script>
-
-<script type="text/html" id="stick">
+<script type="text/html" id="is_show">
             <input type="checkbox" 
-           {{#  if(d.article_is_stick == "1"){ }}
+           {{#  if(d.is_show == "1"){ }}
                  checked="checked" 
            {{#  }}}
-             name="article_is_stick"  lay-skin="switch" lay-filter="article_is_stick" article_id='{{d.article_id}}'  lay-text="是|否" >
+             name="is_show"  lay-skin="switch" lay-filter="is_show" type_id='{{d.type_id}}'  lay-text="是|否" >
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
 
 </script>

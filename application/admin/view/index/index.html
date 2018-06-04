@@ -60,15 +60,17 @@
         <div class="layui-side-scroll">
             <!-- 左侧主菜单添加选项卡监听 -->
             <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
-     
-                <li class="layui-nav-item layui-nav-itemed"> 
+                <!-- layui-nav-itemed添加这个类名默认展开-->
+                <li class="layui-nav-item "> 
                     <a href="javascript:;"><i class="layui-icon">&#xe628;</i>文章管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" href-url="{:url('Article/index')}"><i class="layui-icon">&#xe621;</i>文章列表</a></dd>
                     </dl>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('Article/articleType')}"><i class="layui-icon">&#xe621;</i>文章分类</a></dd>
+                    </dl>
                 </li>
             </ul>
-
         </div>
     </div>
     <!-- body -->

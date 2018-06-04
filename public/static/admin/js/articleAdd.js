@@ -99,6 +99,7 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
                 top.layer.msg(res.msg);
             }
          },'json');
+        return false;
     })
 
     //预览

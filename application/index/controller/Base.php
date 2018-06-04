@@ -2,19 +2,24 @@
 // +----------------------------------------------------------------------
 // | Author: 阿康
 // +----------------------------------------------------------------------
-// | Time: 2018/6/416:13
+// | Time: 2018/6/616:14
 // +----------------------------------------------------------------------
 namespace app\index\controller;
-class Index extends Base
-{	
-	/** 
-	* 前台首页
-	* @access public 
-	* @return view
-	*/ 
-    public function index()
-    {
-    	
-       return view('index');
-    }
+use think\Controller;
+
+/** 
+* 前台控制器基类
+* @access public 
+*/ 
+class Base extends Controller
+{
+	public function __construct()
+	{
+		parent::__construct();
+
+		
+	}
+
+	
+
 }

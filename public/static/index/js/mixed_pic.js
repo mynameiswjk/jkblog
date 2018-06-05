@@ -1,11 +1,11 @@
 var pics = {
   "data": [
-      {"src": "images/pic/1.jpg",   "alt": "盘中餐",},
-      {"src": "images/pic/2.jpg",   "alt": "向日葵"},
-      {"src": "images/pic/3.jpg",   "alt": "日出"},
-      {"src": "images/pic/4.jpg",   "alt": "水果拼盘"},
-      {"src": "images/pic/5.jpg",   "alt": "花园"},
-      {"src": "images/pic/6.jpg",   "alt": "红花"}
+      {"src": "/static/index/img/pic/1.jpg",   "alt": "盘中餐",},
+      {"src": "/static/index/img/pic/2.jpg",   "alt": "向日葵"},
+      {"src": "/static/index/img/pic/3.jpg",   "alt": "日出"},
+      {"src": "/static/index/img/pic/4.jpg",   "alt": "水果拼盘"},
+      {"src": "/static/index/img/pic/5.jpg",   "alt": "花园"},
+      {"src": "/static/index/img/pic/6.jpg",   "alt": "红花"}
    ]};
 layui.use(['jquery','flow'], function () {
 	var $ = layui.jquery;
@@ -23,7 +23,7 @@ layui.use(['jquery','flow'], function () {
     			if (count==-1) {
     				lis.push('<div class="mixed shadow animated zoomIn">'+
     	                 '<div class="mixed-pic">'+
-    	                    '<a href="javascript:"><img src="images/pic/0.jpg" alt="图片还在拍摄中" /></a>'+
+    	                    '<a href="javascript:"><img src="/static/index/img/pic/0.jpg" alt="图片还在拍摄中" /></a>'+
 	                    '</div>'+
 	                    '<div class="mixed-info">图片还在拍摄中</div>'+
 	                    '<div class="mixed-footer">'+

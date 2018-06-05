@@ -14,3 +14,36 @@
     <link href="__CSS__/global.css" rel="stylesheet" />
     <link href="__CSS__/animate.min.css" rel="stylesheet" />
 </head>
+<body>
+   <!-- 导航 -->
+    <nav class="blog-nav layui-header">
+        <div class="blog-container">
+            <!-- 用户登陆 -->
+            <div class="blog-user"></div>
+            
+            <!-- zuoqy -->
+            <a class="blog-logo" href="{:url('Index/index')}"><img src="__IMG__/logo.png" width="64px" height="64px"></a>
+            <!-- 导航菜单 -->
+            <ul class="layui-nav" lay-filter="nav">
+                <li class="layui-nav-item {if request()->controller() eq 'Index'}layui-this{/if}">
+                    <a href="{:url('Index/index')}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Article'}layui-this{/if}">
+                    <a href="{:url('Article/index')}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Mixed'}layui-this{/if}">
+                    <a href="{:url('Mixed/index')}"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Timeline'}layui-this{/if}">
+                    <a href="{:url('Timeline/index')}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'About'}layui-this{/if}">
+                    <a href="{:url('About/index')}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+                </li>
+            </ul>
+            <!-- 手机和平板的导航开关 -->
+            <a class="blog-navicon" href="javascript:;">
+                <i class="fa fa-navicon"></i>
+            </a>
+        </div>
+    </nav>

@@ -1,0 +1,31 @@
+{include file='public/header'}
+<!-- 本页样式表 -->
+{load href='__CSS__/timeline.css'}
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <!-- 这个一般才是真正的主体内容 -->
+        <div class="blog-container">
+        	<blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+                <a href="index.html" title="网站首页">网站首页</a>
+                <a><cite>点点滴滴</cite></a>
+            </blockquote>
+            <div class="blog-main">
+                <div class="child-nav shadow">
+	                <span class="child-nav-btn child-nav-btn-this">时光轴</span>
+	                <!-- <span class="child-nav-btn" onclick="location.href='#'">待开发</span> -->
+                </div>
+                <div class="timeline-box shadow">
+                    <div class="timeline-main">
+                        <h1><i class="fa fa-clock-o"></i>时光轴<span> —— 记录生活点点滴滴</span></h1>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-data"></div>
+                        <h1 style="padding-top:4px;padding-bottom:2px;margin-top:40px;"><i class="fa fa-hourglass-end"></i>THE END</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+{include file='public/footer'}
+<!-- 本页脚本 -->
+{load href='__JS__/timeline.js'}

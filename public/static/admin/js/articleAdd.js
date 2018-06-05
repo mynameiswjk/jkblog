@@ -78,9 +78,7 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
         }else if(submit_action ='edit'){
             submit_url = articleEditUrl;
         }
-       article_type_id = $("input:checkbox[name='article_type_id']:checked").map(function(index,elem) {
-            return $(elem).val();
-        }).get().join(',');
+       article_type_id = $("input[name='article_type_id']:checked").val();
         $.post(submit_url,{
              article_id      : $("#submit_action").attr('article_id'),
              article_title   : $("#article_title").val(),  //文章标题

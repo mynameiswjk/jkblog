@@ -5,7 +5,8 @@
 // | Time: 2018/6/220:51
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
-
+use think\Validate;
+use think\Loader;
 class Article extends Base
 {
 	/** 
@@ -26,6 +27,12 @@ class Article extends Base
 		if(request()->isPost()) {
 			//数据接收
 			$data = input('post.');
+			//数据验证
+			$articleValitate = Loader::validate('ArticleValidate');
+
+			if(!$articleValitate->scene('add')->check($data)) {
+				die(json_encode(['code'=>'500','msg'=>$articleValitate->getError()]));
+			}
 			$userInfo = session('userInfo');
 			//数据补充①作者id
 			$data['article_author']  = $userInfo['admin_id'];
@@ -54,6 +61,12 @@ class Article extends Base
 		if(request()->isAjax()) {
 			//数据接收
 			$data = input('post.');
+			//数据验证
+			$articleValitate = Loader::validate('ArticleValidate');
+
+			if(!$articleValitate->scene('edit')->check($data)) {
+				die(json_encode(['code'=>'500','msg'=>$articleValitate->getError()]));
+			}
 			$userInfo = session('userInfo');
 			//数据补充①作者id
 			$data['article_author']  = $userInfo['admin_id'];

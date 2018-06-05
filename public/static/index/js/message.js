@@ -1,11 +1,4 @@
-var result = {"msg":null,"code":1,"item":[{"content":"模板挺好看的，我很喜欢可以分享模板吗，www.scever.com","time":"2017-11-14 16:13:53","dzan":"81","isYe":"","name":"紫逸","img":"/user/7.jpg",
-					"item":[{"content":"稍等，后期我会整理出来，现在也可以去github上面下载，我给源码直接贴上去了","time":"2017-11-14 18:30:56","dzan":"6","name":"zuoqy","img":"/user/1.jpg"}]},
-					{"content":"<a target=\"_self\" href=\"http://www.yansuanzhi.cn\">http://www.yansuanzhi.cn</a><br>",
-					"time":"2017-11-14 14:00:41","dzan":"64","name":"验算纸","img":"/user/12.jpg",
-					"item":[{"content":"你这个打不开啊","time":"2017-11-14 18:29:19","dzan":"2","name":"zuoqy","img":"/user/1.jpg"}]},
-					{"content":"怎么能联系到博主","time":"2017-11-14 14:00:19","dzan":"1","isYe":"","name":"验算纸",
-					"img":"/user/12.jpg","item":[{"content":"首页，就有4种联系方式","time":"2017-11-14 18:28:52","dzan":"1","name":"zuoqy","img":"/user/1.jpg"}]},
-					]};
+var result = {"msg":null,"code":1,"item":[{"content":"模板挺好看的，我很喜欢可以分享模板吗，www.scever.com","time":"2017-11-14 16:13:53","dzan":"81","isYe":"","name":"紫逸","img":img_path+'/7.jpg'}]};
 
 var aid = '0';
 var user = MyLocalStorage.get('user');
@@ -60,8 +53,8 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
             '<p class="info">'+
             	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
             	'<span class="dh">'+
-            		'<a class="btn-dzan" href="javascript:dzan(\''+msgs[i].mid+'\');" id="dzan_'+msgs[i].mid+'"><img src="images/zan.png"></img>'+msgs[i].dzan+'</a>'+
-            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msgs[i].mid+'\')" id="a_'+msgs[i].mid+'");"><img src="images/huifu.png"></img>回复</a>'+
+            		'<a class="btn-dzan" href="javascript:dzan(\''+msgs[i].mid+'\');" id="dzan_'+msgs[i].mid+'"><img src="/static/index/img/zan.png"></img>'+msgs[i].dzan+'</a>'+
+            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msgs[i].mid+'\')" id="a_'+msgs[i].mid+'");"><img src="/static/index/img/huifu.png"></img>回复</a>'+
             	'</span>'+
             '</p>'+
         '</div>'+
@@ -78,7 +71,7 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
 					'<p class="info">'+
                 	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
                 	'<span class="dh">'+
-                		'<a class="btn-dzan" href="javascript:dzan(\''+cs[j].mid+'\');" id="dzan_'+cs[j].mid+'"><img src="images/zan.png"></img>'+cs[j].dzan+'</a>'+
+                		'<a class="btn-dzan" href="javascript:dzan(\''+cs[j].mid+'\');" id="dzan_'+cs[j].mid+'"><img src="/static/index/img/zan.png"></img>'+cs[j].dzan+'</a>'+
                 	'</span>'+
                 	'</p><hr/>'+
                 	'</div>';
@@ -127,8 +120,8 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
         	            '<p class="info">'+
         	            	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
         	            	'<span class="dh">'+
-        	            		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="images/zan.png"></img>'+msg.dzan+'</a>'+
-        	            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msg.mid+'\')" id="a_'+msg.mid+'");"><img src="images/huifu.png"></img>回复</a>'+
+        	            		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="/static/index/img/zan.png"></img>'+msg.dzan+'</a>'+
+        	            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msg.mid+'\')" id="a_'+msg.mid+'");"><img src="/static/index/img/huifu.png"></img>回复</a>'+
         	            	'</span>'+
         	            '</p>'+
         	            '</div>'+
@@ -191,7 +184,7 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
         				'<p class="info">'+
         	        	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
         	        	'<span class="dh">'+
-        	        		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="images/zan.png"></img>'+msg.dzan+'</a>'+
+        	        		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="/static/index/img/zan.png"></img>'+msg.dzan+'</a>'+
         	        	'</span>'+
         	        	'</p><hr/>'+
         	        	'</div>';
@@ -214,7 +207,7 @@ function btnReplyClick(elem) {
     if ($('#a_'+elem).text() == '回复') {
         $('#a_'+elem).html('<i class="fa fa-caret-square-o-up" style="font-size:18px;"></i>&nbsp;收起');
     } else {
-        $('#a_'+elem).html('<img src="images/huifu.png"></img>回复');
+        $('#a_'+elem).html('<img src="/static/index/img/huifu.png"></img>回复');
     };
 }
 
@@ -227,7 +220,7 @@ function dzan(mid) {
 		url: _contextPath+"/msg/dzan.do",
 		success:function(result) {
 			if (result.code==1) {
-				  $('#dzan_'+mid).html('<img src="images/zan_d.png" class="animated bounceIn"></img>'+i);
+				  $('#dzan_'+mid).html('<img src="/static/index/img/zan_d.png" class="animated bounceIn"></img>'+i);
 			} else {
 				layer.msg(result.msg,{anim:6,icon:5});
 			}

@@ -78,13 +78,16 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
         }else if(submit_action ='edit'){
             submit_url = articleEditUrl;
         }
+       article_type_id = $("input:checkbox[name='article_type_id']:checked").map(function(index,elem) {
+            return $(elem).val();
+        }).get().join(',');
         $.post(submit_url,{
              article_id      : $("#submit_action").attr('article_id'),
              article_title   : $("#article_title").val(),  //文章标题
              article_abstract: $("#article_abstract").val(),  //文章摘要
              article_content : layedit.getContent(editIndex).split('<audio controls="controls" style="display: none;"></audio>')[0],  //文章内容
              article_surface : $(".thumbImg").attr("src"),  //缩略图
-             article_type_id : '1',    //文章分类
+             article_type_id :article_type_id,    //文章分类
              /*newsStatus : $('.newsStatus select').val(),    //发布状态
              newsTime : submitTime,    //发布时间*/
              article_is_stick : data.field.article_is_stick == "on" ? "1" : "0",    //是否置顶

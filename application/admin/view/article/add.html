@@ -49,10 +49,12 @@
 		<blockquote class="layui-elem-quote title"><i class="seraph icon-caidan"></i> 分类目录</blockquote>
 		<div class="border category">
 			<div class="">
-				<p><input type="checkbox" name="article_type" title="新闻" lay-skin="primary" /></p>
-				<p><input type="checkbox" name="article_type" title="商品" lay-skin="primary" /></p>
-				<p><input type="checkbox" name="article_type" title="公告" lay-skin="primary" /></p>
-				<p><input type="checkbox" name="article_type" title="图片" lay-skin="primary" /></p>
+				<!--文章分类-->
+				{if !empty($articleTypeData)}
+					{volist  id='type' name='$articleTypeData' key='k'}
+						<p><input type="checkbox" name="article_type_id"  value='{$type.type_id}' title="{$type.type_name}" lay-skin="primary" /></p>
+					{/volist}
+				{/if}
 			</div>
 		</div>
 		<blockquote class="layui-elem-quote title magt10"><i class="layui-icon">&#xe609;</i> 发布</blockquote>

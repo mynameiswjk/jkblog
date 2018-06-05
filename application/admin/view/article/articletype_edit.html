@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表单</title>
+    <link rel="stylesheet" href="__COMMON__/layui/css/layui.css">
+</head>
+<body class="body">
+
+
+<blockquote class="layui-elem-quote layui-text" id='blockquote'>
+  文章分类的编辑
+</blockquote>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称</label>
+        <div class="layui-input-block">
+            <input type="text" id='type_name' name="type_name" maxlength="30"  value='{$type.type_name}' lay-verify="type_name" autocomplete="off" placeholder="请输入分类名称"   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="order" id='order' value='255'  value='{$type.order}' lay-verify="order" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item is_show">
+        <label class="layui-form-label">是否显示</label>
+        <div class="layui-input-block ">
+        <input type="radio" name="is_show"  value="1"  lay-skin="primary" title="是"  {if $type.is_show eq 1 }checked{/if}/>
+        <input type="radio" name="is_show" value="0"  lay-skin="primary" title="否"   {if $type.is_show eq 0}checked{/if}/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="type_btn">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!-- 通用-970*90 -->
+<script src="__COMMON__/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate;
+
+
+        //自定义验证规则
+        form.verify({
+            type_name: function(value){
+                if(value.length == 0){
+                    return '分类名称不能为空';
+                }
+            }
+            ,order: function(value){
+                if(value.length == 0){
+                    return '排序不能为空';
+                }
+            }
+        });
+        //监听提交
+        form.on('submit(type_btn)', function(data){
+            var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            var type_name = data.field.type_name;
+            var order     = data.field.order;
+            var is_show   = data.field.is_show;
+            var type_id   = "{$type.type_id}";
+            var submit_url = "{:url('articleTypeEdit')}";
+
+            $.post(submit_url,{type_id:type_id,type_name:type_name,order:order,is_show:is_show}
+                ,function(res){
+                    if(res.code == 200 ) {
+                      top.layer.msg(res.msg,{icon:1,time:2000},function(){
+                            top.layer.close(index);
+                            layer.closeAll("iframe");
+                            parent.location.reload();
+                        });
+                    }else{
+                        top.layer.msg(res.msg);
+                    }
+            },'json');
+           return false;
+        });
+
+
+    });
+</script>
+</body>
+</html>

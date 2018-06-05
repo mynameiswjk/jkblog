@@ -99,7 +99,7 @@ layui.config({
                     body.find(".thumbImg").attr("src",edit.article_surface);
                     body.find("#article_content").val(edit.article_content);
                     body.find(".newsStatus select").val(edit.newsStatus);
-                    body.find(".openness input[name='openness'][title='"+edit.newsLook+"']").prop("checked","checked");
+                    body.find("input[name='article_type_id'][value='"+edit.article_type_id+"']").prop("checked","checked");
                     body.find(".article_is_stick input[name='article_is_stick']").prop("checked",checked);
                     form.render();
                 }

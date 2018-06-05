@@ -14,9 +14,6 @@
 <blockquote class="layui-elem-quote layui-text" id='blockquote'>
   文章分类的添加
 </blockquote>
-
-<div id='submit_action' action='add' type_id=''>
-
 <form class="layui-form" action="">
     <div class="layui-form-item">
         <label class="layui-form-label">分类名称</label>
@@ -78,15 +75,9 @@
             var type_name = data.field.type_name;
             var order     = data.field.order;
             var is_show   = data.field.is_show;
-            var submit_action = $("#submit_action").attr('action');
-            var type_id       = $("#submit_action").attr('type_id');
-            if(submit_action == 'add') {
-                submit_url = "{:url('articleTypeAdd')}";
-            }else if(submit_action ='edit'){
-                submit_url = "{:url('articleTypeEdit')}";
-            }
+            var submit_url = "{:url('articleTypeAdd')}";
             $.post(submit_url,
-                {type_id:type_id,type_name:type_name,order:order,is_show:is_show}
+                {type_name:type_name,order:order,is_show:is_show}
                 ,function(res){
                     if(res.code == 200 ) {
                       top.layer.msg(res.msg,{icon:1,time:2000},function(){

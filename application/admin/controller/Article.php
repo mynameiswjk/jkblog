@@ -39,9 +39,10 @@ class Article extends Base
 				die(json_encode(['code'=>'500','msg'=>'文章添加失败！']));
 			}
 		}
-
+		//列出文章分类
+		$articleTypeData = db('article_type')->order(['order'=>'asc'])->select();
 		//视图展示
-		return view('add');
+		return view('add',['articleTypeData'=>$articleTypeData]);
 
 	}
 	/** 
@@ -57,7 +58,7 @@ class Article extends Base
 			//数据补充①作者id
 			$data['article_author']  = $userInfo['admin_id'];
 			//入库存储
-			if(!db('article')->where(['article_id'=>$data['article_id']])->update($data) === false) {
+			if(db('article')->where(['article_id'=>$data['article_id']])->update($data) !== false) {
 				//添加成功
 				die(json_encode(['code'=>'200','msg'=>'文章修改成功！']));
 			}else{
@@ -89,7 +90,7 @@ class Article extends Base
 							->order(['article_id'=>'desc'])
 							->select();
 			foreach($ArticleData as $k=>$v) {
-				$ArticleData[$k]['article_type']    = '测试分类';
+				$ArticleData[$k]['article_type']    = db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');
 				$ArticleData[$k]['article_author']  = db('admin')->where(['admin_id'=>$v['article_author']])->value('admin_name');
 				$ArticleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
 			}
@@ -97,7 +98,6 @@ class Article extends Base
 			$data['msg']   = '';
 			$data['count'] = $ArticleCount;
 			$data['data']  = $ArticleData;
-
 			die(json_encode($data));
 		}
 	}
@@ -108,7 +108,6 @@ class Article extends Base
 	*/ 
 	public function articleDel()
 	{	
-		
 		if(request()->isAjax()) {
 			$article_id = $_GET['article_id'];
 			if(is_array($article_id)) {
@@ -202,14 +201,18 @@ class Article extends Base
 		if(request()->isAjax()) {
 			//数据接收
 			$data = input('post.');
-			if(!db('article_type')->where(['type_id'=>$data['type_id']])->update($data) === false) {
+			if(db('article_type')->where(['type_id'=>$data['type_id']])->update($data) !== false) {
 				//添加成功
 				die(json_encode(['code'=>'200','msg'=>'分类修改成功！']));
 			}else{
 				//添加失败
 				die(json_encode(['code'=>'500','msg'=>'分类修改失败！']));
 			}
-		}		
+		}
+		//视图展示
+		$type_id  = input('param.type_id');
+		$typeData = db("article_type")->where(['type_id'=>$type_id])->find(); 
+		return view('articletype_edit',['type'=>$typeData]);
 	}
 	/** 
 	* 文章分类删除
@@ -218,7 +221,6 @@ class Article extends Base
 	*/ 
 	public function articleTypeDel()
 	{	
-		
 		if(request()->isAjax()) {
 			$type_id = $_GET['type_id'];
 			if(is_array($type_id)) {

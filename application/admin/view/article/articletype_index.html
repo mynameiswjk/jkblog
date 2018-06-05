@@ -71,31 +71,12 @@ layui.config({
         });
     //添加文章
     function article_type_add(edit){
-    	if(edit){
-    		tit = '文章分类编辑';
-    	}else{
-    		tit ='文章分类添加';
-    	}
         var index = layui.layer.open({
-            title : tit,
+            title : '文章分类添加',
             type : 2,
             content :"{:url('Article/articleTypeAdd')}",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
-                if(edit){
-                	 body.find('#blockquote').html('文章分类的编辑');
-                     body.find("#submit_action").attr('action','edit');
-                     body.find("#submit_action").attr('type_id',edit.type_id);
-                  	  if(edit.is_show == 1){
-                  	  		redio_title='是';
-                  	  }else{
-                  	  		redio_title='否';
-                  	  }
-                    body.find("#type_name").val(edit.type_name);
-                    body.find("#order").val(edit.order);
-                  	body.find(".is_show input[name='is_show'][title='"+redio_title+"']").prop("checked","checked");
-                    form.render();
-                }
                 setTimeout(function(){
                     layui.layer.tips('点击此处返回分类列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
@@ -185,11 +166,28 @@ layui.config({
         
         table.on('tool(vessel)', function(obj){
             var layEvent = obj.event,
-                data = obj.data;
-                
+                data = obj.data; 
             if(layEvent === 'article_type_edit'){ //编辑
-                article_type_add(data);
-            } 
+                    var index = layui.layer.open({
+                        title : '文章分类编辑',
+                        type : 2,
+                        content :"{:url('Article/articleTypeEdit')}?type_id="+data.type_id,
+                        success : function(layero, index){
+                            var body = layui.layer.getChildFrame('body', index);
+                            setTimeout(function(){
+                                layui.layer.tips('点击此处返回分类列表', '.layui-layer-setwin .layui-layer-close', {
+                                    tips: 3
+                                });
+                            },500)
+                        }
+                    })
+                    layui.layer.full(index);
+                    //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+                    $(window).on("resize",function(){
+                        layui.layer.full(index);
+                    })
+                }
+           
         });
         //搜索功能
         $('#article_search').on('click',function () {

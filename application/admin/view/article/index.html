@@ -262,10 +262,9 @@ layui.config({
 </script>
 <script type="text/html" id="article_surface">
                 
-            <img src='{{d.article_surface}}'>
+            <img src='{{d.article_surface}}' height='25'>
 
 </script>
-
 <script type="text/html" id="stick">
             <input type="checkbox" 
            {{#  if(d.article_is_stick == "1"){ }}
@@ -273,9 +272,6 @@ layui.config({
            {{#  }}}
              name="article_is_stick"  lay-skin="switch" lay-filter="article_is_stick" article_id='{{d.article_id}}'  lay-text="是|否" >
             <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
-
 </script>
-           
-
 </body>
 </html> 

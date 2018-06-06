@@ -123,7 +123,7 @@ layui.use(['element', 'layer', 'util', 'form'], function () {
     }
     
     $(function(){
-    	isUser();
+    /*	isUser();*/
     	//配置背景粒子
 	    var config = {
 	        vx: 4,	//小球x轴速度,正为右，负为左
@@ -142,7 +142,7 @@ layui.use(['element', 'layer', 'util', 'form'], function () {
 	    
     });
     
-    
+/*    
     // 退出
     $(".user-out").click(function(){
     	MyLocalStorage.remove("user");
@@ -168,7 +168,7 @@ layui.use(['element', 'layer', 'util', 'form'], function () {
                 	'<a href="login.html">登陆</a>'+
                 	'<a href="register.html">注册</a>');
     	}
-    }
+    }*/
     
     
     

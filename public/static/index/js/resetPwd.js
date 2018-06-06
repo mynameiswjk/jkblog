@@ -1,13 +1,13 @@
 layui.use(['jquery','form'], function () {
     var $ = layui.jquery;
 
-    var url = window.location.href.split("?")[1];
+   /* var url = window.location.href.split("?")[1];
     var args = url.split("&");
     var token = args[0].split("=")[1];
     var uid = args[1].split("=")[1];
-    var name = args[2].split("=")[1];
+    var name = args[2].split("=")[1];*/
     
-    $("#cite").text(name+',请重置您的密码');
+/*    $("#cite").text(name+',请重置您的密码');
     
     $(function(){
     	$.ajax({
@@ -55,5 +55,5 @@ layui.use(['jquery','form'], function () {
     		}
     	});
     	return false;
-    });
+    });*/
 });

@@ -300,14 +300,14 @@ class Article extends Base
 		if(empty($file)) die(json_encode(['code'=>'500','msg'=>'无效的文件']));
 		//移动到框架应用根目录/public/uploads/ 目录下
   		$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads'); 
-  		if ($info) { 
+  		if($info) { 
   			$file_url =  DS .'uploads'. DS . $info->getSaveName();
   			$file_url =  str_replace('\\','/',$file_url);
-	     	 die(json_encode([
+	     	die(json_encode([
 	     	 	'code'=>'200',
 	     	 	'msg'=>'文件上传成功',
 	     	 	'file_url'=>$file_url]
-	     	 ));
+	     	));
 	    } else { 
 	      	//上传失败获取错误信息 
 	     	die(json_encode(['code'=>'500','msg'=>'上传文件失败']));

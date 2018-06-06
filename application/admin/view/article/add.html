@@ -52,8 +52,9 @@
 				<!--文章分类-->
 				{if !empty($articleTypeData)}
 					{volist  id='type' name='$articleTypeData' key='k'}
-						<!-- <p><input type="checkbox" name="article_type_id"  value='' title="{$type.type_name}" lay-skin="primary" /></p> -->
-			<p><input type="radio" name="article_type_id"  value="{$type.type_id}"  lay-skin="primary" title="{$type.type_name}"  /></p>
+							<p>
+								<input type="radio" name="article_type_id"  value="{$type.type_id}"  lay-skin="primary" title="{$type.type_name}"  />
+							</p>
 					{/volist}
 				{/if}
 			</div>

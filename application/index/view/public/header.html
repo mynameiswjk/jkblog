@@ -19,8 +19,18 @@
     <nav class="blog-nav layui-header">
         <div class="blog-container">
             <!-- 用户登陆 -->
-            <div class="blog-user"></div>
-            
+            <div class="blog-user">
+                <a href="{:url('Login/index')}"><i class="fa fa-user-circle-o"></i></a>
+                <a href="{:url('Login/index')}">登陆</a>
+                <a href="{:url('Login/register')}">注册</a>
+
+            <!--
+                <a href="user.html"><img src="images'+user.img+'" alt="zuoqy" title="zuoqy" /></a>
+                <a href="user.html"><i class="fa fa-cog"></i></a>
+                <a class="user-out"><i class="fa fa-sign-out"></i></a> 
+             -->
+
+            </div>
             <!-- zuoqy -->
             <a class="blog-logo" href="{:url('Index/index')}"><img src="__IMG__/logo.png" width="64px" height="64px"></a>
             <!-- 导航菜单 -->

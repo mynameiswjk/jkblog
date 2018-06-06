@@ -8,7 +8,7 @@
     <title>阿康 · 博客后台管理 </title>
     <link rel="stylesheet" href="__PUBLIC__/frame/layui/css/layui.css">
     <link rel="stylesheet" href="__PUBLIC__/frame/static/css/style.css">
-    <link rel="icon" href="__PUBLIC__/frame/static/image/code.png">
+    <link rel="icon" href="/jkblog.ico">
 </head>
 <body>
 
@@ -61,6 +61,23 @@
             <!-- 左侧主菜单添加选项卡监听 -->
             <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
                 <!-- layui-nav-itemed添加这个类名默认展开-->
+                 <li class="layui-nav-item "> 
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>网站设置</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" href-url="{:url('Setting/index')}"><i class="layui-icon">&#xe621;</i>基本设置</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" href-url="{:url('Banner/index')}"><i class="layui-icon">&#xe621;</i>首页banner轮播</a>
+                        </dd>
+                    </dl>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('Notice/index')}"><i class="layui-icon">&#xe621;</i>公告管理</a></dd>
+                    </dl>
+                     <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('Blogroll/index')}"><i class="layui-icon">&#xe621;</i>友链管理</a></dd>
+                    </dl>
+                </li>
                 <li class="layui-nav-item "> 
                     <a href="javascript:;"><i class="layui-icon">&#xe628;</i>文章管理</a>
                     <dl class="layui-nav-child">
@@ -68,6 +85,24 @@
                     </dl>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" href-url="{:url('Article/articleType')}"><i class="layui-icon">&#xe621;</i>文章分类</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item "> 
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>图片管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('Photo/index')}"><i class="layui-icon">&#xe621;</i>图片列表</a></dd>
+                    </dl>
+                </li>
+                 <li class="layui-nav-item "> 
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>点点滴滴</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('Timeline/index')}"><i class="layui-icon">&#xe621;</i>时光轴</a></dd>
+                    </dl>
+                </li>
+                 <li class="layui-nav-item "> 
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>关于本站</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="{:url('AboutBlog/index')}"><i class="layui-icon">&#xe621;</i>关于本站</a></dd>
                     </dl>
                 </li>
             </ul>

@@ -29,7 +29,7 @@ class Setting extends Base
 				if(db('setting')->insert($data)) {
 					die(json_encode(['code'=>200,'msg'=>'设置信息成功']));
 				}else{
-					die(json_encode(['code'=>200,'msg'=>'设置信息失败']));
+					die(json_encode(['code'=>500,'msg'=>'设置信息失败']));
 				}
 			}else{
 				//数据修改

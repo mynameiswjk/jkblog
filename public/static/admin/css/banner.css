@@ -1,0 +1,31 @@
+  #banner_img
+  {
+    width:500px;
+    margin:0 auto;
+  }
+  #banner
+  {
+    width: 100%;
+  }
+  #sub
+  {
+    width: 216px; 
+    margin: 100px auto;
+    bottom: 0px;
+  }
+  .layui-upload-drag img
+  {
+    width: 500px;
+    height:135px;
+    display:block;
+    position: relative;
+
+  }
+  #banner_close
+  {
+    position: absolute;
+    right: -20px;
+    z-index: 100;
+    top:-18px;
+    font-size: 35px;
+  }

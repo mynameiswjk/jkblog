@@ -34,3 +34,29 @@ function getVersionsInfo()
 		$data['mysql_versions'] = mysqli_get_server_info($con);
 		return $data;
 }
+
+/** 
+* 封装一个函数用于文件上传
+* @access public 
+* @param  file 
+* @return code msg file_url
+*/  
+function uploadFile($file)
+{
+	if(empty($file)) die(json_encode(['code'=>'500','msg'=>'无效的文件']));
+	//移动到框架应用根目录/public/uploads/ 目录下
+  	$info = $file->move(ROOT_PATH . 'public' . DS . 'uploads'); 
+	if($info) { 
+  			$file_url =  DS .'uploads'. DS . $info->getSaveName();
+  			$file_url =  str_replace('\\','/',$file_url);
+	     	die(json_encode([
+	     	 	'code'=>'200',
+	     	 	'msg'=>'文件上传成功',
+	     	 	'file_url'=>$file_url]
+	     	));
+	    } else { 
+	      	//上传失败获取错误信息 
+	     	die(json_encode(['code'=>'500','msg'=>'上传文件失败']));
+	   } 
+
+}

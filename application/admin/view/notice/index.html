@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Data-Table 表格</title>
+    <link rel="stylesheet" href="__PUBLIC__/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="__PUBLIC__/frame/static/css/style.css">
+    <link rel="icon" href="__PUBLIC__/frame/static/image/code.png">
+</head>
+<style type="text/css">
+    .layui-form-onswitch,.layui-form-switch{
+        height: 25px;
+        width:55px;
+        margin-top: 0;
+    }
+</style>
+<body class="body">
+<!-- 工具集 -->
+<div class="my-btn-box">
+    <span class="fl">
+        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量删除</a>
+        <a class="layui-btn btn-add btn-default" id="article_add">添加</a>
+        <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
+    </span>
+    <span class="fr">
+        <span class="layui-form-label">搜索条件：</span>
+        <div class="layui-input-inline">
+            <input type="text" autocomplete="off" id='search_name' placeholder="请输入文章标题" class="layui-input">
+        </div>
+        <button class="layui-btn mgl-20" id="article_search">查询</button>
+    </span>
+</div>
+
+<!-- 表格 -->
+<table id="dateTable" lay-filter="vessel"></table>
+
+<script type="text/javascript" src="__PUBLIC__/frame/layui/layui.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/index.js"></script>
+<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+layui.config({
+    base: '/static/public/frame/static/js/'  // 模块目录
+});
+    // layui方法
+    layui.use(['table', 'form', 'layer', 'vip_table'], function () {
+
+        // 操作对象
+        var form = layui.form
+                , table = layui.table
+                , layer = layui.layer
+                , vipTable = layui.vip_table
+                , $ = layui.jquery;
+
+        // 表格渲染
+        var tableIns = table.render({
+            elem: '#dateTable'                  //指定原始表格元素选择器（推荐id选择器）
+            , height: vipTable.getFullHeight()    //容器高度
+            , cols: [[                  //标题栏
+                {checkbox: true, sort: true, fixed: true, space: true}
+                , {field: 'notice_id', title: '公告ID', width: 80,align:'center'}
+                , {field: 'notice_content', title: '公告内容', width: 500}
+                , {field: 'notice_is_stick',title: '是否置顶', width: 100,align: 'center',toolbar: '#stick'}
+                , {field: 'is_show',title: '是否显示', width: 100,align: 'center',toolbar: '#is_show'}
+                , {field: 'notice_addtime', title: '发布时间', width: 200,'align':'center'}
+                , {fixed: 'right', title: '操作', width: 250, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+            ]]
+            , id: 'dataCheck'
+            , url: '{:url("Notice/getNoticeData")}'
+            , method: 'get'
+            , page: true
+            , limits: [30, 60, 90, 150, 300]
+            , limit: 30 //默认采用30
+            , loading: false
+        });
+    //添加文章
+    function addArticle(edit){
+        if(edit){
+            var tit  = '编辑文章';
+        }else{
+            var tit = '添加文章';
+        }
+        var index = layui.layer.open({
+            title : tit,
+            type : 2,
+            content :"{:url('Article/articleAdd')}",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                if(edit){
+                     body.find("#submit_action").attr('action','edit');
+                     body.find("#submit_action").attr('article_id',edit.article_id);
+                    var checked;
+                    if(edit.article_is_stick == 1)
+                    {
+                        checked='checked';
+                    }else{
+                        checked='';
+                    }
+                    body.find(".article_title").val(edit.article_title);
+                    body.find(".article_abstract").val(edit.article_abstract);
+                    body.find(".thumbImg").attr("src",edit.article_surface);
+                    body.find("#article_content").val(edit.article_content);
+                    body.find(".newsStatus select").val(edit.newsStatus);
+                    body.find("input[name='article_type_id'][value='"+edit.article_type_id+"']").prop("checked","checked");
+                    body.find(".article_is_stick input[name='article_is_stick']").prop("checked",checked);
+                    form.render();
+                }
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(index);
+        })
+    }
+    //触发文章添加方法
+    $('#article_add').on('click',function(){
+        addArticle();
+    });
+        // 获取选中行
+       /* table.on('checkbox(dataCheck)', function (obj) {
+            layer.msg('123');
+            console.log(obj.checked); //当前是否选中状态
+            console.log(obj.data); //选中行的相关数据
+            console.log(obj.type); //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+        });*/
+
+        // 刷新
+        $('#btn-refresh').on('click', function () {
+            tableIns.reload();
+        });
+
+        //批量删除
+        $("#btn-delete-all").click(function(){
+            var checkStatus = table.checkStatus('dataCheck'),
+                data = checkStatus.data;
+                notice_id = [];
+            if(data.length > 0) {
+                for (var i in data) {
+                    notice_id.push(data[i].notice_id);
+                }
+                layer.confirm('确定删除选中的公告么？', {icon: 3, title: '批量删除'}, function (index) {
+                   $.get("{:url('Notice/noticeDel')}",{
+                         notice_id : notice_id  //将需要删除的newsId作为参数传入
+                     },function(res){
+                        if(res.code == 200 ) {
+                            layer.msg(res.msg,{icon:1,time:2000},function(){
+                                tableIns.reload();
+                            });
+                        }else{
+                            layer.msg(res.msg,{icon:2});
+                        }
+                     },'json')
+                })
+            }else{
+                layer.msg("请选择需要删除的公告");
+            }
+        })
+         //是否置顶
+        form.on('switch(notice_is_stick)', function(data){
+            var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+            setTimeout(function(){
+                var elem = $(data.elem);//原始dom对象
+                    notice_id = elem.attr('notice_id');
+                if(data.elem.checked){
+                    //发送置顶
+                    $.post("{:url('Notice/updateStatus')}",{notice_id:notice_id,notice_is_stick:1},function(res){
+                            if(res.code == 200 ){
+                                layer.msg("公告置顶成功！");
+                            }else{
+                                layer.msg("公告置顶失败！");
+                            }
+                    },'json');
+                    
+                }else{
+                    //取消置顶
+                    $.post("{:url('Notice/updateStatus')}",{notice_id:notice_id,notice_is_stick:0},function(res){
+                        if(res.code == 200 ){
+                                layer.msg("取消置顶成功！");
+                            }else{
+                                layer.msg("取消置顶失败！");
+                             }
+                    },'json');
+                    
+                }
+            },500);
+        })
+         //是否显示
+        form.on('switch(is_show)', function(data){
+            var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+            setTimeout(function(){
+                var elem = $(data.elem);//原始dom对象
+                    notice_id = elem.attr('notice_id');
+                if(data.elem.checked){
+                    //发送置顶
+                    $.post("{:url('Notice/updateStatus')}",{notice_id:notice_id,is_show:1},function(res){
+                            if(res.code == 200 ){
+                                layer.msg("公告显示成功");
+                            }else{
+                                layer.msg("公告显示失败");
+                            }
+                    },'json');
+                    
+                }else{
+                    //取消置顶
+                    $.post("{:url('Notice/updateStatus')}",{notice_id:notice_id,is_show:0},function(res){
+                        if(res.code == 200 ){
+                                layer.msg("取消显示成功！");
+                            }else{
+                                layer.msg("取消显示失败！");
+                             }
+                    },'json');
+                    
+                }
+            },500);
+        })
+        //公告编辑
+        
+        table.on('tool(vessel)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+                
+            if(layEvent === 'article_edit'){ //编辑
+                addArticle(data);
+            } 
+        });
+        //搜索功能
+        $('#article_search').on('click',function () {
+            var search_name = $('#search_name').val();
+            tableIns.reload({
+                where:{
+                  search_name:search_name
+                }
+            });
+
+        });
+       
+
+    });
+ function notice_del(notice_id)
+ {  
+    var tit = '删除公告';
+    layer.confirm(
+        '确定要删除这个公告么', 
+        {btn: ['确定', '取消'],icon: 2, title:tit}, 
+        function () {
+            //确定删除，发送请求
+            $.post('{:url("Notice/noticeDel")}?notice_id='+notice_id,function(res){
+                    if(res.code == 200) {
+                        layer.msg(res.msg,{icon:1,time:2000},function(){
+                            $(".layui-laypage-btn")[0].click(); 
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:2});
+                    }
+            },'json');
+         }
+    ); 
+ }
+
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="article_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="notice_del('{{d.notice_id}}')">删除</a>
+</script>
+<script type="text/html" id="article_surface">
+                
+            <img src='{{d.article_surface}}' height='25'>
+
+</script>
+<script type="text/html" id="stick">
+            <input type="checkbox" 
+           {{#  if(d.notice_is_stick == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="notice_is_stick"  lay-skin="switch" lay-filter="notice_is_stick" notice_id='{{d.notice_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>
+<script type="text/html" id="is_show">
+            <input type="checkbox" 
+           {{#  if(d.is_show == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="is_show"  lay-skin="switch" lay-filter="is_show" notice_id='{{d.notice_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>
+</body>
+</html> 

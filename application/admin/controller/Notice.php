@@ -105,7 +105,7 @@ class Notice extends Base
 		//当前公告数据获取
 		$notice_id  = input('param.notice_id');
 		$noticeInfo = db('notice')->where(['notice_id'=>$notice_id])->find();
-		//将文章内容反序列化出来
+		//将公告内容反序列化出来
 		$noticeInfo['notice_content'] = unserialize($noticeInfo['notice_content']); 
 		return view('edit',['notice'=>$noticeInfo]);
 	}

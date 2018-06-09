@@ -35,6 +35,7 @@ class Article extends Base
 			}
 			$userInfo = session('userInfo');
 			//数据补充①作者id
+			$data['article_content'] = serialize($data['article_content']);
 			$data['article_author']  = $userInfo['admin_id'];
 			$data['article_addtime'] = time();
 			//入库存储
@@ -70,6 +71,7 @@ class Article extends Base
 			$userInfo = session('userInfo');
 			//数据补充①作者id
 			$data['article_author']  = $userInfo['admin_id'];
+			$data['article_content'] = serialize($data['article_content']);
 			//入库存储
 			if(db('article')->where(['article_id'=>$data['article_id']])->update($data) !== false) {
 				//添加成功
@@ -104,6 +106,7 @@ class Article extends Base
 							->select();
 			foreach($ArticleData as $k=>$v) {
 				$ArticleData[$k]['article_type']    = db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');
+				$ArticleData[$k]['article_content'] = unserialize($v['article_content']);
 				$ArticleData[$k]['article_author']  = db('admin')->where(['admin_id'=>$v['article_author']])->value('admin_name');
 				$ArticleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
 			}

@@ -61,11 +61,11 @@ layui.config({
             , cols: [[                  //标题栏
                 {checkbox: true, sort: true, fixed: true, space: true}
                 , {field: 'notice_id', title: '公告ID', width: 80,align:'center'}
-                , {field: 'notice_content', title: '公告内容', width: 500}
+                , {field: 'notice_title', title: '公告标题', width: 400}
                 , {field: 'notice_is_stick',title: '是否置顶', width: 100,align: 'center',toolbar: '#stick'}
                 , {field: 'is_show',title: '是否显示', width: 100,align: 'center',toolbar: '#is_show'}
                 , {field: 'notice_addtime', title: '发布时间', width: 200,'align':'center'}
-                , {fixed: 'right', title: '操作', width: 250, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
+                , {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
             ]]
             , id: 'dataCheck'
             , url: '{:url("Notice/getNoticeData")}'
@@ -76,39 +76,16 @@ layui.config({
             , loading: false
         });
     //添加文章
-    function addArticle(edit){
-        if(edit){
-            var tit  = '编辑文章';
-        }else{
-            var tit = '添加文章';
-        }
+    function addNotice(){
+       
         var index = layui.layer.open({
-            title : tit,
+            title :'公告管理' ,
             type : 2,
-            content :"{:url('Article/articleAdd')}",
+            content :"{:url('Notice/noticeAdd')}",
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
-                if(edit){
-                     body.find("#submit_action").attr('action','edit');
-                     body.find("#submit_action").attr('article_id',edit.article_id);
-                    var checked;
-                    if(edit.article_is_stick == 1)
-                    {
-                        checked='checked';
-                    }else{
-                        checked='';
-                    }
-                    body.find(".article_title").val(edit.article_title);
-                    body.find(".article_abstract").val(edit.article_abstract);
-                    body.find(".thumbImg").attr("src",edit.article_surface);
-                    body.find("#article_content").val(edit.article_content);
-                    body.find(".newsStatus select").val(edit.newsStatus);
-                    body.find("input[name='article_type_id'][value='"+edit.article_type_id+"']").prop("checked","checked");
-                    body.find(".article_is_stick input[name='article_is_stick']").prop("checked",checked);
-                    form.render();
-                }
                 setTimeout(function(){
-                    layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+                    layui.layer.tips('点击此处返回公告列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
                 },500)
@@ -120,9 +97,9 @@ layui.config({
             layui.layer.full(index);
         })
     }
-    //触发文章添加方法
+    //触发公告添加方法
     $('#article_add').on('click',function(){
-        addArticle();
+        addNotice();
     });
         // 获取选中行
        /* table.on('checkbox(dataCheck)', function (obj) {
@@ -244,6 +221,28 @@ layui.config({
        
 
     });
+//公告编辑
+function notice_edit(notice_id)
+{
+      var index = layui.layer.open({
+            title :'公告管理' ,
+            type : 2,
+            content :"{:url('Notice/noticeEdit')}?notice_id="+notice_id,
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回公告列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(index);
+        })
+}
  function notice_del(notice_id)
  {  
     var tit = '删除公告';
@@ -269,7 +268,7 @@ layui.config({
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption" >
     <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="article_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-normal" onclick="notice_edit('{{d.notice_id}}')" lay-event="article_edit"   >编辑</a>
     <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="notice_del('{{d.notice_id}}')">删除</a>
 </script>
 <script type="text/html" id="article_surface">

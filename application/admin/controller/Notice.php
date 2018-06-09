@@ -24,7 +24,6 @@ class Notice extends Base
 	* @access public 
 	* @return DATA
 	*/
-
 	public function getNoticeData()
 	{
 		if(request()->isAjax())
@@ -32,7 +31,7 @@ class Notice extends Base
 			$search_name = input('get.search_name');
 			$where =[];
 			if(!empty($search_name)) {
-				$where['notice_content'] = ["like","%{$search_name}%"];
+				$where['notice_title'] = ["like","%{$search_name}%"];
 			}
 			$page 		 = input('get.page'); 
 			$limit 		 = input('get.limit');
@@ -53,7 +52,63 @@ class Notice extends Base
 			die(json_encode($data));
 		}
 	}
+	/** 
+	* 公告添加
+	* @access public 
+	* @return Success Error
+	*/
+	public function noticeAdd()
+	{
+		if(request()->isPost()) {
+			$data  = input('post.');
+			//数据验证
+			$noticeValidate = Loader::Validate('NoticeValidate');
+			if(!$noticeValidate->scene('add')->check($data)) {
+				die(json_encode(['code'=>'500','msg'=>$noticeValidate->getError()]));
+			}
+			//数据补充
+			$data['notice_addtime'] = time();
+			$data['notice_content'] = serialize($data['notice_content']);
 
+			if(db('notice')->insert($data)) {
+				die(json_encode(['code'=>200,'msg'=>'公告添加成功']));
+			}else{
+				die(json_encode(['code'=>500,'msg'=>'公告添加失败']));
+			}
+		}
+		return view('add');
+		
+	}
+	/** 
+	* 公告编辑
+	* @access public 
+	* @return Success Error
+	*/
+	public function noticeEdit()
+	{
+		if(request()->isPost()) {
+			$data = input('post.');
+			//数据验证
+			$noticeValidate = Loader::Validate('NoticeValidate');
+			if(!$noticeValidate->scene('edit')->check($data)) {
+				die(json_encode(['code'=>'500','msg'=>$noticeValidate->getError()]));
+			}
+			$data['notice_content'] = serialize($data['notice_content']);
+			if(!db('notice')->where(['notice_id'=>$data['notice_id']])->update($data) === FALSE){
+				die(json_encode(['code'=>200,'msg'=>'公告修改成功']));
+			}else{
+				die(json_encode(['code'=>500,'msg'=>'公告修改失败']));
+			}
+		}
+
+		//视图展示
+		//当前公告数据获取
+		$notice_id  = input('param.notice_id');
+		$noticeInfo = db('notice')->where(['notice_id'=>$notice_id])->find();
+		//将文章内容反序列化出来
+		$noticeInfo['notice_content'] = unserialize($noticeInfo['notice_content']); 
+		return view('edit',['notice'=>$noticeInfo]);
+	}
 	/** 
 	* 修改公告的一些状态
 	* @access public 
@@ -86,8 +141,8 @@ class Notice extends Base
 				$where['notice_id']=['in',$notice_id];
 
 			}else{
-				//单个删除
-				$where['notice_id']=$notice_id;
+				 //单个删除
+				 $where['notice_id']=$notice_id;
 			}
 			$res = db('notice')->where($where)->delete();
 			if($res) {

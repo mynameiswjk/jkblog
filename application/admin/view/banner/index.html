@@ -48,7 +48,7 @@ layui.use(['upload','form','jquery'], function(){
     elem: '#banner'
     ,url: '{:url("Banner/uploadBanner")}'
     ,done: function(res){
-      $('#banner_img').append('<div class="layui-upload-drag"><img  src ="'+res.file_url+'"><input type="hidden" name="banner_img" value="'+res.file_url+'"> </div>');
+      $('#banner_img').append('<div class="layui-upload-drag"><i class="layui-icon" id="banner_close" onclick="del_banner(this)">&#x1007;</i><img  src ="'+res.file_url+'"><input type="hidden" name="banner_img" value="'+res.file_url+'"> </div>');
     }
   });
   //监听提交

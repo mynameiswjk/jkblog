@@ -145,18 +145,25 @@
 </div>
 
 <script type="text/javascript" src="__PUBLIC__/frame/layui/layui.js"></script>
+<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/frame/static/js/vip_comm.js"></script>
 <script type="text/javascript">
 layui.use(['layer','vip_nav'], function () {
-
     // 操作对象
     var layer       = layui.layer
         ,vipNav     = layui.vip_nav
         ,$          = layui.jquery;
-
-
-
 });
+//图片管理弹窗
+function showImg(){
+    $.getJSON("{:url('Photo/getPhotoData')}", function(json){
+        var res = json;
+        layer.photos({
+            photos: res,
+            anim: 5
+        });
+    });
+}
 </script>
 </body>
 </html>

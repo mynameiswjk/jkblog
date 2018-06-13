@@ -49,14 +49,9 @@ function uploadFile($file)
 	if($info) { 
   			$file_url =  DS .'uploads'. DS . $info->getSaveName();
   			$file_url =  str_replace('\\','/',$file_url);
-	     	die(json_encode([
-	     	 	'code'=>'200',
-	     	 	'msg'=>'文件上传成功',
-	     	 	'file_url'=>$file_url]
-	     	));
+	     	return $file_url;
 	    } else { 
-	      	//上传失败获取错误信息 
-	     	die(json_encode(['code'=>'500','msg'=>'上传文件失败']));
-	   } 
+	      	return false;
+		} 
 
 }

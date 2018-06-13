@@ -51,5 +51,6 @@ layui.use(['jquery','flow'], function () {
 });
 function view(start) {
 	pics.start = start;
+   console.log(pics)
 	layer.photos({photos: pics });	
 }

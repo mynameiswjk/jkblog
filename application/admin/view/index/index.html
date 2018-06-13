@@ -155,8 +155,9 @@ layui.use(['layer','vip_nav'], function () {
         ,$          = layui.jquery;
 });
 //图片管理弹窗
-function showImg(){
-    $.getJSON("{:url('Photo/getPhotoData')}", function(json){
+function showImg(photo_id){
+    var jsonUrl = "{:url('Photo/getPhotoDetail')}";
+    $.getJSON(jsonUrl,{photo_id:photo_id},function(json){
         var res = json;
         layer.photos({
             photos: res,

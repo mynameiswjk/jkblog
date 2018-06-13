@@ -22,7 +22,7 @@
 			<a class="layui-btn layui-btn-sm layui-btn-danger batchDel">批量删除</a>
 		</div>
 		<div class="layui-inline">
-			<a class="layui-btn layui-btn-sm uploadNewImg">上传新图片</a>
+			<a class="layui-btn layui-btn-sm" onclick='addPhoto("{:url(\"Photo/add\")}")'>添加图片</a>
 		</div>
 	</blockquote>
 	<ul class="layer-photos-demo" id="Images"></ul>
@@ -30,8 +30,11 @@
 <script type="text/javascript">
 		//定义图片数据获取路径
 		var getPhotoDataUrl = "{:url('Photo/getPhotoData')}";
+		//图片删除路径
+		var photoDel 		= "{:url('Photo/delete')}";
 </script>
 <script type="text/javascript" src="__COMMON__/layui/layui.js"></script>
+<script type="text/javascript" src="__JS__/JQUERY-1.11.1.min.js"></script>
 <script type="text/javascript" src="__JS__/images.js"></script>
 </body>
 </html>

@@ -55,96 +55,14 @@
     <button class="layui-btn" lay-submit="" lay-filter="demo2" style="margin-left: 20px;">提交</button>
   </div>
 </form>
-
-<script type="text/javascript" src="__COMMON__/layui/layui.js"></script>
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+{load href='__COMMON__/layui/layui.js'}
+{load href='__JS__/blogroll_edit.js'}
 <script>
-layui.use(['form', 'layedit', 'laydate','upload'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-  ,layedit = layui.layedit
-  ,laydate = layui.laydate;
-   var $ = layui.jquery
-  ,upload = layui.upload;
-  //普通图片上传
-  var loading;
-  var uploadInst = upload.render({
-    elem: '#test1'
-    ,url: '{:url("Setting/settingUpload")}'
-    ,before:function(){
-     loading = top.layer.msg('图片上传中',{icon: 16,time:false,shade:0.8});
-    }
-    ,done: function(res){
-      top.layer.close(loading);
-      if(res.code == 200) {
-          $("#blogroll_logo").attr('src',res.file_url);
-          $("input[name='blogroll_logo']").val(res.file_url);
-      }else{
-          layer.msg(res.msg,{icon:2});
-      }
-    }
-    ,error: function(){
-      //演示失败状态，并实现重传
-   
-    },exts: 'png|jpg|jpeg'
-     ,size : 10240
-  });
-  //自定义验证规则
-  form.verify({
-   blogroll_name: function(value){
-      if(value.length  == 0){
-        return '请输入友情链接名称';
-      }
-      if(value.length  > 30){
-        return '友情链接名称必须小于30位';
-      }
-    }
-    ,blogroll_url: function(value){
-      if(value.length  == 0){
-        return '请输入友情链接地址';
-      }
-      var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
-      if(!reg.test(value)){
-        return 'URL格式不正确';
-     }
-    },blogroll_logo: function(value){
-      if(value.length  == 0){
-        return '请上传logo图片';
-      }
-    }
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  
-  //监听提交
-  form.on('submit(demo2)', function(data){
-    var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-    var field  = data.field;
-    var is_show = $("input[name='is_show']:checked").val();
-    $.post("{:url('Blogroll/editBlogroll')}",{
-        blogroll_id   :  "{$blogroll.blogroll_id}",
-        blogroll_name :  field.blogroll_name,
-        blogroll_url  :  field.blogroll_url,
-        blogroll_logo :  field.blogroll_logo,
-        is_show       :  is_show,
-    },function(res){
-          if(res.code == 200) {
-            top.layer.msg(res.msg,{icon:1,time:2000},function(){
-                    top.layer.close(index);
-                    layer.closeAll("iframe");
-                    parent.location.reload();
-            });
-          }else{
-                top.layer.msg(res.msg,{icon:2});
-          }
-      }
-      ,'json');
-
-    return false;
-  });
-});
+  //定义页面所需要的数据
+  var settingUploadUrl = "{:url('Setting/settingUpload')}";
+  var editBlogrollUrl  = "{:url('Blogroll/editBlogroll')}";
+  var blogroll_id      = "{$blogroll.blogroll_id}";
+  var TopLay           = top.layer;
 </script>
-
 </body>
 </html>

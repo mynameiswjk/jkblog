@@ -1,0 +1,33 @@
+<script type="text/javascript">
+//定义JS所需要的参数
+var getNoticeDataUrl  = '{:url("Notice/getNoticeData")}';
+var noticeAddUrl      = "{:url('Notice/noticeAdd')}";
+var noticeDelUrl      = "{:url('Notice/noticeDel')}";
+var updateStatusUrl   = "{:url('Notice/updateStatus')}";
+var noticeEditUrl     = "{:url('Notice/noticeEdit')}";
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-mini layui-btn-normal" onclick="notice_edit('{{d.notice_id}}')" lay-event="article_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="notice_del('{{d.notice_id}}')">删除</a>
+</script>
+<script type="text/html" id="article_surface">
+       <img src='{{d.article_surface}}' height='25'>
+</script>
+<script type="text/html" id="stick">
+            <input type="checkbox" 
+           {{#  if(d.notice_is_stick == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="notice_is_stick"  lay-skin="switch" lay-filter="notice_is_stick" notice_id='{{d.notice_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>
+<script type="text/html" id="is_show">
+            <input type="checkbox" 
+           {{#  if(d.is_show == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="is_show"  lay-skin="switch" lay-filter="is_show" notice_id='{{d.notice_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

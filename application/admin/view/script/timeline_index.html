@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    //定义js页面所需要的数据
+    var getTimelineDataUrl =  "{:url('Timeline/getTimelineData')}";
+    var addTimelineUrl     =  "{:url('Timeline/addTimeline')}";
+    var delTimelineUrl     =  "{:url('Timeline/delTimeline')}";
+    var updateTimelineStatusUrl     =  "{:url('Timeline/updateTimelineStatus')}";
+    var editTimelineUrl     =  "{:url('Timeline/editTimeline')}";
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="timeline_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="timeline_del('{{d.timeline_id}}')">删除</a>
+</script>
+<script type="text/html" id="is_show">
+            <input type="checkbox" 
+           {{#  if(d.is_show == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="is_show"  lay-skin="switch" lay-filter="is_show" timeline_id='{{d.timeline_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="__COMMON__/layui/css/layui.css">
 </head>
 <body class="body">
-
-
 <blockquote class="layui-elem-quote layui-text" id='blockquote'>
   文章分类的编辑
 </blockquote>
@@ -47,54 +45,12 @@
 <!-- 通用-970*90 -->
 <script src="__COMMON__/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
-
-<script>
-    layui.use(['form', 'layedit', 'laydate'], function(){
-        var form = layui.form
-                ,layer = layui.layer
-                ,layedit = layui.layedit
-                ,laydate = layui.laydate;
-
-
-        //自定义验证规则
-        form.verify({
-            type_name: function(value){
-                if(value.length == 0){
-                    return '分类名称不能为空';
-                }
-            }
-            ,order: function(value){
-                if(value.length == 0){
-                    return '排序不能为空';
-                }
-            }
-        });
-        //监听提交
-        form.on('submit(type_btn)', function(data){
-            var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-            var type_name = data.field.type_name;
-            var order     = data.field.order;
-            var is_show   = data.field.is_show;
-            var type_id   = "{$type.type_id}";
-            var submit_url = "{:url('articleTypeEdit')}";
-
-            $.post(submit_url,{type_id:type_id,type_name:type_name,order:order,is_show:is_show}
-                ,function(res){
-                    if(res.code == 200 ) {
-                      top.layer.msg(res.msg,{icon:1,time:2000},function(){
-                            top.layer.close(index);
-                            layer.closeAll("iframe");
-                            parent.location.reload();
-                        });
-                    }else{
-                        top.layer.msg(res.msg);
-                    }
-            },'json');
-           return false;
-        });
-
-
-    });
+<script type="text/javascript" src="__JS__/articletype_edit.js"></script>
+<script type="text/javascript">
+    //定义js数据提交所需要的东西
+    var type_id    = "{$type.type_id}";
+    var submit_url = "{:url('articleTypeEdit')}";
+    var topLayer   = top.layer;
 </script>
 </body>
 </html>

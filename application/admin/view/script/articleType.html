@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    //定义js文件所需要的数据
+    var  getArticleTypeDataUrl  = "{:url('Article/getArticleTypeData')}";
+    var  articleTypeAddUrl      = "{:url('Article/articleTypeAdd')}";
+    var  articleTypeDelUrl      = "{:url('Article/articleTypeDel')}";
+    var  updateIsShowUrl        = "{:url('Article/updateIsShow')}";
+    var  articleTypeEditUrl     = "{:url('Article/articleTypeEdit')}?type_id=";
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="article_type_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="type_del('{{d.type_id}}')">删除</a>
+</script>
+<script type="text/html" id="is_show">
+<input type="checkbox" 
+{{#  if(d.is_show == "1"){ }}
+     checked="checked" 
+{{#  }}}
+ name="is_show"  lay-skin="switch" lay-filter="is_show" type_id='{{d.type_id}}'  lay-text="是|否" >
+<div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

@@ -86,98 +86,13 @@
     <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
   </div>
 </form>
-
-<script type="text/javascript" src="__COMMON__/layui/layui.js"></script>
+{load href='__COMMON__/layui/layui.js'}
+{load href='__JS__/setting.js'}
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
-layui.use(['form', 'layedit', 'laydate','upload'], function(){
-  var form = layui.form
-  ,layer = layui.layer
-  ,layedit = layui.layedit
-  ,laydate = layui.laydate;
-   var $ = layui.jquery
-  ,upload = layui.upload;
-
-  //普通图片上传
-  var loading;
-  var uploadInst = upload.render({
-    elem: '#test1'
-    ,url: '{:url("Setting/settingUpload")}'
-    ,before:function(){
-     loading = top.layer.msg('图片上传中',{icon: 16,time:false,shade:0.8});
-    }
-    ,done: function(res){
-      top.layer.close(loading);
-      if(res.code == 200) {
-          $("#blogger_avatar").attr('src',res.file_url);
-          $("input[name='blogger_avatar']").val(res.file_url);
-      }else{
-          layer.msg(res.msg,{icon:2});
-      }
-    }
-    ,error: function(){
-      //演示失败状态，并实现重传
-   
-    },exts: 'png|jpg|jpeg'
-     ,size : 10240
-  });
-  //自定义验证规则
-  form.verify({
-   blogger_name: function(value){
-      if(value.length  == 0){
-        return '请输入博主名称';
-      }
-      if(value.length  > 12){
-        return '博主名称必须小于12位';
-      }
-    }
-    ,blogger_intro: function(value){
-      if(value.length  == 0){
-        return '请输入博主简介';
-      }
-    },blogger_address: function(value){
-      if(value.length  == 0){
-        return '请输入所在地址';
-      }
-    }
-    ,content: function(value){
-      layedit.sync(editIndex);
-    }
-  });
-  
-  //监听提交
-  form.on('submit(demo2)', function(data){
-/*    layer.alert(JSON.stringify(data.field), {
-      title: '最终的提交信息'
-    })*/
-    var field           = data.field;
-    var blogger_name    = field.blogger_name;
-    var blogger_address = field.blogger_address;
-    var blogger_email   = field.blogger_email;
-    var blogger_github  = field.blogger_github;
-    var blogger_intro   = field.blogger_intro;
-    var blogger_motto   = field.blogger_motto;
-    var blogger_qq      = field.blogger_qq;
-    var close_website_cause = field.close_website_cause;
-    var is_close_website    = field.is_close_website;
-    var blogger_avatar      = field.blogger_avatar;
-    $.post("{:url('Setting/index')}"
-      ,{blogger_name:blogger_name,blogger_address:blogger_address,blogger_email:blogger_email,blogger_github:blogger_github,blogger_intro:blogger_intro,blogger_motto:blogger_motto,blogger_qq:blogger_qq,close_website_cause:close_website_cause,is_close_website:is_close_website,blogger_avatar:blogger_avatar}
-      ,function(res){
-          if(res.code == 200) {
-            layer.msg(res.msg,{icon:1,time:2000},function(){
-              location.reload();
-            });
-          }else{
-            layer.msg(res.msg,{icon:2});
-          }
-      }
-      ,'json');
-
-    return false;
-  });
-});
+  //定义js文件所需要的参数
+  var  settingUploadUrl = '{:url("Setting/settingUpload")}';
+  var  settingIndexUrl = "{:url('Setting/index')}";
 </script>
-
 </body>
 </html>

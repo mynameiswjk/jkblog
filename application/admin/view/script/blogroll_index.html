@@ -1,0 +1,26 @@
+<script type="text/javascript">
+ //定义js需要的数据
+ var getBlogrollDataUrl = "{:url('Blogroll/getBlogrollData')}"; 
+ var addBlogrollUrl 	= "{:url('Blogroll/addBlogroll')}"; 
+ var blogrollDelUrl		= "{:url('Blogroll/blogrollDel')}"; 
+ var updateBlogrollStatusUrl = "{:url('Blogroll/updateBlogrollStatus')}"; 
+ var editBlogrollUrl 		 = "{:url('Blogroll/editBlogroll')}"; 
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="blogroll_edit"   >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="blogroll_del('{{d.blogroll_id}}')">删除</a>
+</script>
+<script type="text/html" id="blogroll_logo">
+                
+            <img src='{{d.blogroll_logo}}' height='25'>
+
+</script>
+<script type="text/html" id="is_show">
+ 		<input type="checkbox" 
+           {{#  if(d.is_show == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+         name="is_show"  lay-skin="switch" lay-filter="is_show" blogroll_id='{{d.blogroll_id}}'  lay-text="是|否" >
+        <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

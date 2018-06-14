@@ -15,7 +15,9 @@
   <!-- layui 2.2.5 新增 -->
   <button class="layui-btn layui-btn-fluid"  style='margin-top:50px;' id='photo_add' >添加图片</button>
 </div>
-{load href='__COMMON__/layui/layui.js'}
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
 {load href='__JS__/images_add.js'}
 <script>
   var  uploadPhotoUrl = '{:url("Photo/uploadPhoto")}';

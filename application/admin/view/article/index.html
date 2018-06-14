@@ -18,10 +18,11 @@
 </div>
 <!-- 表格 -->
 <table id="dateTable" lay-filter="vessel"></table>
-<script type="text/javascript" src="__PUBLIC__/frame/layui/layui.js"></script>
-<script type="text/javascript" src="__PUBLIC__/js/index.js"></script>
-<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="__JS__/article_index.js"></script>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/vip_common.js'}
+{load href='__JS__/article_index.js'}
 {include file='script/article_index'}
 </body>
 </html> 

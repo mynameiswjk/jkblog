@@ -65,8 +65,10 @@
 		</div>
 	</div>
 </form>
-<script type="text/javascript" src="__PUBLIC__/frame/layui/layui.js"></script>
-<script type="text/javascript" src="__JS__/articleAdd.js"></script>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/articleAdd.js'}
 <!--定义文章提交URL,图片上传URL-->
 <script type="text/javascript">
 	var articleAddUrl 		  = "{:url('Article/articleAdd')}";

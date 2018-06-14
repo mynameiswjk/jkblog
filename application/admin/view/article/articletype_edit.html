@@ -35,9 +35,10 @@
     </div>
 </form>
 <!-- 通用-970*90 -->
-<script src="__COMMON__/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="__JS__/articletype_edit.js"></script>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/articletype_edit.js'}
 <script type="text/javascript">
     //定义js数据提交所需要的东西
     var type_id    = "{$type.type_id}";

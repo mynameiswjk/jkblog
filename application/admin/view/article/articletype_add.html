@@ -35,10 +35,10 @@
     </div>
 </form>
 <!-- 通用-970*90 -->
-<script src="__COMMON__/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="__JS__/articleType_add.js"></script>
-
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/articleType_add.js'}
 <script>
    //定义js文件所需要端数据
    var  articleTypeAddUrl= "{:url('articleTypeAdd')}";

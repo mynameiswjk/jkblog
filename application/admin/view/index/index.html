@@ -130,9 +130,10 @@
         </tr>
     </table>
 </div>
-<script type="text/javascript" src="__PUBLIC__/frame/layui/layui.js"></script>
-<script type="text/javascript" src="__JS__/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/frame/static/js/vip_comm.js"></script>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本地脚本文件-->
+{load href='__JS__/admin_index.js'}
 <script type="text/javascript">
 layui.use(['layer','vip_nav'], function () {
     // 操作对象

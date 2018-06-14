@@ -44,7 +44,7 @@ class Photo extends Base
 			if(db('photo')->insertAll($data)) {
 				die(json_encode(['code'=>200,'msg'=>'添加图片成功']));
 			}else{
-				die();
+				die(json_encode(['code'=>500,'msg'=>'添加图片失败']));
 			}
 		}
 		return view('add');

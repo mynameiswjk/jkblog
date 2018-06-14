@@ -1,0 +1,80 @@
+<!--引入后台公共头文件-->
+{include file='public/admin_header'}
+<!--本页样式表-->
+{load href='__CSS__/admin_public.css'}
+<body class="childrenBody">
+<form class="layui-form layui-row layui-col-space10" lay-filter='formTest'>
+	<div class="layui-col-md9 layui-col-xs12">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md9 layui-col-xs7">
+				<div class="layui-form-item magt3">
+					<label class="layui-form-label">文章标题</label>
+					<div class="layui-input-block">
+						<input type="text"  name='article_title' value='{$article.article_title}' class="layui-input article_title" lay-verify="article_title"  id='article_title' placeholder="请输入文章标题">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">文章摘要</label>
+					<div class="layui-input-block">
+						<textarea placeholder="请输入文章摘要"  lay-verify="article_abstract" name='article_abstract'  id='article_abstract' class="layui-textarea article_abstract"> {$article.article_abstract}</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md3 layui-col-xs5">
+				<div class="layui-upload-list thumbBox mag0 magt3">
+					<img class="layui-upload-img thumbImg" {if !empty($article.article_surface)}src='{$article.article_surface}'{/if}>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item magb0">
+			<label class="layui-form-label">文章内容</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea layui-hide article_content"   name="article_content"   lay-verify="article_content" id="article_content">{$article.article_content}</textarea>
+			</div>
+		</div>
+	</div>
+	<div class="layui-col-md3 layui-col-xs12">
+		<blockquote class="layui-elem-quote title"><i class="seraph icon-caidan"></i> 分类目录</blockquote>
+		<div class="border category">
+			<div class="">
+				<!--文章分类-->
+				{if !empty($articleTypeData)}
+					{volist  id='type' name='$articleTypeData' key='k'}
+							<p>
+								<input type="radio" name="article_type_id"  value="{$type.type_id}"  lay-skin="primary" title="{$type.type_name}"  {if $type.type_id eq $article.article_type_id}checked{/if} />
+							</p>
+					{/volist}
+				{/if}
+			</div>
+		</div>
+		<blockquote class="layui-elem-quote title magt10"><i class="layui-icon">&#xe609;</i> 发布</blockquote>
+		<div class="border">
+			<div class="layui-form-item article_is_stick">
+				<label class="layui-form-label"><i class="seraph icon-zhiding"></i> 置　顶</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="article_is_stick" lay-skin="switch" lay-text="是|否">
+				</div>
+			</div>
+			<hr class="layui-bg-gray" />
+			<div class="layui-right">
+				<a class="layui-btn layui-btn-sm" lay-filter="addArticle" lay-submit><i class="layui-icon">&#xe609;</i>发布</a>
+				<a class="layui-btn layui-btn-primary layui-btn-sm" lay-filter="look" lay-submit>预览</a>
+			</div>
+		</div>
+	</div>
+</form>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__COMMON__/layui/layui.js'}
+{load href='__JS__/article_edit.js'}
+<!--定义文章提交URL,图片上传URL-->
+<script type="text/javascript">
+	var article_id            = "{$article.article_id}";
+	var is_stick 			  = "{$article.article_is_stick}";
+	var articleEditUrl 		  = "{:url('Article/articleEdit')}";
+	var uploadArticleSurface  = "{:url('Article/uploadArticleSurface')}";
+	var uploadArticleLayedit  = "{:url('Article/uploadArticleLayedit')}";
+</script>
+</body>
+</html>

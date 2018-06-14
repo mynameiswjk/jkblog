@@ -4,8 +4,6 @@
 {load href='__CSS__/admin_public.css'}
 <body class="childrenBody">
 <form class="layui-form layui-row layui-col-space10">
-	<!--放一个div,action为add或者edit 默认为add-->
-	<div action='add' id='submit_action' article_id=''></div>
 	<div class="layui-col-md9 layui-col-xs12">
 		<div class="layui-row layui-col-space10">
 			<div class="layui-col-md9 layui-col-xs7">
@@ -72,7 +70,6 @@
 <!--定义文章提交URL,图片上传URL-->
 <script type="text/javascript">
 	var articleAddUrl 		  = "{:url('Article/articleAdd')}";
-	var articleEditUrl 		  = "{:url('Article/articleEditUrl')}";
 	var uploadArticleSurface  = "{:url('Article/uploadArticleSurface')}";
 	var uploadArticleLayedit  = "{:url('Article/uploadArticleLayedit')}";
 </script>

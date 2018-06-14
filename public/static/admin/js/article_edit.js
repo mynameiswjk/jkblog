@@ -52,6 +52,10 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
         }
     });
 
+    is_stick = is_stick == 1 ? true : false;
+    form.val('formTest',{
+        'article_is_stick' : is_stick
+    });
     form.verify({
         article_title : function(val){
             if(val == ''){
@@ -66,13 +70,11 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
         
     })
     form.on("submit(addArticle)",function(data){
-        /*//截取文章内容中的一部分文字放入文章摘要
-
-        var abstract = layedit.getText(editIndex).substring(0,50);*/
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         var article_type_id = $("input[name='article_type_id']:checked").val();
-        $.post(articleAddUrl,{
+        $.post(articleEditUrl,{
+             article_id      : article_id,
              article_title   : $("#article_title").val(),  //文章标题
              article_abstract: $("#article_abstract").val(),  //文章摘要
              article_content : layedit.getContent(editIndex).split('<audio controls="controls" style="display: none;"></audio>')[0],  //文章内容

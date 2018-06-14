@@ -2,7 +2,7 @@ layui.config({
     base: '/static/public/frame/static/js/'  // 模块目录
 });
 // layui方法
-layui.use(['table', 'form', 'layer', 'vip_table'], function () {
+layui.use(['table', 'form', 'layer', 'vip_table','jquery'], function () {
     // 操作对象
     var form = layui.form
             , table = layui.table
@@ -36,36 +36,33 @@ layui.use(['table', 'form', 'layer', 'vip_table'], function () {
 //添加文章
 function addArticle(edit)
 {
-    if(edit){
-        var tit  = '编辑文章';
-    }else{
-        var tit = '添加文章';
-    }
     var index = layui.layer.open({
-        title : tit,
+        title : '添加文章',
         type : 2,
         content :articleAddUrl,
         success : function(layero, index){
-            var body = layui.layer.getChildFrame('body', index);
-            if(edit){
-                 body.find("#submit_action").attr('action','edit');
-                 body.find("#submit_action").attr('article_id',edit.article_id);
-                var checked;
-                if(edit.article_is_stick == 1)
-                {
-                    checked='checked';
-                }else{
-                    checked='';
-                }
-                body.find(".article_title").val(edit.article_title);
-                body.find(".article_abstract").val(edit.article_abstract);
-                body.find(".thumbImg").attr("src",edit.article_surface);
-                body.find("#article_content").val(edit.article_content);
-                body.find(".newsStatus select").val(edit.newsStatus);
-                body.find("input[name='article_type_id'][value='"+edit.article_type_id+"']").prop("checked","checked");
-                body.find(".article_is_stick input[name='article_is_stick']").prop("checked",checked);
-                form.render();
-            }
+            setTimeout(function(){
+                layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+                    tips: 3
+                });
+            },500)
+        }
+    })
+    layui.layer.full(index);
+    //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+    $(window).on("resize",function(){
+        layui.layer.full(index);
+    })
+}
+
+//编辑文章
+function editArticle(data)
+{  
+    var index = layui.layer.open({
+        title : '编辑文章',
+        type : 2,
+        content :articleEditUrl+'?article_id='+data.article_id,
+        success : function(layero, index){
             setTimeout(function(){
                 layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
                     tips: 3
@@ -151,7 +148,7 @@ function addArticle(edit)
                 data = obj.data;
                 
             if(layEvent === 'article_edit'){ //编辑
-                addArticle(data);
+                editArticle(data);
             } 
         });
         //搜索功能

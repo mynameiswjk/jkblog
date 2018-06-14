@@ -51,15 +51,14 @@ class Article extends Base
 		$articleTypeData = db('article_type')->order(['order'=>'asc'])->select();
 		//视图展示
 		return view('add',['articleTypeData'=>$articleTypeData]);
-
 	}
 	/** 
 	* 文章编辑
 	* @access public 
 	*/ 
-	public function articleEditUrl()
+	public function articleEdit()
 	{
-		if(request()->isAjax()) {
+		if(request()->isPost()) {
 			//数据接收
 			$data = input('post.');
 			//数据验证
@@ -81,6 +80,15 @@ class Article extends Base
 				die(json_encode(['code'=>'500','msg'=>'文章修改失败！']));
 			}
 		}
+		//数据展示
+		$article_id = input('param.article_id');
+		//数据获取
+		$articleInfo = db('article')->where(['article_id'=>$article_id])->find();
+		$articleInfo['article_content'] = unserialize($articleInfo['article_content']);
+		//列出文章分类
+		$articleTypeData = db('article_type')->order(['order'=>'asc'])->select();
+		//视图展示
+		return view('edit',['article'=>$articleInfo,'articleTypeData'=>$articleTypeData]);
 	}
 	/** 
 	* 文章列表页通过Ajax请求获取数据

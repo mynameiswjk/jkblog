@@ -1,160 +1,73 @@
 {include file="public/header"}
 <!-- 本页样式表 -->
 {load href='__CSS__/index.css'}
-
     <!-- 主体（一般只改变这里的内容） -->
     <div class="blog-body">
     	<div class="layui-carousel blog-bg" id="carousel">
 		  <div carousel-item>
-		    <div class="bg bg_a"></div>
-		    <div class="bg bg_b"></div>
-		    <div class="bg bg_c"></div>
-		    <div class="bg bg_d"></div>
-		    <div class="bg bg_e"></div>
+                {volist id='banner' name='banner'}
+    		      <div><img src='{$banner}' width='100%' height='100%'></div>
+                {/volist}
 		  </div>
 		</div>
         <div class="blog-container">
             <div class="blog-main">
                 <!-- 网站公告提示 -->
                 <div class="home-tips shadow">
-                    <i style="float:left;line-height:17px;" class="fa fa-volume-up"></i>
+                    <i style="float:left;line-height:25px;" class="fa fa-volume-up"></i>
                     <div class="home-tips-container">
-                        <span style="color: red">新功能vip视频解析上线了！！！<a href="mixed_vip.html" target="_blank" style="color:#01AAED">去围观</a></span>
-                        <span style="color: #009688">有事做有所期待，日子就是幸福的</span>
-                        <span style="color: red">如果你觉得网站做得还不错，来Fly社区点个赞吧！<a href="http://fly.layui.com/case/2017/" target="_blank" style="color:#01AAED">点我前往</a></span>
-                        <span style="color: #009688">用心每一天，不忘初心，方能走远</span>
-                        <span style="color: #009688">偷偷挤进一缕斜阳，送来满满幸福</span>
+                        {volist name='notice' id='notice'}
+                           <span style="{if $notice.is_show eq 1 }color: red;{else}color: #009688;{/if}">
+                              {$notice.notice_content}
+                                  {if !empty($notice.notice_url)}
+                                       <a href="{$notice.notice_url}" target="_blank" style="color:#01AAED">去围观</a>
+                                  {/if}
+                            </span>
+                        {/volist}
                     </div>
                 </div>
                 <!--左边文章列表-->
                 <div class="blog-main-left animated slideInLeft">
-                	<div class="article shadow animated fadeInLeft">
-                		<div class="article-left ">
-                			<img src="__IMG__/art/001.jpg" alt="终于等来了,zuoqy博客v0.1!"/>
-                		</div>
-                		<div class="article-right">
-                        	<div class="article-title">
-                        		<a href="{:url('Article/articleEdit')}"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a>
-                        	</div>
-                        	<div class="article-abstract">
-                          	从准备实施个人博客这个计划，到现在一个月不到，准备的东西很少，想着先运营起来再说，边测试边改版，
-                          	吸取广大好友的意见，针对问题慢慢改进。有了这个发版也是博主，撸了一晚上。。。
-                        	</div>
+                    {volist name='article' id='article'}
+                        <div class="article shadow animated fadeInLeft">
+                            <div class="article-left ">
+                                <img src="{$article.article_surface}" alt="{$article.article_title}"/>
+                            </div>
+                            <div class="article-right">
+                                <div class="article-title">
+                                    <a href="{:url('Article/articleEdit')}?article_id={$article.article_id}"><i class="layui-icon">&#xe609;</i>{$article.article_title}</a>
+                                </div>
+                                <div class="article-abstract">
+                                 {$article.article_abstract}
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="article-footer">
+                                <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{$article.article_addtime}</span>
+                                <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;{$article.Author}</span>
+                                <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> {$article.type_name}</a></span>
+                                <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{$article.article_page_view}</span>
+                                <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
+                            </div>
                         </div>
-                        <div class="clear"></div>
-                        <div class="article-footer">
-	                        <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;2017-09-12 17:47:48</span>
-	                        <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' zuoqy·北京</span>
-	                        <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> 杂文随笔</a></span>
-	                        <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;3</span>
-	                        <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                    	</div>
-                	</div>
-                	<div class="article shadow animated fadeInLeft">
-                		<div class="article-left ">
-                			<img src="__IMG__/art/001.jpg" alt="终于等来了,zuoqy博客v0.1!"/>
-                		</div>
-                		<div class="article-right">
-                        	<div class="article-title">
-                        		<a href="{:url('Article/articleEdit')}"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a>
-                        	</div>
-                        	<div class="article-abstract">
-                          	从准备实施个人博客这个计划，到现在一个月不到，准备的东西很少，想着先运营起来再说，边测试边改版，
-                          	吸取广大好友的意见，针对问题慢慢改进。有了这个发版也是博主，撸了一晚上。。。
-                        	</div>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-footer">
-	                        <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;2017-09-12 17:47:48</span>
-	                        <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' zuoqy·北京</span>
-	                        <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> 杂文随笔</a></span>
-	                        <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;3</span>
-	                        <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                    	</div>
-                	</div>
-                	<div class="article shadow animated fadeInLeft">
-                		<div class="article-left ">
-                			<img src="__IMG__/art/001.jpg" alt="终于等来了,zuoqy博客v0.1!"/>
-                		</div>
-                		<div class="article-right">
-                        	<div class="article-title">
-                        		<a href="{:url('Article/articleEdit')}"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a>
-                        	</div>
-                        	<div class="article-abstract">
-                          	从准备实施个人博客这个计划，到现在一个月不到，准备的东西很少，想着先运营起来再说，边测试边改版，
-                          	吸取广大好友的意见，针对问题慢慢改进。有了这个发版也是博主，撸了一晚上。。。
-                        	</div>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-footer">
-	                        <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;2017-09-12 17:47:48</span>
-	                        <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' zuoqy·北京</span>
-	                        <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> 杂文随笔</a></span>
-	                        <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;3</span>
-	                        <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                    	</div>
-                	</div>
-                	<div class="article shadow animated fadeInLeft">
-                		<div class="article-left ">
-                			<img src="__IMG__/art/001.jpg" alt="终于等来了,zuoqy博客v0.1!"/>
-                		</div>
-                		<div class="article-right">
-                        	<div class="article-title">
-                        		<a href="{:url('Article/articleEdit')}"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a>
-                        	</div>
-                        	<div class="article-abstract">
-                          	从准备实施个人博客这个计划，到现在一个月不到，准备的东西很少，想着先运营起来再说，边测试边改版，
-                          	吸取广大好友的意见，针对问题慢慢改进。有了这个发版也是博主，撸了一晚上。。。
-                        	</div>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-footer">
-	                        <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;2017-09-12 17:47:48</span>
-	                        <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' zuoqy·北京</span>
-	                        <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> 杂文随笔</a></span>
-	                        <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;3</span>
-	                        <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                    	</div>
-                	</div>
-                	<div class="article shadow animated fadeInLeft">
-                		<div class="article-left ">
-                			<img src="__IMG__/art/001.jpg" alt="终于等来了,zuoqy博客v0.1!"/>
-                		</div>
-                		<div class="article-right">
-                        	<div class="article-title">
-                        		<a href="{:url('Article/articleEdit')}"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a>
-                        	</div>
-                        	<div class="article-abstract">
-                          	从准备实施个人博客这个计划，到现在一个月不到，准备的东西很少，想着先运营起来再说，边测试边改版，
-                          	吸取广大好友的意见，针对问题慢慢改进。有了这个发版也是博主，撸了一晚上。。。
-                        	</div>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-footer">
-	                        <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;2017-09-12 17:47:48</span>
-	                        <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;' zuoqy·北京</span>
-	                        <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> 杂文随笔</a></span>
-	                        <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;3</span>
-	                        <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                    	</div>
-                	</div>
+                    {/volist}
                 </div>
                 <!--右边小栏目-->
                 <div class="blog-main-right">
                 	<!-- 小编信息 -->
                     <div class="blogerinfo shadow animated fadeInRight">
                         <div class="blogerinfo-figure">
-                            <img src="__IMG__/user/face.png" alt="Absolutely" />
+                            <img src="{$author.blogger_avatar}" alt="Absolutely" />
                         </div>
-                        <p class="blogerinfo-nickname">阿康</p>
-                        <p class="blogerinfo-introduce">一枚95后程序员，PHP开发工程师</p>
-                        <p class="blogerinfo-location"><i class="fa fa-location-arrow"></i>&nbsp;浙江 - 杭州</p>
+                        <p class="blogerinfo-nickname">{$author.blogger_name}</p>
+                        <p class="blogerinfo-introduce">{$author.blogger_intro}</p>
+                        <p class="blogerinfo-location"><i class="fa fa-location-arrow"></i>&nbsp;{$author.blogger_address}</p>
                         <hr />
                         <div class="blogerinfo-contact">
-                            <a target="_blank" title="QQ交流" href="http://shang.qq.com/email/stop/email_stop.html?qq=2065820975"><i class="fa fa-qq fa-2x"></i></a>
-                            <a target="_blank" title="给我写信" href="mailto:zuoqiyin@163.com"><i class="fa fa-envelope fa-2x"></i></a>
+                            <a target="_blank" title="QQ交流" href="http://shang.qq.com/email/stop/email_stop.html?qq={$author.blogger_qq}"><i class="fa fa-qq fa-2x"></i></a>
+                            <a target="_blank" title="给我写信" href="mailto:{$author.blogger_email}"><i class="fa fa-envelope fa-2x"></i></a>
                             <a target="_blank" title="新浪微博" href="http://weibo.com/zuoqiyin"><i class="fa fa-weibo fa-2x"></i></a>
-                            <a target="_blank" title="GitHub" href="https://github.com/zuoqiyin"><i class="fa fa-git fa-2x"></i></a>
+                            <a target="_blank" title="GitHub" href="{$author.blogger_github}"><i class="fa fa-git fa-2x"></i></a>
                         </div>
                     </div>
                     <!--热文推荐/点击排行-->
@@ -166,10 +79,16 @@
   						<div class="layui-tab-content">
   							<div class="layui-tab-item layui-show">
 	                        	<ul class="blog-module-ul">
-		                            <li><i class="layui-badge-rim layui-bg-red">1</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0001"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a></li>
-		                            <li><i class="layui-badge-rim layui-bg-orange">2</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0005">操之过急留下的诟病</a></li>
-		                            <li><i class="layui-badge-rim layui-bg-green">3</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0003">不要让网络绑架了你!</a></li>
-		                            <li><i class="layui-badge-rim">4</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0004">阿里云ECS无法使用25端口发送邮件解决方法</a></li>
+                                    <!--点击排行-->
+                                    {volist name='article_list' id='article_list' key='k'}
+		                            <li>
+                                        <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
+                                        <a href="{:url('Article/articleEdit')}?article_id={$article_list.article_id}">
+                                            <i class="layui-icon">&#xe609;</i>{$article_list.article_title}
+                                        </a>
+                                    </li>
+                                    {/volist}
+
 		                        </ul>
 	                        </div>
   							<div class="layui-tab-item">
@@ -185,7 +104,7 @@
 					<!-- 个性签名 -->
 					<div class="blog-module shadow animated fadeInRight">
                         <div class="blog-module-title"><i class="fa fa-file-text-o"></i>&nbsp;个性签名</div>
-                        <p>软件最大的好处，就是让一切变得简单。但是，做到这一点的方法，是正确设置缺省值，而不是限制用户的选择。&nbsp;&nbsp;&nbsp;--Paul Graham<p> 
+                        <p>{$author.blogger_motto}<p> 
                     </div>
 					<!-- 广告 -->
 					<div></div>
@@ -193,8 +112,9 @@
                     <div class="blog-module shadow animated fadeInRight">
                         <div class="blog-module-title"><i class="fa fa-link"></i>&nbsp;友情链接</div>
                         <ul class="blogroll">
-                            <li><a target="_blank" href="http://www.zuoqy.cn/" title="Layui">zuoqy博客</a></li>
-                            <li><a target="_blank" href="http://www.zuoqy.cn/old" title="Layui">zuoqy博客v0.1</a></li>
+                            {volist name='blogroll'  id='blogroll'}
+                            <li><a target="_blank" href="{$blogroll.blogroll_url}" title="Layui">{$blogroll.blogroll_name}</a></li>
+                            {/volist}
                         </ul>
                     </div>    
                 </div>

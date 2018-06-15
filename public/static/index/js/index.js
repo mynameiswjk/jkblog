@@ -8,7 +8,7 @@
     carousel.render({
       elem: '#carousel'
       ,width: width+'px' //设置容器宽度
-      ,height:'360px'
+      ,height:'320px'
       ,indicator: 'inside'
       ,arrow: 'always' //始终显示箭头
       ,anim: 'default' //切换动画方式

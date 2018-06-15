@@ -8,21 +8,12 @@
 
 .blog-bg {
     position: relative;
-    margin: 0 auto;
+    margin: 65px auto;
 }
 
-.bg_a {background-image: url("/static/index/img/bg/carousel1.jpg");}
-.bg_b {background-image: url("/static/index/img/bg/carousel2.jpg");}
-.bg_c {background-image: url("/static/index/img/bg/carousel3.jpg");}
-.bg_d {background-image: url("/static/index/img/bg/carousel4.jpg");}
-.bg_e {background-image: url("/static/index/img/bg/carousel5.jpg");}
 
 @media (min-width: 768px) {
-	.bg_a {background-image: url("/static/index/img/bg/a.jpg");}
-	.bg_b {background-image: url("/static/index/img/bg/b.jpg");}
-	.bg_c {background-image: url("/static/index/img/bg/c.jpg");}
-	.bg_d {background-image: url("/static/index/img/bg/d.jpg");}
-	.bg_e {background-image: url("/static/index/img/bg/e.jpg");}
+    
 }
 
 /*博主信息*/

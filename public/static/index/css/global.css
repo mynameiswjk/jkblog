@@ -39,7 +39,8 @@ body {background: #eee;color: #444;}
 
         .blog-main > .home-tips > .home-tips-container {
             margin-left: 20px;
-            height: 17px;
+            height: 25px;
+            line-height: 25px;
             overflow: hidden;
         }
 

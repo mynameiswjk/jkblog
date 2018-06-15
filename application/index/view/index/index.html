@@ -80,11 +80,11 @@
   							<div class="layui-tab-item layui-show">
 	                        	<ul class="blog-module-ul">
                                     <!--点击排行-->
-                                    {volist name='article_list' id='article_list' key='k'}
+                                    {volist name='articleClickList' id='articleClickList' key='k'}
 		                            <li>
                                         <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
-                                        <a href="{:url('Article/articleEdit')}?article_id={$article_list.article_id}">
-                                            <i class="layui-icon">&#xe609;</i>{$article_list.article_title}
+                                        <a href="{:url('Article/articleEdit')}?article_id={$articleClickList.article_id}">
+                                            <i class="layui-icon">&#xe609;</i>{$articleClickList.article_title}
                                         </a>
                                     </li>
                                     {/volist}
@@ -93,10 +93,15 @@
 	                        </div>
   							<div class="layui-tab-item">
 		  						<ul class="blog-module-ul">
-		                            <li><i class="layui-badge-rim layui-bg-red">1</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0004">阿里云ECS无法使用25端口发送邮件解决方法</a></li>
-		                            <li><i class="layui-badge-rim layui-bg-orange">2</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0003">不要让网络绑架了你!</a></li>
-		                            <li><i class="layui-badge-rim layui-bg-green">3</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0002">PL/SQL入门</a></li>
-		                        	<li><i class="layui-badge-rim">4</i>&nbsp;&nbsp;<a href="{:url('Article/articleEdit')}?aid=0001"><i class="layui-icon">&#xe609;</i>终于等来了,zuoqy博客v0.1!</a></li>
+                                    <!--站长推荐-->
+                                    {volist name='articleRecommend' id='articleRecommend' key='k'}
+                                    <li>
+                                        <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
+                                        <a href="{:url('Article/articleEdit')}?article_id={$articleRecommend.article_id}">
+                                            <i class="layui-icon">&#xe609;</i>{$articleRecommend.article_title}
+                                        </a>
+                                    </li>
+                                    {/volist}
 		                        </ul>
 	                        </div>
   						</div>

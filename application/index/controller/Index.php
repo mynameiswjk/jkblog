@@ -15,19 +15,22 @@ class Index extends Base
 	*/ 
     public function index()
     {
-    	//Banner
+    	//首页Banner
     	 $this->getBanner();
-    	//公告
+    	//首页公告
     	 $this->getNotice();
     	//文章数据
     	 $this->getArticle();
-    	 //博主信息
+    	//博主信息
     	 $this->getAuthorData();
-    	 //获得点击排行和站长推荐文章
-    	 $this->getArticle(['article_page_view'=>'desc'],5);
-    	 //友情链接信息获取
+    	//获得点击排行
+    	 $articleClickList = $this->getArticle(NUll,['article_page_view'=>'desc'],5);
+    	//获得站长推荐站长推荐
+    	 $articleRecommend = $this->getArticle(['article_recommend'=>1],['article_recommend'=>'desc','article_addtime'=>'desc'],5);
+    	//友情链接信息获取
     	 $this->getBlogrollData();
-         return view('index');
+
+         return view('index',['articleClickList'=>$articleClickList,'articleRecommend'=>$articleRecommend]);
     }
 	/** 
 	* 获取banner数据
@@ -62,13 +65,17 @@ class Index extends Base
 	* @access public 
 	* @return data
 	*/ 
-	public function getArticle($order = NULL,$limit= NULL)
+	public function getArticle($orwhere = NULL,$order = NULL,$limit= NULL)
 	{	
 		//获取指定条件的数据
 		if($order && $limit)
 		{	
-			$articleData =  db('article')->order($order)->limit($limit)->select();
-
+			$articleData =  db('article')
+							->order($order)
+							->where(['article_is_show'=>1])
+							->where($orwhere)
+							->limit($limit)
+							->select();
 			//下标重新排序从1开始
 			$arr = [];
 			$j	 = 1;
@@ -76,11 +83,13 @@ class Index extends Base
 				$arr[$j]   = $v;
 				$j++;
 			}
-			$this->assign('article_list',$arr);
+			return $arr;
+			
 		}else{
 			//文章列表
 			$articleData =  db('article')
 							->field('article_id,article_title,article_type_id,article_abstract,article_surface,article_page_view,article_addtime')
+							->where(['article_is_show'=>1])
 							->order(['article_is_stick'=>'desc','article_addtime'=>'desc'])
 							->select();
 			//数据处理
@@ -90,8 +99,8 @@ class Index extends Base
 				//获取文章分类
 				$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');	
 			}
-
 			$this->assign('article',$articleData);
+
 		}
 		
 	}

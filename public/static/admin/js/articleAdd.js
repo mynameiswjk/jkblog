@@ -78,7 +78,9 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
              article_content : layedit.getContent(editIndex).split('<audio controls="controls" style="display: none;"></audio>')[0],  //文章内容
              article_surface : $(".thumbImg").attr("src"),  //缩略图
              article_type_id :article_type_id,    //文章分类
-             article_is_stick : data.field.article_is_stick == "on" ? "1" : "0",    //是否置顶
+             article_is_stick  : data.field.article_is_stick  == "on" ? "1" : "0",    //是否置顶
+             article_recommend : data.field.article_recommend == "on" ? "1" : "0",    //是否推荐
+             article_is_show   : data.field.article_is_show   == "on" ? "1" : "0",    //是否显示
          },function(res){
             if(res.code == 200 ) {
                 top.layer.msg(res.msg,{icon:1,time:2000},function(){

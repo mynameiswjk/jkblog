@@ -156,13 +156,12 @@ class Article extends Base
 	* @access public 
 	* @return ['code','msg']
 	*/ 
-	public function updateStick()
+	public function updateArticleStatus()
 	{
 		if(request()->isAjax()) {
-			$article_id				  = input('param.article_id');
-			$data['article_is_stick'] = input('param.article_is_stick');
-
-			if(db('article')->where(['article_id'=>$article_id])->update($data)){
+			//数据接收
+			$data = input('post.');
+			if(db('article')->where(['article_id'=>$data['article_id']])->update($data)){
 				die(json_encode(['code'=>'200','msg'=>'信息修改成功']));
 			}else{
 				die(json_encode(['code'=>'500','msg'=>'信息修改失败']));

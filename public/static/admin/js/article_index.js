@@ -22,6 +22,8 @@ layui.use(['table', 'form', 'layer', 'vip_table','jquery'], function () {
             , {field: 'article_author', title: '文章作者', width: 110,'align':'center'}
             , {field: 'article_surface', title: '封面图', width: 150,'align':'center',height:50,toolbar: '#article_surface'}
             , {field: 'article_is_stick',title: '是否置顶', width: 100,align: 'center',toolbar: '#stick'}
+            , {field: 'article_recommend',title: '是否推荐', width: 100,align: 'center',toolbar: '#recommend'}
+            , {field: 'article_is_show',title: '是否显示', width: 100,align: 'center',toolbar: '#is_show'}
             , {field: 'article_addtime', title: '文章发布时间', width: 200,align:'center'}
             , {fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barOption'} //这里的toolbar值是模板元素的选择器
         ]]
@@ -120,7 +122,7 @@ function editArticle(data)
                 article_id = elem.attr('article_id');
             if(data.elem.checked){
                 //发送置顶
-                $.get(updateStickUrl,{article_id:article_id,article_is_stick:1},function(res){
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_is_stick:1},function(res){
                         if(res.code == 200 ){
                             layer.msg("文章置顶成功！");
                         }else{
@@ -130,11 +132,69 @@ function editArticle(data)
                 
             }else{
                 //取消置顶
-                $.get(updateStickUrl,{article_id:article_id,article_is_stick:0},function(res){
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_is_stick:0},function(res){
                     if(res.code == 200 ){
                             layer.msg("取消置顶成功！");
                         }else{
                             layer.msg("取消置顶失败！");
+                         }
+                },'json');
+                
+            }
+        },500);
+    })
+    //是否显示
+    form.on('switch(article_is_show)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        setTimeout(function(){
+            var elem = $(data.elem);//原始dom对象
+                article_id = elem.attr('article_id');
+            if(data.elem.checked){
+                //发送置顶
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_is_show:1},function(res){
+                        if(res.code == 200 ){
+                            layer.msg("文章显示成功！");
+                        }else{
+                            layer.msg("文章显示失败！");
+                        }
+                },'json');
+                
+            }else{
+                //取消置顶
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_is_show:0},function(res){
+                    if(res.code == 200 ){
+                            layer.msg("文章已隐藏");
+                        }else{
+                            layer.msg("文章隐藏失败");
+                         }
+                },'json');
+                
+            }
+        },500);
+    })
+     //是否显示
+    form.on('switch(article_recommend)', function(data){
+        var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
+        setTimeout(function(){
+            var elem = $(data.elem);//原始dom对象
+                article_id = elem.attr('article_id');
+            if(data.elem.checked){
+                //发送置顶
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_recommend:1},function(res){
+                        if(res.code == 200 ){
+                            layer.msg("已推荐该文章");
+                        }else{
+                            layer.msg("文章推荐失败");
+                        }
+                },'json');
+                
+            }else{
+                //取消置顶
+                $.post(updateArticleStatusUrl,{article_id:article_id,article_recommend:0},function(res){
+                    if(res.code == 200 ){
+                            layer.msg("文章已取消推荐");
+                        }else{
+                            layer.msg("取消推荐失败");
                          }
                 },'json');
                 

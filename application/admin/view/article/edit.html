@@ -55,6 +55,18 @@
 					<input type="checkbox" name="article_is_stick" lay-skin="switch" lay-text="是|否">
 				</div>
 			</div>
+			<div class="layui-form-item article_is_stick">
+				<label class="layui-form-label"><i class="seraph icon-zhiding"></i> 推 荐</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="article_is_stick" lay-skin="switch" {if $article.article_recommend eq 1}checked{/if}  lay-text="是|否">
+				</div>
+			</div>
+			<div class="layui-form-item article_is_stick">
+				<label class="layui-form-label"><i class="seraph icon-zhiding"></i> 显 示</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="article_is_stick" {if $article.article_is_show eq 1}checked{/if} lay-skin="switch" lay-text="是|否">
+				</div>
+			</div>	
 			<hr class="layui-bg-gray" />
 			<div class="layui-right">
 				<a class="layui-btn layui-btn-sm" lay-filter="addArticle" lay-submit><i class="layui-icon">&#xe609;</i>发布</a>

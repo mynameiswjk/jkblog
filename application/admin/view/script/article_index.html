@@ -4,7 +4,7 @@
     var  articleAddUrl     = "{:url('Article/articleAdd')}";
     var  articleEditUrl    = "{:url('Article/articleEdit')}";
     var  articleDelUrl     = "{:url('Article/articleDel')}";
-    var  updateStickUrl    = "{:url('Article/updateStick')}";
+    var  updateArticleStatusUrl    = "{:url('Article/updateArticleStatus')}";
 </script>
 <!-- 表格操作按钮集 -->
 <script type="text/html" id="barOption" >
@@ -21,5 +21,21 @@
                  checked="checked" 
            {{#  }}}
              name="article_is_stick"  lay-skin="switch" lay-filter="article_is_stick" article_id='{{d.article_id}}'  lay-text="是|否" >
+      <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>
+<script type="text/html" id="recommend">
+            <input type="checkbox" 
+           {{#  if(d.article_recommend == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="article_recommend"  lay-skin="switch" lay-filter="article_recommend" article_id='{{d.article_id}}'  lay-text="是|否" >
+      <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>
+<script type="text/html" id="is_show">
+            <input type="checkbox" 
+           {{#  if(d.article_is_show == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="article_is_show"  lay-skin="switch" lay-filter="article_is_show" article_id='{{d.article_id}}'  lay-text="是|否" >
       <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
 </script>

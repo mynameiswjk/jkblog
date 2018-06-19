@@ -11,7 +11,7 @@
         	</blockquote>
             <div class="blog-main">
                 <!--左边文章列表-->
-                <div class="blog-main-left animated slideInLeft">
+                <div class="blog-main-left animated slideInLeft" id='article_list'>
                     {volist name='article' id='article'}
                         <div class="article shadow animated fadeInLeft">
                             <div class="article-left ">
@@ -43,7 +43,7 @@
 	                    <form class="layui-form" action="">
 	                        <div class="layui-form-item">
 	                            <div class="search-keywords  shadow">
-	                                <input type="text" name="keywords" lay-verify="required" placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
+	                                <input type="text" name="article_title" placeholder="请输入关键字" autocomplete="off" class="layui-input">
 	                            </div>
 	                            <div class="search-submit  shadow">
 	                                <a class="search-btn" lay-submit="formSearch" lay-filter="formSearch"><i class="fa fa-search"></i></a>
@@ -52,11 +52,18 @@
 	                    </form>
 	                </div>
                 	<!-- 分类导航 -->
-                	<div class="article-category shadow ">
+                	<div class="article-category shadow " id='category'>
                         <div class="article-category-title">分类导航</div>
                         {volist name='articleType' id='articleType'}
-                             <a href="javascript:void(0);">{$articleType.type_name}</a>
+                             <a href="javascript:void(0);"   class='' onclick='articleType(this,"{$articleType.type_id}");'>{$articleType.type_name}</a>
                         {/volist}
+                        <style>
+                          .active{
+                                border: 1px solid #5FB878 !important;
+                                background: inherit !important;
+                                color: #5FB878 !important;
+                            }
+                        </style>
                         <div class="clear"></div>
                     </div>
                     <!--热文推荐/点击排行-->
@@ -70,12 +77,12 @@
 	                        	<ul class="blog-module-ul">
                                   <!--点击排行-->
                                     {volist name='articleClickList' id='articleClickList' key='k'}
-                                    <li>
-                                        <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
-                                        <a href="{:url('Article/articleEdit')}?article_id={$articleClickList.article_id}">
-                                            <i class="layui-icon">&#xe609;</i>{$articleClickList.article_title}
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
+                                            <a href="{:url('Article/articleEdit')}?article_id={$articleClickList.article_id}">
+                                                <i class="layui-icon">&#xe609;</i>{$articleClickList.article_title}
+                                            </a>
+                                        </li>
                                     {/volist}
 		                        </ul>
 	                        </div>
@@ -83,12 +90,12 @@
 		  						<ul class="blog-module-ul">
                                     <!--站长推荐-->
                                     {volist name='articleRecommend' id='articleRecommend' key='k'}
-                                    <li>
-                                        <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
-                                        <a href="{:url('Article/articleEdit')}?article_id={$articleRecommend.article_id}">
-                                            <i class="layui-icon">&#xe609;</i>{$articleRecommend.article_title}
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
+                                            <a href="{:url('Article/articleEdit')}?article_id={$articleRecommend.article_id}">
+                                                <i class="layui-icon">&#xe609;</i>{$articleRecommend.article_title}
+                                            </a>
+                                        </li>
                                     {/volist}
 		                        </ul>
 	                        </div>
@@ -101,4 +108,36 @@
             <div class="clear"></div>
         </div>
     </div>
+<!--定义JS需要的路径-->
+<script>
+var getArticleDataUrl = "{:url('article/getArticleData')}";
+</script>
 {include file='public/footer'}
+<!--本页样式表-->
+{load href='__JS__/article_index.js'}
+<!--layui模板引擎渲染-->
+<script id="articlelist" type="text/html">
+{{#  layui.each(d, function(index, article){ }}
+    <div class="article shadow animated fadeInLeft">
+        <div class="article-left ">
+            <img src="{{article.article_surface}}" alt="{{article.article_title}}"/>
+        </div>
+        <div class="article-right">
+            <div class="article-title">
+                <a href="{:url('Article/articleEdit')}?article_id={{article.article_id}}"><i class="layui-icon">&#xe609;</i>{{article.article_title}}</a>
+            </div>
+            <div class="article-abstract">
+             {{article.article_abstract}}
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="article-footer">
+            <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{{article.article_addtime}}</span>
+            <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;{{article.Author}}</span>
+            <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> {{article.type_name}}</a></span>
+            <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{{article.article_page_view}}</span>
+            <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
+        </div>
+    </div>
+{{#  }); }}
+</script>

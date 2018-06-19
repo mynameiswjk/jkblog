@@ -18,7 +18,8 @@ class Article extends Model
 						->field('article_id,article_title,article_type_id,article_abstract,article_surface,article_page_view,article_addtime')
 						->where(['article_is_show'=>1])
 						->order(['article_is_stick'=>'desc','article_addtime'=>'desc'])
-						->select()->toArray();
+						->select()
+						->toArray();
 		//数据处理
 		foreach ($articleData as $k => $v) {
 			$articleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);

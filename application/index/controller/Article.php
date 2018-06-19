@@ -32,4 +32,36 @@ class Article extends Base
 	{
 		return view("edit");
 	}
+
+	/**
+	* 返回搜索文章的数据
+	*/
+	public function getarticledata()
+	{
+		if(request()->isAjax()){
+			$action  = input('post.datatype');
+			$where   = input('post.where');
+			//判断
+			switch ($action) {
+				case 'search' : 
+					$whe['article_title'] = ["like","%{$where}%"];
+					break;
+				case 'search_type' :
+					$whe['article_type_id'] = $where;
+					break;
+			}
+			$whe['article_is_show'] = 1;
+			//根据条件获取数据
+			$articleData = db('article')->where($whe)->order(['article_addtime'=>'desc'])->select();
+			//数据处理
+			foreach ($articleData as $k => $v) {
+				$articleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
+				$articleData[$k]['Author'] = '阿康';
+				//获取文章分类
+				$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');	
+			}
+			die(json_encode($articleData));
+			
+		}		
+	}
 }

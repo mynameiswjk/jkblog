@@ -12,6 +12,7 @@
             <div class="blog-main">
                 <!--左边文章列表-->
                 <div class="blog-main-left animated slideInLeft" id='article_list'>
+                    {if $article}
                     {volist name='article' id='article'}
                         <div class="article shadow animated fadeInLeft">
                             <div class="article-left ">
@@ -35,6 +36,9 @@
                             </div>
                         </div>
                     {/volist}
+                    {else}
+                        <div class="layui-flow-more">没有更多的文章了~QAQ</div>
+                    {/if}
                 </div>
                 <!--右边小栏目-->
                 <div class="blog-main-right">
@@ -55,15 +59,8 @@
                 	<div class="article-category shadow " id='category'>
                         <div class="article-category-title">分类导航</div>
                         {volist name='articleType' id='articleType'}
-                             <a href="javascript:void(0);"   class='' onclick='articleType(this,"{$articleType.type_id}");'>{$articleType.type_name}</a>
+                             <a href="javascript:void(0);"   class='{if $article_type_id}{if $articleType.type_id eq $article_type_id}active{/if}{/if}' onclick='articleType(this,"{$articleType.type_id}");'>{$articleType.type_name}</a>
                         {/volist}
-                        <style>
-                          .active{
-                                border: 1px solid #5FB878 !important;
-                                background: inherit !important;
-                                color: #5FB878 !important;
-                            }
-                        </style>
                         <div class="clear"></div>
                     </div>
                     <!--热文推荐/点击排行-->

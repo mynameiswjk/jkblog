@@ -27,15 +27,29 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
     //评论和留言的编辑器的验证
     layui.form.verify({
         content: function (value) {
-        	if (user==null) return "登录后才能提交"; 
             value = $.trim(layedit.getText(editIndex));
-            if (value == "") return "至少得有一个字吧";
+            if (value == "") return "请输入评论内容";
             layedit.sync(editIndex);
         }
     });
     
     
-    	
+   //文章评论
+   form.on('submit(formLeaveMessage)', function (data) {
+      var index = layer.load(1);
+      $.post(addCommentUrl,{
+            from_uid : 1,//评论人id,数据模拟
+            content :data.field.editorContent  //评论内容
+        },function(res){
+            if(res.code == 200 ){
+                layer.close(index);
+                layer.msg(res.msg, { icon: 1 });
+            }else{
+                    layer.msg(result.msg,{anim:6,icon:5});
+            }
+        },'json');
+      return false;
+   }); 	
 
 	var msgs = result.item;
 	var lis = [];
@@ -93,7 +107,7 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
 	//next(lis.join(''), page < result.count);
 	$(".blog-comment").html(lis.join(''));
 
-    //监听留言提交
+/*    //监听留言提交
     form.on('submit(formLeaveMessage)', function (data) {
         var index = layer.load(1);
         //模拟留言提交
@@ -152,7 +166,7 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
         }, 500);
         return false;
     });
-
+*/
     //监听留言回复提交
     form.on('submit(formReply)', function (data) {
     	if (user==null) {

@@ -14,14 +14,14 @@ class Article extends Base
 	*/ 
 	public function index()
 	{	
+		$article_type_id = !empty(input('param.type_id')) ? input('param.type_id') : NULL;
 		//数据渲染
-		$this->assign('article',model('Article')->getArticle());
+		$this->assign('article',model('Article')->getArticle($article_type_id));
 		$this->assign('articleClickList',model('Article')->getArticleClickList());
 		$this->assign('articleRecommend',model('Article')->getArticleRecommend());
 		//文章类型数据获取
-		$articleTypeData = db('article_type')->where(['is_show'=>1])->order(['add_time'=>'desc'])->select();
-		$this->assign('articleType',$articleTypeData);
-		return view('index');
+		$this->assign('articleType',model('Article')->getArticleType());
+		return view('index',['article_type_id'=>$article_type_id]);
 	}
 
 	/** 
@@ -29,8 +29,32 @@ class Article extends Base
 	* @access public 
 	*/ 
 	public function articleEdit()
-	{
-		return view("edit");
+	{	
+		//获得当前文章详情信息
+		$article_id = input('param.article_id');
+		if(empty($article_id)) $this->error('非法访问','Index/index');
+		//文章数据获取
+		$articleInfo = db('article')->where(['article_is_show'=>1,'article_id'=>$article_id])->find();
+		//是否可以访问
+		if($articleInfo['article_is_show'] == 0) $this->error('该文章禁止访问','Index/index');
+		//页面访问一次浏览次数加一
+		model('Article')->savePageview($article_id);
+		//数据处理
+		$articleInfo['article_content'] = unserialize($articleInfo['article_content']);
+		$articleInfo['article_addtime'] = date('Y-m-d H:i:s',$articleInfo['article_addtime']);
+		$articleInfo['Author'] 			= '阿康';
+		//文章类型数据获取
+		$this->assign('articleType',model('Article')->getArticleType());
+		//获得相似的文章
+		$this->assign('similarity',model('Article')->getSimilarityData($article_id,$articleInfo['article_type_id']));
+		//随便看看默认使用站长推荐的数据
+		$articleRecommend = model('Article')->getArticleRecommend();
+		foreach ($articleRecommend as $k => $v) {
+			if($article_id == $v['article_id']) unset($articleRecommend[$k]);
+		}
+		$this->assign('articleRecommend',$articleRecommend);
+		//视图渲染
+		return view("edit",['article'=>$articleInfo]);
 	}
 
 	/**

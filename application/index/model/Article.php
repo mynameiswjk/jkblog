@@ -11,12 +11,14 @@ use think\Model;
 class Article extends Model
 {	
 	//文章列表数据
-	public function getArticle()
+	public function getArticle($article_type_id = FALSE)
 	{
+		if($article_type_id) $where['article_type_id'] = $article_type_id;
+		$where['article_is_show'] = 1;
 		//文章列表
 		$articleData =  $this
 						->field('article_id,article_title,article_type_id,article_abstract,article_surface,article_page_view,article_addtime')
-						->where(['article_is_show'=>1])
+						->where($where)
 						->order(['article_is_stick'=>'desc','article_addtime'=>'desc'])
 						->select()
 						->toArray();
@@ -41,6 +43,28 @@ class Article extends Model
 	{
 		$articleRecommend = $this->where(['article_is_show'=>1,'article_recommend'=>'1'])->order(['article_addtime'=>'desc'])->limit('5')->select()->toArray();
 		return $articleRecommend;
+	}
+	//修改文章浏览量
+	public function savePageview($article_id)
+	{	
+		$article_page_view = $this->where(['article_id'=>$article_id])->value('article_page_view');
+		$article_page_view = ++$article_page_view;
+		$this->where(['article_id'=>$article_id])->update(['article_page_view'=>$article_page_view]);
+	}
+	//获得文章分类信息
+	public function getArticleType()
+	{
+		$articleTypeData = db('article_type')->where(['is_show'=>1])->order(['add_time'=>'decs'])->select();
+		return $articleTypeData;
+	}
+	//获得相似文章
+	public function getSimilarityData($article_id,$type_id = FALSE,$limit = 5)
+	{
+		$where ['article_is_show'] = 1;
+		$where ['article_id'] 	   = ['neq',$article_id];
+		$where ['article_type_id'] = $type_id;
+		$similarityData = $this->where($where)->order(['article_addtime'=>'desc'])->limit($limit)->select()->toArray();
+		return $similarityData;
 	}
 }
 

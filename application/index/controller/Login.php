@@ -5,6 +5,8 @@
 // | Time: 2018/6/6 9:25
 // +----------------------------------------------------------------------
 namespace app\index\controller;
+use think\Validate;
+use think\Loader;
 class Login extends Base
 {
 	/** 
@@ -13,6 +15,17 @@ class Login extends Base
 	*/ 
 	public function index()
 	{
+		if(request()->isPost()){
+			//数据接收
+			$data = input('post.');
+			//数据验证
+			$LoginValidate = Loader::Validate('LoginValidate');
+			if(!$LoginValidate->scene('login')->check($data)) {
+				die(json_encode(['code'=>'500','msg'=>$LoginValidate->getError()]));
+			}
+			//会话数据存储,登录成功,页面跳转。
+			die(json_encode(['code'=>'500','msg'=>'登录成功']));
+		}
 		return view('login');
 	}
 

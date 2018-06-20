@@ -5,21 +5,21 @@
     </footer>
       <!--侧边导航-->
     <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
-        <li class="layui-nav-item layui-this">
-            <a href="index.html"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="article.html"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="mixed_pic.html"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="timeline.html"><i class="fa fa-road fa-fw"></i>&nbsp;点点滴滴</a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="about.html"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
-        </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Index'}layui-this{/if}">
+                    <a href="{:url('Index/index')}"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Article'}layui-this{/if}">
+                    <a href="{:url('Article/index')}"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Mixed'}layui-this{/if}">
+                    <a href="{:url('Mixed/index')}"><i class="fa fa-paper-plane-o fa-fw"></i>&nbsp;杂七杂八</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'Timeline'}layui-this{/if}">
+                    <a href="{:url('Timeline/index')}"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+                </li>
+                <li class="layui-nav-item {if request()->controller() eq 'About'}layui-this{/if}">
+                    <a href="{:url('About/index')}"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+                </li>
     </ul>
     <!--分享窗体-->
     <div class="blog-share layui-hide">

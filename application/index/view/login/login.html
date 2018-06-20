@@ -1,4 +1,6 @@
 {include file='public/header'}
+<!-- 本页样式表 -->
+{load href='__CSS__/login.css'}
     <!-- 主体（一般只改变这里的内容） -->
     <div class="blog-body">
         <div class="blog-container">
@@ -18,28 +20,28 @@
 						<div class="layui-tab-item layui-show">
 					    	<form class="layui-form layui-form-pane" method="post">
 					    		<div class="layui-form-item">
-								    <label class="layui-form-label">邮箱</label>
+								    <label class="layui-form-label">账号</label>
 							    	<div class="layui-input-inline">
-							        	<input type="text" name="email" required  lay-verify="email" autocomplete="off" class="layui-input">
+							        	<input type="text" name="user_name"    maxlength='22' lay-verify="user_name" autocomplete="off" placeholder="请输入您的手机号或邮箱" class="layui-input">
 							        </div>
 							    </div>
 							    <div class="layui-form-item">
 								    <label class="layui-form-label">密码框</label>
 								    <div class="layui-input-inline">
-								      <input type="password" name="pwd" required lay-verify="required" autocomplete="off" class="layui-input">
+								      <input type="password" name="password"  lay-verify="password" maxlength='22' placeholder="请输入您的密码" autocomplete="off" class="layui-input">
 								    </div>
 							  </div>
 							  	<div class="layui-form-item">
 								    <label class="layui-form-label">人类验证</label>
 								    <div class="layui-input-inline">
-								      <input type="text" name="verify" required lay-verify="required" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
+								      <input type="text" name="verify" required lay-verify="verify" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
 								    </div>
-								    <div class="layui-form-mid">
-								    	<span style="color:#c00" class="verift-text"></span>
+								    <div class="captcha_img">
+								    	{:captcha_img()}
 								    </div>
 							    </div>
 						        <div class="layui-form-item">
-								    <button class="layui-btn" lay-submit lay-filter="loginForm">立即登陆</button>
+								    <button class="layui-btn" lay-submit='false' lay-filter="loginForm">立即登陆</button>
 								    <span style="padding-left: 20px">
 								    	<a href="javascript:" id="forgetPwd">忘记密码?</a>
 								    </span>
@@ -125,4 +127,9 @@
     {include file='public/footer'}
     <!-- 本页脚本 -->
 	{load href='__JS__/login.js'}
+	<!--定义表单提交页面-->
+	<script>
+		var loginUrl = "{:url('Login/index')}";
+	</script>
+
   

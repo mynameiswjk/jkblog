@@ -86,7 +86,43 @@
 {include file='public/footer'} 
 <!-- 评论留言 -->
 <script>
-        var img_path ="__IMG__";
-        var addCommentUrl = "{:url('Comment/addComment')}";
+    var img_path ="__IMG__";
+    var addCommentUrl = "{:url('Comment/addComment')}";
 </script>
 {load href='__JS__/message.js'}
+<!--layui模板引擎渲染-->
+<script id="commentList" type="text/html">
+    <li>
+        <div class="comment-parent">
+            <img src="{{d.from_headPortrait}}">
+            <div class="info">
+              <span class="username">{{d.from_uname}}</span>
+            </div>
+            <div class="content">
+               {{d.content}}
+           </div>
+            <p class="info">
+                <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.comment_time}} </span>
+                <span class="dh">
+                    <a class="btn-dzan" href="javascript:dzan('{{d.comment_id}}');" id="dzan_{{d.comment_id}}">
+                    <img src="/static/index/img/zan.png">{{d.praise_num}}</a>
+                    <a class="btn-reply" href="javascript:btnReplyClick('{{d.comment_id}}')" id="a_{{d.comment_id}}"> <img src="/static/index/img/huifu.png">
+                    </img>回复</a>
+                </span>
+            </p>
+        </div>
+        <hr>
+        <div class="replycontainer layui-hide" id="{{d.comment_id}}">
+            <form class="layui-form" action="">
+                <input type="hidden" name="isYe" value="{{d.comment_id}}">
+                <div class="layui-form-item">
+                    <textarea name="replyContent" lay-verify="replyContent"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
+                    </textarea>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                </div>
+            </form>
+        </div>
+    </li>
+</script>

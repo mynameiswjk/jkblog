@@ -3,7 +3,7 @@ var result = {"msg":null,"code":1,"item":[{"content":"模板挺好看的，我�
 var aid = '0';
 var user = MyLocalStorage.get('user');
 if (user!=null) user = JSON.parse(user);
-layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
+layui.use(['jquery', 'form', 'layedit','flow','util','laytpl'], function () {
 	var util = layui.util;
     var form = layui.form;
     var $ = layui.jquery;
@@ -43,14 +43,24 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
         },function(res){
             if(res.code == 200 ){
                 layer.close(index);
+               //使用layui模板引擎进行页面渲染
+               var laytpl = layui.laytpl;
+               var getTpl = commentList.innerHTML;
+                laytpl(getTpl).render(res.commentData, function(html){
+                    $('.blog-comment').prepend(html);
+                });
+                $('#remarkEditor').val('');
+                editIndex = layui.layedit.build('remarkEditor', {
+                    height: 150,
+                    tool: ['face', '|', 'left', 'center', 'right', '|', 'link'],
+                });
                 layer.msg(res.msg, { icon: 1 });
             }else{
-                    layer.msg(result.msg,{anim:6,icon:5});
+                    layer.msg(res.msg,{anim:6,icon:5});
             }
         },'json');
       return false;
    }); 	
-
 	var msgs = result.item;
 	var lis = [];
 	for (var i=0; i<msgs.length; i++) {
@@ -106,67 +116,6 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
 	}
 	//next(lis.join(''), page < result.count);
 	$(".blog-comment").html(lis.join(''));
-
-/*    //监听留言提交
-    form.on('submit(formLeaveMessage)', function (data) {
-        var index = layer.load(1);
-        //模拟留言提交
-        setTimeout(function () {
-        	layer.close(index);
-        	var json = {aid:aid,content:data.field.editorContent,isYe:"",uid:user.uid};
-        	$.ajax({
-        		type: 'POST',
-        		data: json,
-        		url: _contextPath+"/msg/set.do",
-        		success:function(result) {
-        			if (result.code==1) {
-        				var msg = result.item;
-        				var time = util.timeAgo(formatDate(""+msg.time));
-        				var html = '<li>'+
-        	            '<div class="comment-parent">'+
-        	            '<img src="images'+user.img+'"/>'+
-        	            '<div class="info">'+
-        	                '<span class="username">'+user.name+'</span>'+
-        	            '</div>'+
-        	            '<div class="content">'+
-        	                	msg.content+
-        	            '</div>'+
-        	            '<p class="info">'+
-        	            	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
-        	            	'<span class="dh">'+
-        	            		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="/static/index/img/zan.png"></img>'+msg.dzan+'</a>'+
-        	            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msg.mid+'\')" id="a_'+msg.mid+'");"><img src="/static/index/img/huifu.png"></img>回复</a>'+
-        	            	'</span>'+
-        	            '</p>'+
-        	            '</div>'+
-        	            '<hr />'+
-        	            '<div class="replycontainer layui-hide" id="'+msg.mid+'">'+
-        				'<form class="layui-form" action="">'+
-        				'<input type="hidden" name="isYe" value="'+msg.mid+'">'+
-        				'<div class="layui-form-item">'+
-        					'<textarea name="replyContent" lay-verify="replyContent" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>'+
-        				'</div>'+
-        				'<div class="layui-form-item">'+
-        					'<button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>'+
-        				'</div>'+
-        				'</form>'+
-        				'</div></li>';
-        	            $('.blog-comment').prepend(html);
-        	            $('#remarkEditor').val('');
-        	            editIndex = layui.layedit.build('remarkEditor', {
-        	                height: 150,
-        	                tool: ['face', '|', 'left', 'center', 'right', '|', 'link'],
-        	            });
-        	            layer.msg("留言成功", { icon: 1 });
-        			} else {
-        				layer.msg(result.msg,{anim:6,icon:5});
-        			}
-        		}
-        	});
-        }, 500);
-        return false;
-    });
-*/
     //监听留言回复提交
     form.on('submit(formReply)', function (data) {
     	if (user==null) {
@@ -218,13 +167,12 @@ layui.use(['jquery', 'form', 'layedit','flow','util'], function () {
 function btnReplyClick(elem) {
     var $ = layui.jquery;
     $('#'+elem).toggleClass('layui-hide');
-    if ($('#a_'+elem).text() == '回复') {
+    if ($('#a_'+elem).text().trim() == '回复') {
         $('#a_'+elem).html('<i class="fa fa-caret-square-o-up" style="font-size:18px;"></i>&nbsp;收起');
     } else {
         $('#a_'+elem).html('<img src="/static/index/img/huifu.png"></img>回复');
     };
 }
-
 function dzan(mid) {
     var i = parseInt($('#dzan_'+mid).text());
     i++;

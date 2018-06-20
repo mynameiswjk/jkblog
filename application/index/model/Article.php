@@ -64,6 +64,9 @@ class Article extends Model
 		$where ['article_id'] 	   = ['neq',$article_id];
 		$where ['article_type_id'] = $type_id;
 		$similarityData = $this->where($where)->order(['article_addtime'=>'desc'])->limit($limit)->select()->toArray();
+		foreach ($similarityData as $k => $v) {
+			if($article_id == $v['article_id']) unset($similarityData[$k]);
+		}
 		return $similarityData;
 	}
 }

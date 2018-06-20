@@ -49,9 +49,6 @@ class Article extends Base
 		$this->assign('similarity',model('Article')->getSimilarityData($article_id,$articleInfo['article_type_id']));
 		//随便看看默认使用站长推荐的数据
 		$articleRecommend = model('Article')->getArticleRecommend();
-		foreach ($articleRecommend as $k => $v) {
-			if($article_id == $v['article_id']) unset($articleRecommend[$k]);
-		}
 		$this->assign('articleRecommend',$articleRecommend);
 		//视图渲染
 		return view("edit",['article'=>$articleInfo]);

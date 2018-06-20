@@ -1,42 +1,52 @@
 layui.use(['jquery','form'], function () {
     var $ = layui.jquery;
     var form = layui.form;
-    //获取验证码
-    $(function(){
-    	$.ajax({
-    		type: 'GET',
-    		url: _contextPath+"/verify.do",
-    		success:function(result) {
-    			if (result.code==1) {
-    				$(".verift-text").text(result.item);
-    			} else {
-    				layer.msg(result.msg,{anim:6});
-    			}
-    		}
-    	});
-    });
+    //表单验证
+     form.verify({
+        user_name : function (value){
+            if(value.length == 0) {
+                return '用户名不能为空';
+            }
+            if(value.length <3){
+                return '用户名不得小于三位数';
+            }
+        },
+        password : function (value){
+            if(value.length == 0){
+                return '密码不能为空';
+            }
+            if(value.length <3){
+                return '密码不得小于三位数';
+            }
+        },
+        verify : function (value){
+            if(value.length == 0){
+                return '验证码不能为空';
+            }
+            if(value.length != 5){
+                return '请输入正确的5位数验证码';
+            }
+        }
+
+     });
     //监听登陆
     form.on('submit(loginForm)', function(data){
     	data = data.field;
-    	$.ajax({
-    		type: 'post',
-    		data: data,
-    		async:true,
-    		url: _contextPath+"/user/login.do",
-    		success:function(result) {
-    			if (result.code==1) {
-    				MyLocalStorage.put("user", JSON.stringify(result.item), 360*24*3);
-    				if (document.referrer.split('?')[0].lastIndexOf('resetPwd.html')>0) {
-    					location.href = _contextPath+'/index.html';
-    				} else {    					
-    					window.history.go(-1);
-    				}
-    			} else {
-    				layer.msg(result.msg,{anim:6});
-    			}
-    		}
-    	});
-    	return false;
+    	$.post(loginUrl,{
+            user_name : data.user_name,
+            password  : data.password,
+            verify    : data.verify
+        },function(res){
+            //登录成功跳转页面
+            if(res.code == 200){
+                layer.msg(res.msg,{icon:1},function(){
+                    location.href=res.redirect_url;
+                });
+            }else{
+                layer.msg(res.msg,{icon:2});
+            }
+        },'json');
+    	 return false;
     });
     //监听注册
     form.on('submit(regForm)', function(data){

@@ -1,44 +1,30 @@
-var result = {"msg":null,"code":1,"item":[{"content":"模板挺好看的，我很喜欢可以分享模板吗，www.scever.com","time":"2017-11-14 16:13:53","dzan":"81","isYe":"","name":"紫逸","img":img_path+'/7.jpg'}]};
-
-var aid = '0';
-var user = MyLocalStorage.get('user');
-if (user!=null) user = JSON.parse(user);
 layui.use(['jquery', 'form', 'layedit','flow','util','laytpl'], function () {
 	var util = layui.util;
     var form = layui.form;
     var $ = layui.jquery;
     var layedit = layui.layedit;
     var flow = layui.flow;
-    
-    // 获取页面aid编号
-    var url = window.location.href.split("?");
-    if (url.length==2) {
-    	url = url[1];
-    	var args = url.split("&");
-    	aid = args[0].split("=")[1];
-    }
-
     //评论和留言的编辑器
     var editIndex = layedit.build('remarkEditor', {
         height: 150,
         tool: ['face', '|','strong','italic', 'del','left', 'center', 'right', '|', 'link'],
     });
     
-    //评论和留言的编辑器的验证
-    layui.form.verify({
-        content: function (value) {
-            value = $.trim(layedit.getText(editIndex));
-            if (value == "") return "请输入评论内容";
-            layedit.sync(editIndex);
-        }
-    });
-    
-    
    //文章评论
    form.on('submit(formLeaveMessage)', function (data) {
+        if(typeof(userInfo) == 'undefined'){
+              layer.msg('登陆之后才能评论',{anim:6,icon:5},function(){
+                    location.href=redirect;
+              });
+              return false;
+        }
+        if(data.field.editorContent.length == 0){
+            layer.msg('请输入评论内容',{anim:6,icon:5});
+              return false;
+        }
       var index = layer.load(1);
       $.post(addCommentUrl,{
-            from_uid : 1,//评论人id,数据模拟
+            article_id :article_id,           //文章id
             content :data.field.editorContent  //评论内容
         },function(res){
             if(res.code == 200 ){
@@ -55,111 +41,48 @@ layui.use(['jquery', 'form', 'layedit','flow','util','laytpl'], function () {
                     tool: ['face', '|', 'left', 'center', 'right', '|', 'link'],
                 });
                 layer.msg(res.msg, { icon: 1 });
+            }else if(res.code == 503){
+                 layer.msg(res.msg,{anim:6,icon:5},function(){
+                    location.href=res.url+'?redirect='+res.redirect;
+                 });
             }else{
                     layer.msg(res.msg,{anim:6,icon:5});
             }
         },'json');
       return false;
    }); 	
-	var msgs = result.item;
-	var lis = [];
-	for (var i=0; i<msgs.length; i++) {
-		var time = util.timeAgo(formatDate(""+msgs[i].time));
-		var html = '<li>'+
-        '<div class="comment-parent">'+
-            '<img src="images'+msgs[i].img+'"/>'+
-            '<div class="info">'+
-                '<span class="username">'+msgs[i].name+'</span>'+
-            '</div>'+
-            '<div class="content">'+
-                	msgs[i].content+
-            '</div>'+
-            '<p class="info">'+
-            	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
-            	'<span class="dh">'+
-            		'<a class="btn-dzan" href="javascript:dzan(\''+msgs[i].mid+'\');" id="dzan_'+msgs[i].mid+'"><img src="/static/index/img/zan.png"></img>'+msgs[i].dzan+'</a>'+
-            		'<a class="btn-reply" href="javascript:btnReplyClick(\''+msgs[i].mid+'\')" id="a_'+msgs[i].mid+'");"><img src="/static/index/img/huifu.png"></img>回复</a>'+
-            	'</span>'+
-            '</p>'+
-        '</div>'+
-        '<hr />';
-		var cs = msgs[i].item;
-		if (cs!=null && cs.length>0) {
-			for (var j=0; j<cs.length; j++) {
-				var time = util.timeAgo(""+formatDate(cs[j].time));
-				html += '<div class="comment-child">'+
-					'<img src="images'+cs[j].img+'" alt="Absolutely" />'+
-					'<div class="info">'+
-						'<span class="username">'+cs[j].name+'</span><span>'+cs[j].content+'</span>'+
-					'</div>'+
-					'<p class="info">'+
-                	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
-                	'<span class="dh">'+
-                		'<a class="btn-dzan" href="javascript:dzan(\''+cs[j].mid+'\');" id="dzan_'+cs[j].mid+'"><img src="/static/index/img/zan.png"></img>'+cs[j].dzan+'</a>'+
-                	'</span>'+
-                	'</p><hr/>'+
-                	'</div>';
-			}
-		}
-		 html +='<div class="replycontainer layui-hide" id="'+msgs[i].mid+'">'+
-		'<form class="layui-form" action="">'+
-		'<input type="hidden" name="isYe" value="'+msgs[i].mid+'">'+
-		'<div class="layui-form-item">'+
-			'<textarea name="replyContent" lay-verify="replyContent" id="t_'+msgs[i].mid+'" placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>'+
-		'</div>'+
-		'<div class="layui-form-item">'+
-			'<button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>'+
-		'</div>'+
-		'</form>'+
-		'</div></li>';
-		 lis.push(html);
-	}
-	//next(lis.join(''), page < result.count);
-	$(".blog-comment").html(lis.join(''));
     //监听留言回复提交
     form.on('submit(formReply)', function (data) {
-    	if (user==null) {
-    		layer.msg("登录后才能提交",{anim:6,icon:5});
-    		return false;
-    	}
-        if (data.field.replyContent == "") {
-        	layer.msg("至少得有一个字吧",{anim:6,icon:5});
+        if(typeof(userInfo) == 'undefined'){
+              layer.msg('登陆之后才能评论',{anim:6,icon:5},function(){
+                    location.href=redirect;
+              });
+              return false;
+        }
+        if (data.field.reply_content.length == 0) {
+        	layer.msg("请输入回复的内容",{anim:6,icon:5});
         	return false;
         } 
         var index = layer.load(1);
-        //模拟留言回复
-        setTimeout(function () {
-            layer.close(index);
-            var json = {aid:aid,content:data.field.replyContent,isYe:data.field.isYe,uid:user.uid};
-            $.ajax({
-        		type: 'POST',
-        		data: json,
-        		url: _contextPath+"/msg/set.do",
-        		success:function(result) {
-        			if (result.code==1) {
-        				var msg = result.item;
-        				var time = util.timeAgo(formatDate(""+msg.time));
-        				var html = '<div class="comment-child">'+
-        				'<img src="images'+user.img+'" alt="Absolutely" />'+
-        				'<div class="info">'+
-        					'<span class="username">'+user.name+'</span><span>'+msg.content+'</span>'+
-        				'</div>'+
-        				'<p class="info">'+
-        	        	'<span class="time"><i class="fa fa-clock-o"></i>&nbsp;'+time+'</span>'+
-        	        	'<span class="dh">'+
-        	        		'<a class="btn-dzan" href="javascript:dzan(\''+msg.mid+'\');" id="dzan_'+msg.mid+'"><img src="/static/index/img/zan.png"></img>'+msg.dzan+'</a>'+
-        	        	'</span>'+
-        	        	'</p><hr/>'+
-        	        	'</div>';
-        	            $(data.form).find('textarea').val('');
-        	            $(data.form).parent('.replycontainer').before(html).siblings('.comment-parent').children('p').children('a').click();
-        	            layer.msg("回复成功", { icon: 1 });
-        			} else {
-        				layer.msg(result.msg,{anim:6,icon:5});
-        			}
-        		}
-        	});
-        }, 500);
+        //数据发送
+        $.post(replyCommentUrl,{
+           reply_comment_id : data.field.reply_comment_id,
+           reply_content    : data.field.reply_content
+        },function(res){
+            if(res.code == 200){
+                layer.close(index);
+               //使用layui模板引擎进行页面渲染
+               var laytpl = layui.laytpl;
+               var getTpl = replyCommentList.innerHTML;
+                laytpl(getTpl).render(res.replyData, function(html){
+                    $(data.form).find('textarea').val('');
+                    $(data.form).parent().parent().find('.reply_list').before(html).siblings('.comment-parent').children('p').children('a').click();
+                    layer.msg(res.msg, { icon: 1 });
+                });
+            }else{
+                layer.msg(res.msg,{anim:6,icon:5});
+            }
+        },'json');
         return false;
     });
 });

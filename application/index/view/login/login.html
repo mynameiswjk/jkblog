@@ -32,7 +32,7 @@
 								    </div>
 							  </div>
 							  	<div class="layui-form-item">
-								    <label class="layui-form-label">人类验证</label>
+								    <label class="layui-form-label" >验证码</label>
 								    <div class="layui-input-inline">
 								      <input type="text" name="verify" required lay-verify="verify" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
 								    </div>
@@ -103,7 +103,7 @@
 						        	</div>
 								</div>
 								<div class="layui-form-item">
-							    	<label class="layui-form-label">人类验证</label>
+							    	<label class="layui-form-label" >人类验证</label>
 							    	<div class="layui-input-inline">
 							      		<input type="text" name="verify" required lay-verify="required" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
 							    	</div>
@@ -121,7 +121,6 @@
 				</div>      
             </div>
         </div>
-        
     </div>
     <!-- 页脚 -->
     {include file='public/footer'}
@@ -129,7 +128,12 @@
 	{load href='__JS__/login.js'}
 	<!--定义表单提交页面-->
 	<script>
-		var loginUrl = "{:url('Login/index')}";
+		var loginUrl     = "{:url('Login/index')}";
+		var getVerifyUrl = "{:url('Login/get_verify')}";
 	</script>
-
+{if !empty($redirect)}
+	<script>
+		var redirect = "{$redirect}";
+	</script>
+{/if}
   

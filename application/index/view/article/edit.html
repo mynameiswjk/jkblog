@@ -46,8 +46,62 @@
                                 </form>
                             </div>
                         </fieldset>
-                        <div class="blog-module-title">最新评论</div>
-                        <ul class="blog-comment"></ul>
+                      <div class="blog-module-title">最新评论</div>
+                        <ul class="blog-comment">
+                          {volist name='articleComment' id='comment'}
+                            <li>
+                                <div class="comment-parent">
+                                    <img src="/uploads/{$comment.from_headPortrait}">
+                                    <div class="info">
+                                      <span class="username">{$comment.from_uname}</span>
+                                    </div>
+                                    <div class="content">
+                                       {$comment.content}
+                                   </div>
+                                    <p class="info">
+                                        <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$comment.comment_time}</span>
+                                        <span class="dh">
+                                            <a class="btn-dzan" href="javascript:dzan('{$comment.comment_id}');" id="dzan_{$comment.comment_id}">
+                                            <img src="/static/index/img/zan.png">{$comment.praise_num}</a>
+                                            <a class="btn-reply" href="javascript:btnReplyClick('{$comment.comment_id}')" id="a_{$comment.comment_id}"> <img src="/static/index/img/huifu.png">
+                                            </img>回复</a>
+                                        </span>
+                                    </p>
+                                </div>
+                                <hr>
+                                <div class='reply_list'>
+                                    {if !empty($comment.reply_list)}
+                                        {volist name='comment.reply_list' id='reply_list'}
+                                          <div class="comment-child">
+                                                <img src="{$reply_list.reply_headPortrait}"  />
+                                                <div class="info">
+                                                   <span class="username">{$reply_list.reply_uname}</span><span>{$reply_list.reply_content}</span>
+                                                </div>
+                                                <p class="info">
+                                                    <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$reply_list.reply_time}</span>
+                                                    <span class="dh">
+                                                         <a class="btn-dzan" href="javascript:dzan('{$reply_list.reply_id}');" id="dzan_{$reply_list.reply_id}"><img src="/static/index/img/zan.png"></img>{$reply_list.praise_num}</a>
+                                                    </span>
+                                                </p>
+                                                <hr/>
+                                            </div>
+                                        {/volist}
+                                    {/if}
+                                </div>
+                                <div class="replycontainer layui-hide" id="{$comment.comment_id}">
+                                    <form class="layui-form" action="">
+                                        <input type="hidden" name="reply_comment_id" value="{$comment.comment_id}">
+                                        <div class="layui-form-item"><textarea placeholder="请输入要回复的内容" name="reply_content" 
+                                            class="layui-textarea" style="min-height:80px;"></textarea>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                           {/volist}
+                        </ul>
                     </div>
                 </div>
                 <!--右边小栏目-->
@@ -88,9 +142,24 @@
 <script>
     var img_path ="__IMG__";
     var addCommentUrl = "{:url('Comment/addComment')}";
+    var article_id = "{$article.article_id}";
+    var replyCommentUrl = "{:url('Comment/replyComment')}"
 </script>
+{if !empty($userInfo)}
+<!--用户信息传递给js脚本-->
+<script>
+        userInfo ="{$userInfo.user_id}";
+</script>
+{else}
+<script>
+
+    var redirect =encodeURIComponent("{:url('Article/articleedit')}?article_id="+article_id);
+        redirect = "{:url('Login/index')}?redirect="+redirect;
+</script>
+{/if}
 {load href='__JS__/message.js'}
 <!--layui模板引擎渲染-->
+<!--渲染评论列表-->
 <script id="commentList" type="text/html">
     <li>
         <div class="comment-parent">
@@ -125,4 +194,20 @@
             </form>
         </div>
     </li>
+</script>
+<!--渲染评论回复列表-->
+<script id='replyCommentList' type='text/html'>
+   <div class="comment-child">
+        <img src="{{d.reply_headPortrait}}"  />
+        <div class="info">
+           <span class="username">{{d.reply_uname}}</span><span>{{d.reply_content}}</span>
+        </div>
+        <p class="info">
+            <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.reply_time}}</span>
+            <span class="dh">
+                 <a class="btn-dzan" href="javascript:dzan('{{d.reply_id}}');" id="dzan_{{d.reply_id}}"><img src="/static/index/img/zan.png"></img>{{d.praise_num}}</a>
+            </span>
+        </p>
+        <hr/>
+    </div>
 </script>

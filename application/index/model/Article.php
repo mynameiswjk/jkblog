@@ -10,6 +10,8 @@ use think\Model;
 
 class Article extends Model
 {	
+
+	protected $resultSetType = 'collection';
 	//文章列表数据
 	public function getArticle($article_type_id = FALSE)
 	{
@@ -68,6 +70,32 @@ class Article extends Model
 			if($article_id == $v['article_id']) unset($similarityData[$k]);
 		}
 		return $similarityData;
+	}
+	//获得当前文章的评论
+	public function getArticleComment($article_id)
+	{
+	    $where ['article_id'] = $article_id;
+	    $articleCommentData = db('comment')->where($where)->order(['comment_time'=>'desc'])->select();
+	    if($articleCommentData){
+		    foreach ($articleCommentData as $k => $v) {
+				$articleCommentData[$k]['comment_time'] = empty($v['comment_time']) ? '暂无' : date('Y-m-d H:i:s',$v['comment_time']);
+				$articleCommentData[$k]['content'] = unserialize($v['content']);
+ 				//获得评论的用户姓名和头像
+				$articleCommentData[$k]['from_headPortrait'] = db('user')->where(['user_id'=>$v['from_uid']])->value('user_head_portrait');
+				$articleCommentData[$k]['from_uname'] = db('user')->where(['user_id'=>$v['from_uid']])->value('user_name');
+				//获得回复评论列表
+				$articleCommentData[$k]['reply_list'] = db('reply_comment')->where(['reply_comment_id'=>$v['comment_id']])->order(['reply_time'=>'desc'])->select();
+				foreach ($articleCommentData[$k]['reply_list'] as $kk => $vv) {
+					$articleCommentData[$k]['reply_list'][$kk]['reply_time'] = empty($vv['reply_time']) ? '暂无' : date('Y-m-d H:i:s',$vv['reply_time']);
+					//获得评论回复列表用户的姓名和头像
+					$articleCommentData[$k]['reply_list'][$kk]['reply_content'] = unserialize($vv['reply_content']);
+					$userData = db('user')->where(['user_id'=>$vv['reply_uid']])->find();
+					$articleCommentData[$k]['reply_list'][$kk]['reply_headPortrait'] = '/uploads/'.$userData['user_head_portrait'];
+					$articleCommentData[$k]['reply_list'][$kk]['reply_uname'] 		 = $userData['user_name'];
+				}
+			}
+	    }
+		return $articleCommentData;
 	}
 }
 

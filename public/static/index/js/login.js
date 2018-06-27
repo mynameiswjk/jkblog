@@ -31,19 +31,28 @@ layui.use(['jquery','form'], function () {
      });
     //监听登陆
     form.on('submit(loginForm)', function(data){
+        if(typeof(redirect) == 'undefined'){
+            redirect = '';
+        }else{
+            redirect = redirect;
+        }
     	data = data.field;
     	$.post(loginUrl,{
             user_name : data.user_name,
             password  : data.password,
+            redirect  : redirect,
             verify    : data.verify
         },function(res){
             //登录成功跳转页面
             if(res.code == 200){
                 layer.msg(res.msg,{icon:1},function(){
-                    location.href=res.redirect_url;
+                    location.href=res.redirect;
                 });
             }else{
-                layer.msg(res.msg,{icon:2});
+                layer.msg(res.msg,{icon:5,anim:6});
+                if(res.code  == 501){
+                    get_verify();
+                }
             }
         },'json');
     	 return false;
@@ -101,3 +110,9 @@ layui.use(['jquery','form'], function () {
     });
 });
 
+function get_verify()
+{
+    $.get(getVerifyUrl,'',function(res){
+         $('.captcha_img').html(res);
+    });
+}

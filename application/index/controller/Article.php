@@ -50,6 +50,8 @@ class Article extends Base
 		//随便看看默认使用站长推荐的数据
 		$articleRecommend = model('Article')->getArticleRecommend();
 		$this->assign('articleRecommend',$articleRecommend);
+		//获得当前文章的评论
+		$this->assign('articleComment',model('Article')->getArticleComment($article_id));
 		//视图渲染
 		return view("edit",['article'=>$articleInfo]);
 	}
@@ -79,8 +81,9 @@ class Article extends Base
 				$articleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
 				$articleData[$k]['Author'] = '阿康';
 				//获取文章分类
-				$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');	
+				$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');
 			}
+		
 			die(json_encode($articleData));
 			
 		}		

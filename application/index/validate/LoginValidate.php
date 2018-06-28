@@ -27,16 +27,4 @@ class LoginValidate extends Validate
 	        'login'    =>   ['user_name','password','verify'],
 	        'register' =>   ['user_name','password','verify'],
     ];
-    //自定义验证规则验证用户名是否存在
-    protected function checkkUserName($value,$rule,$data)
-    {
-    	if(!db('user')->where(['user_name'=>$value])->value('user_name')) return '用户名不存在';
-    }
-    //自定义验证规则验证密码是否正确
-    protected function checkPassword($value,$rule,$data)
-    {	
-    	$where['user_name'] = $data['user_name'];
-    	$where['password']	= md5($value);
-    	if(!db('user')->where($where)->value('password')) return '111';
-    }
 } 

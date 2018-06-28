@@ -1,6 +1,6 @@
 /**
- * @name:   vip-admin 后台模板主入口
- * @author: 随丶
+ * @name:   阿康 后台模板主入口
+ * @author: 阿康
  */
 
 // 配置

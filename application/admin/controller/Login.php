@@ -48,11 +48,11 @@ class Login extends Controller
 		$admin_name = $data['admin_name'];
 		$admin_pass = $data['admin_pass'];
 		//先查找用户名是否存在
-		if($userInfo = db("admin")->where(['admin_name'=>$admin_name])->find()) {
+		if($adminInfo = db("admin")->where(['admin_name'=>$admin_name])->find()) {
 			//如果用户名存在,查看密码是否正确
 			if(db('admin')->where(['admin_pass'=>md5($admin_pass)])->find()) {
 				//密码正确,管理员信息存储session。 
-				session('userInfo',$userInfo);
+				session('adminInfo',$adminInfo);
 				return true;
 			}else{
 				//密码错误
@@ -70,7 +70,7 @@ class Login extends Controller
 	*/ 
 	public function logout()
 	{
-		session('userInfo',NULL);
+		session('adminInfo',NULL);
 		$this->success('退出成功','Login/index');
 	}
 }

@@ -33,7 +33,6 @@ class Article extends Model
 		}
 		return $articleData;
 	}
-
 	//获得文章点击排行
 	public function getArticleClickList()
 	{

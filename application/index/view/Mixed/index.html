@@ -12,9 +12,10 @@
             <div class="blog-main">
                 <div class="child-nav shadow">
 	                <span class="child-nav-btn child-nav-btn-this">照片墙</span>
-	                <span class="child-nav-btn" onclick="location.href='mixed_vip.html'">VIP视频解析</span>
-	                <span class="child-nav-btn" onclick="location.href='mixed_game.html'">游戏墙</span>
+	          <!--       <span class="child-nav-btn" onclick="location.href='mixed_vip.html'">VIP视频解析</span>
+	                <span class="child-nav-btn" onclick="location.href='mixed_game.html'">游戏墙</span> -->
                 </div>
+                <!--图片列表-->
                 <div class="mixed-main" id="pic"></div>
             </div>
             <div class="clear"></div>
@@ -23,3 +24,12 @@
  {include file='public/footer'}
  <!-- 本页JS -->
  {load href ='__JS__/mixed_pic.js'}
+ <!--定义JS脚本所需要的URL路径-->
+ <script>
+//图片分页数据获取
+var getPhotoListUrl = "{:url('Mixed/getPhoto')}";
+//图片下载路径
+var downloadUrl    = "{:url('Mixed/download')}";
+//图片查看的url    
+var  jsonUrl       = "{:url('Mixed/photoDetail')}";
+</script>

@@ -22,9 +22,9 @@ class Base extends Controller
 	*/ 
 	protected function checkLogin()
 	{
-		$userInfo = session('userInfo');
+		$adminInfo = session('adminInfo');
 
-		if(empty($userInfo)) {
+		if(empty($adminInfo)) {
 			
 			$this->error('您未登录,请您登录。',url('Login/index'));
 		}

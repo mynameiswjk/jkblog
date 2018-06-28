@@ -14,8 +14,8 @@ class Index extends Base
 	*/ 
 	public function index()
 	{	
-		$userInfo = session('userInfo');
-		return view('index',['user'=>$userInfo]);
+		$adminInfo = session('adminInfo');
+		return view('index',['admin'=>$adminInfo]);
 	}
 
 	/** 

@@ -33,10 +33,10 @@ class Article extends Base
 			if(!$articleValitate->scene('add')->check($data)) {
 				die(json_encode(['code'=>'500','msg'=>$articleValitate->getError()]));
 			}
-			$userInfo = session('userInfo');
+			$adminInfo = session('adminInfo');
 			//数据补充①作者id
 			$data['article_content'] = serialize($data['article_content']);
-			$data['article_author']  = $userInfo['admin_id'];
+			$data['article_author']  = $adminInfo['admin_id'];
 			$data['article_addtime'] = time();
 			//入库存储
 			if(db('article')->insert($data)) {
@@ -67,9 +67,9 @@ class Article extends Base
 			if(!$articleValitate->scene('edit')->check($data)) {
 				die(json_encode(['code'=>'500','msg'=>$articleValitate->getError()]));
 			}
-			$userInfo = session('userInfo');
+			$adminInfo = session('adminInfo');
 			//数据补充①作者id
-			$data['article_author']  = $userInfo['admin_id'];
+			$data['article_author']  = $adminInfo['admin_id'];
 			$data['article_content'] = serialize($data['article_content']);
 			//入库存储
 			if(db('article')->where(['article_id'=>$data['article_id']])->update($data) !== false) {

@@ -35,7 +35,7 @@ class Timeline extends Base
 							->order(['timeline_id'=>'desc'])
 							->select();	
 			foreach($timelineData as $k=>$v) {
-				$timelineData[$k]['timeline_time'] = date('Y-m-d H:i:s',$v['timeline_time']);
+				$timelineData[$k]['timeline_time']    = date('Y-m-d H:i:s',$v['timeline_time']);
 				$timelineData[$k]['timeline_addtime'] = date('Y-m-d H:i:s',$v['timeline_addtime']);
 			}
 			$data['code']  = 0;
@@ -65,6 +65,11 @@ class Timeline extends Base
 			$data['timeline_time']    = strtotime($data['timeline_time']);
 			$data['timeline_content'] = serialize($data['timeline_content']);
 			$data['timeline_addtime'] = time();
+			//补充时光轴的年，月，日，时：分：秒；
+			$data['year'] 			  = date('Y',$data['timeline_time']);
+			$data['month'] 			  = date('n',$data['timeline_time']);
+			$data['day'] 			  = date('j H:i:s',$data['timeline_time']);
+		
 			//入库处理
 			if(db('timeline')->insert($data)) {
 				die(json_encode(['code'=>200,'msg'=>'添加数据成功']));
@@ -94,6 +99,10 @@ class Timeline extends Base
 			//数据补充
 			$data['timeline_content'] = serialize($data['timeline_content']);
 			$data['timeline_time'] 	  = strtotime($data['timeline_time']);
+			//补充时光轴的年，月，日，时：分：秒；
+			$data['year'] 			  = date('Y',$data['timeline_time']);
+			$data['month'] 			  = date('n',$data['timeline_time']);
+			$data['day'] 			  = date('j H:i:s',$data['timeline_time']);
 			//数据修改
 			if(!db('timeline')->where(['timeline_id'=>$data['timeline_id']])->update($data) === FALSE) {
 				die(json_encode(['code'=>200,'msg'=>'数据修改成功']));

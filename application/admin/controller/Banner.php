@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 use think\Validate;
 use think\Loader;
+use think\Cache;
 class Banner extends Base
 {
 	public function index()
@@ -21,6 +22,7 @@ class Banner extends Base
 				//数据第一次添加
 				$data['banner_url'] = serialize($banner_img);
 				if(db('banner')->insert($data)) {
+					Cache::set('bannerData',$data,0);
 					die(json_encode(['code'=>200,'msg'=>'banner设置成功']));
 				}else{
 					die(json_encode(['code'=>500,'msg'=>'banner设置失败']));
@@ -28,7 +30,7 @@ class Banner extends Base
 			}else{
 				$data['banner_url'] = serialize($banner_img);
 				if(db('banner')->where(['banner_id'=>$banner_id])->update($data) !== FALSE) {
-					
+					Cache::set('bannerData',$data,0);
 					die(json_encode(['code'=>200,'msg'=>'banner设置成功']));
 				}else{
 					die(json_encode(['code'=>200,'msg'=>'banner设置失败']));

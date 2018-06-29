@@ -5,11 +5,11 @@
 <body>
 <blockquote class="layui-elem-quote">前台首页banner轮播管理</blockquote>   
 <form method='' action='' >    
-<div  id='banner_img'>
   <div class="layui-upload-drag" id="banner" >
     <i class="layui-icon"></i>
     <p>点击上传，或将文件拖拽到此处</p>
   </div>
+<div  id='banner_img'>
   {if !empty($banner)}
   {volist name='banner' id='banner'}
      <div class="layui-upload-drag">

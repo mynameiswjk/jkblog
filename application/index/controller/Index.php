@@ -46,7 +46,8 @@ class Index extends Base
 	{
 		//查看缓存是否存在
 		if($bannerData = Cache::get('bannerData')) {
-			$this->assign('banner',unserialize($bannerData));
+			$bannerData = unserialize($bannerData['banner_url']);
+			$this->assign('banner',$bannerData);
 		}else{
 		    $bannerData = db('banner')->value('banner_url');
 			$this->assign('banner',unserialize($bannerData));;

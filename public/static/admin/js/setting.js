@@ -6,7 +6,7 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
    var $ = layui.jquery
   ,upload = layui.upload;
 
-  //普通图片上传
+  //上传头像
   var loading;
   var uploadInst = upload.render({
     elem: '#test1'
@@ -19,6 +19,29 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
       if(res.code == 200) {
           $("#blogger_avatar").attr('src',res.file_url);
           $("input[name='blogger_avatar']").val(res.file_url);
+      }else{
+          layer.msg(res.msg,{icon:2});
+      }
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+   
+    },exts: 'png|jpg|jpeg'
+     ,size : 10240
+  });
+  //上传logo
+    var loading1;
+    var uploadInst = upload.render({
+    elem: '#test2'
+    ,url: settingUploadUrl
+    ,before:function(){
+     loading1 = top.layer.msg('图片上传中',{icon: 16,time:false,shade:0.8});
+    }
+    ,done: function(res){
+      top.layer.close(loading1);
+      if(res.code == 200) {
+          $("#blog_logo").attr('src',res.file_url);
+          $("input[name='blog_logo']").val(res.file_url);
       }else{
           layer.msg(res.msg,{icon:2});
       }
@@ -66,8 +89,10 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
     var close_website_cause = field.close_website_cause;
     var is_close_website    = field.is_close_website;
     var blogger_avatar      = field.blogger_avatar;
+    var blog_logo           = field.blog_logo;
+    var blog_about  =  layedit.getContent(editIndex).split('<audio controls="controls" style="display: none;"></audio>')[0];
     $.post(settingIndexUrl
-      ,{blogger_name:blogger_name,blogger_address:blogger_address,blogger_email:blogger_email,blogger_github:blogger_github,blogger_intro:blogger_intro,blogger_motto:blogger_motto,blogger_qq:blogger_qq,close_website_cause:close_website_cause,is_close_website:is_close_website,blogger_avatar:blogger_avatar}
+      ,{blog_logo:blog_logo,blog_about:blog_about,blogger_name:blogger_name,blogger_address:blogger_address,blogger_email:blogger_email,blogger_github:blogger_github,blogger_intro:blogger_intro,blogger_motto:blogger_motto,blogger_qq:blogger_qq,close_website_cause:close_website_cause,is_close_website:is_close_website,blogger_avatar:blogger_avatar}
       ,function(res){
           if(res.code == 200) {
             layer.msg(res.msg,{icon:1,time:2000},function(){
@@ -80,4 +105,11 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
       ,'json');
     return false;
   });
+   //创建一个编辑器
+    var editIndex = layedit.build('blog_about',{
+        height : 400,
+        uploadImage : {
+            url : uploadArticleLayeditUrl,
+        }
+    });
 });

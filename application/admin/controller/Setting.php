@@ -24,6 +24,8 @@ class Setting extends Base
 			if(!$SettingValidate->scene('index')->check($data)) {
 				die(json_encode(['code'=>'500','msg'=>$SettingValidate->getError()]));
 			}
+			//数据补充
+			$data['blog_about'] = serialize($data['blog_about']);
 			//是否是第一次添加
 			if(!$setting_id = db('setting')->value('setting_id')) {
 				//数据第一次添加
@@ -56,6 +58,7 @@ class Setting extends Base
 		}
 		//查询数据如果不为空数据展示出来
 		$settingData = db('setting')->find();
+		$settingData['blog_about'] = unserialize($settingData['blog_about']);
 		return view('index',['setting'=>$settingData]);
 	}
 

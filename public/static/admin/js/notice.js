@@ -34,7 +34,6 @@ layui.config({
         });
     //添加文章
     function addNotice(){
-       
         var index = layui.layer.open({
             title :'公告管理' ,
             type : 2,

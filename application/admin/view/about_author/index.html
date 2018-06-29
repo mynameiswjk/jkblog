@@ -58,6 +58,12 @@
       <textarea placeholder="请输入内容" name='blogger_motto' class="layui-textarea">{$blogger.blogger_motto}</textarea>
     </div>
   </div>
+  <div class="layui-form-item magb0">
+  <label class="layui-form-label">博主介绍</label>
+  <div class="layui-input-block">
+    <textarea class="layui-textarea layui-hide blog_introduce" name="blogger_introduce" lay-verify="blogger_introduce" id="blogger_introduce">{$blogger.blogger_introduce}</textarea>
+  </div>
+</div>
   <div class="layui-form-item">
     <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
   </div>
@@ -69,8 +75,10 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
   //定义js文件所需要的参数
-  var  BloggerUploadUrl = '{:url("AboutAuthor/bloggerUpload")}';
-  var  setBloggerUrl  = "{:url('AboutAuthor/aboutAuthor')}";
+  var  BloggerUploadUrl         = '{:url("AboutAuthor/bloggerUpload")}';
+  var  setBloggerUrl           = "{:url('AboutAuthor/aboutAuthor')}";
+  var  uploadArticleLayeditUrl = "{:url('Article/uploadArticleLayedit')}";
+
 </script>
 </body>
 </html>

@@ -50,7 +50,7 @@ class Index extends Base
 			$this->assign('banner',$bannerData);
 		}else{
 		    $bannerData = db('banner')->value('banner_url');
-			$this->assign('banner',unserialize($bannerData));;
+			$this->assign('banner',unserialize($bannerData));
 		}
 	}
 	/** 
@@ -77,7 +77,7 @@ class Index extends Base
 		if($AuthorData = Cache::get('AuthorData')) {
 			$this->assign('author',$AuthorData);
 		}else{
-			$AuthorData = db('setting')->find();
+			$AuthorData = db('blogger')->find();
 			$this->assign('author',$AuthorData);
 		}
 	}

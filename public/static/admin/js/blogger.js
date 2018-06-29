@@ -47,6 +47,10 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
       if(value.length  == 0){
         return '请输入所在地址';
       }
+    },blogger_introduce :function(value){
+      if(layedit.getContent(editIndex)  == 0){
+        return '请输入博主介绍';
+      }
     }
     ,content: function(value){
       layedit.sync(editIndex);
@@ -64,8 +68,9 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
     var blogger_motto   = field.blogger_motto;
     var blogger_qq      = field.blogger_qq;
     var blogger_avatar  = field.blogger_avatar;
+    var blogger_introduce = layedit.getContent(editIndex)
     $.post(setBloggerUrl
-      ,{blogger_name:blogger_name,blogger_address:blogger_address,blogger_email:blogger_email,blogger_github:blogger_github,blogger_intro:blogger_intro,blogger_motto:blogger_motto,blogger_qq:blogger_qq,blogger_avatar:blogger_avatar}
+      ,{blogger_introduce:blogger_introduce,blogger_name:blogger_name,blogger_address:blogger_address,blogger_email:blogger_email,blogger_github:blogger_github,blogger_intro:blogger_intro,blogger_motto:blogger_motto,blogger_qq:blogger_qq,blogger_avatar:blogger_avatar}
       ,function(res){
           if(res.code == 200) {
             layer.msg(res.msg,{icon:1,time:2000},function(){
@@ -78,4 +83,11 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
       ,'json');
     return false;
   });
+  //创建一个编辑器
+    var editIndex = layedit.build('blogger_introduce',{
+        height : 400,
+        uploadImage : {
+            url : uploadArticleLayeditUrl
+        }
+    });
 });

@@ -13,6 +13,7 @@ class AboutAuthor extends Base
 	public function index()
 	{	
 		$blogger = db('blogger')->find();
+		if($blogger)$blogger['blogger_introduce'] =  unserialize($blogger['blogger_introduce']);
 		return view('index',['blogger'=>$blogger]);
 	}
 
@@ -27,6 +28,7 @@ class AboutAuthor extends Base
 			if(!$AboutAuthorValidate->scene('index')->check($data)) {
 				die(json_encode(['code'=>500,'msg'=>$AboutAuthorValidate->getError()]));
 			}
+			$data['blogger_introduce'] = serialize($data['blogger_introduce']);
 			//判断是否所第一次添加
 			if(!$blogger_id = db('blogger')->value('blogger_id')) {
 				//数据第一次添加

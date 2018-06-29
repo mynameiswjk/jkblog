@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 use think\Validate;
 use think\Loader;
+use think\Cache;
 class Setting extends Base
 {
 	/** 
@@ -27,6 +28,7 @@ class Setting extends Base
 			if(!$setting_id = db('setting')->value('setting_id')) {
 				//数据第一次添加
 				if(db('setting')->insert($data)) {
+					Cache::set('AuthorData',$data);
 					die(json_encode(['code'=>200,'msg'=>'设置信息成功']));
 				}else{
 					die(json_encode(['code'=>500,'msg'=>'设置信息失败']));
@@ -36,6 +38,7 @@ class Setting extends Base
 				//先把之前的头像地址查出来存入变量
 				$blogger_avatar = db('setting')->where(['setting_id'=>$setting_id])->value('blogger_avatar');
 				if(db('setting')->where(['setting_id'=>$setting_id])->update($data) !== FALSE) {
+					Cache::set('AuthorData',$data);
 					//如果跟提交上来的不相等，说明是新上传的头像进行删除
 					if($data['blogger_avatar'] !== $blogger_avatar) {
 						$blogger_avatar = ROOT_PATH.'public'.$blogger_avatar;

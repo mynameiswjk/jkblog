@@ -1,0 +1,53 @@
+<!--引入后台公共头文件-->
+{include file='public/admin_header'}
+<body>
+  <blockquote class="layui-elem-quote layui-text" id='blockquote'>
+  关于博客
+</blockquote>
+<form class="layui-form layui-form-pane" action=""> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">博客名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="blog_name"  value='{$blog.blog_name}' autocomplete="off" lay-verify="blog_name" placeholder="请输入博客名称" class="layui-input">
+    </div>
+  </div> 
+<div class="layui-upload" style='margin:0 0 20px 15px;'>
+  <div class="layui-upload-list" style='width: 100px;height: 100px;margin: 0 10px 10px 0;border:1px solid #8072725e;'>
+    {if !empty($blog.blog_logo)}
+       <img class="layui-upload-img" id="blog_logo"   src="{$blog.blog_logo}" style='whdth:100%;height:100%;'>
+    {else}
+       <img class="layui-upload-img" id="blog_logo"   style='whdth:100%;height:100%;'>
+    {/if}
+  </div>
+ <button type="button" class="layui-btn" id="test1">上传Logo</button>
+ <input type='hidden' name='blog_logo'  value='{$blog.blog_logo}'/>
+</div>     
+ <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">博客简介</label>
+    <div class="layui-input-block">
+      <textarea placeholder="请输入内容" name='blog_intro' lay-verify='blog_intro' class="layui-textarea">{$blog.blog_intro}</textarea>
+    </div>
+  </div>
+<div class="layui-form-item magb0">
+  <label class="layui-form-label">博客介绍</label>
+  <div class="layui-input-block">
+    <textarea class="layui-textarea layui-hide blog_introduce" name="blog_introduce" lay-verify="blog_introduce" id="blog_introduce">{$blog.blog_introduce}</textarea>
+  </div>
+</div>
+  <div class="layui-form-item">
+    <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
+  </div>
+</form>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/about_blog.js'}
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+  //定义js文件所需要的参数
+  var  BloggerUploadUrl = '{:url("AboutAuthor/bloggerUpload")}';
+  var  setblogUrl 		= "{:url('AboutBlog/setBlog')}";
+  var  uploadArticleLayeditUrl = "{:url('Article/uploadArticleLayedit')}";
+</script>
+</body>
+</html>

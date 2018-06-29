@@ -101,13 +101,15 @@
                                     <legend>Friend Link</legend>
                                     <div class="layui-field-box">
                                         <ul class="friendlink">
+                                            {volist name='blogroll' id='blogroll'}
                                             <li>
-                                                <a target="_blank" href="http://www.layui.com/" title="Layui" class="friendlink-item">
-                                                    <p class="friendlink-item-pic"><img src="http://www.layui.com/favicon.ico" alt="Layui" /></p>
-                                                    <p class="friendlink-item-title">Layui</p>
-                                                    <p class="friendlink-item-domain">layui.com</p>
+                                                <a target="_blank" href="{$blogroll.blogroll_url}" title="Layui" class="friendlink-item">
+                                                    <p class="friendlink-item-pic"><img src="{$blogroll.blogroll_logo}" alt="{$blogroll.blogroll_name}" /></p>
+                                                    <p class="friendlink-item-title">{$blogroll.blogroll_name}</p>
+                                                    <p class="friendlink-item-domain">{$blogroll.blogroll_url}</p>
                                                 </a>
                                             </li>
+                                            {/volist}
                                         </ul>
                                     </div>
                                 </fieldset>

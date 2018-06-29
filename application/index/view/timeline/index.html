@@ -18,7 +18,29 @@
                     <div class="timeline-main">
                         <h1><i class="fa fa-clock-o"></i>时光轴<span> —— 记录生活点点滴滴</span></h1>
                         <div class="timeline-line"></div>
-                        <div class="timeline-data"></div>
+                        <div class="timeline-data">
+                            {volist name='timeline' id='timeline'}
+                                <div class="timeline-year">
+                                    <h2><a class="yearToggle" href="javascript:;">{$timeline.year}<i class="fa fa-caret-down fa-fw"></i></a></h2>
+                                    {volist name='timeline.month' id='month'}
+                                       <div class="timeline-month">
+                                            <h3 class=" animated fadeInLeft">
+                                              <a class="monthToggle" href="javascript:;">{$month.month_name}月<i class="fa fa-caret-down fa-fw"></i></a>
+                                            </h3>
+                                            <ul>
+                                            {volist name='month.day' id='day'}
+                                                  <li>
+                                                        <div class="h4  animated fadeInLeft"><p class="date">{$day.month}月{$day.month}号&nbsp;{$day.time}</p></div>
+                                                        <p class="dot-circle animated "><i class="fa fa-dot-circle-o"></i></p>
+                                                        <div class="content animated fadeInRight">{$day.timeline_content}</div><div class="clear"></div>
+                                                   </li>
+                                            {/volist}
+                                            </ul>
+                                        </div>
+                                    {/volist}
+                                </div>
+                            {/volist}
+                        </div>
                         <h1 style="padding-top:4px;padding-bottom:2px;margin-top:40px;"><i class="fa fa-hourglass-end"></i>THE END</h1>
                     </div>
                 </div>

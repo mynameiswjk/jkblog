@@ -23,13 +23,13 @@ class Timeline extends Model
 	//获得表中所有的年份
 	public function getYear()
 	{
-		$data = $this->field('year')->group('year')->order(['year'=>'desc'])->select()->toArray();
+		$data = $this->field('year')->where(['is_show'=>1])->group('year')->order(['year'=>'desc'])->select()->toArray();
 		return $data;
 	}
 	//获得表中数据所在的所有月份
 	public function getMonth()
 	{
-		$data = $this->field('year,month')->group('year_month')->order(['year'=>'desc'])->select()->toArray();
+		$data = $this->field('year,month')->where(['is_show'=>1])->group('year_month')->order(['month'=>'desc'])->select()->toArray();
 		return $data;
 	}
 }

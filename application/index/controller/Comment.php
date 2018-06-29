@@ -43,7 +43,7 @@ class Comment extends Base
 	public function replyComment()
 	{
 		if(request()->isAjax()) {
-			$data = input('post.','','htmlspecialchars');
+			$data = input('post.');
 			$userInfo = session('userInfo');
 			$data['reply_content'] = serialize($data['reply_content']);
 			$data['reply_uid']  = $userInfo['user_id'];

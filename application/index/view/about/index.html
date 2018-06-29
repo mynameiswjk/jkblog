@@ -72,7 +72,7 @@
                                     <img src="__IMG__/handshake.png" alt="友情链接" />
                                 </div>
                                 <p class="aboutinfo-nickname">友情链接</p>
-                                <p class="aboutinfo-introduce">Name：zuoqy博客&nbsp;&nbsp;&nbsp;&nbsp;Site：www.zuoqy.cn</p>
+                                <p class="aboutinfo-introduce">Name：{$blog.blog_name}&nbsp;&nbsp;&nbsp;&nbsp;Site：{$domain_name}</p>
                                 <p class="aboutinfo-location">
                                     <i class="fa fa-close"></i>经常宕机&nbsp;
                                     <i class="fa fa-close"></i>不合法规&nbsp;
@@ -123,13 +123,64 @@
                                         <div class="leavemessage" style="text-align:initial">
                                             <form class="layui-form">
                                                 <div class="layui-form-item">
-                                                    <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                                    <textarea name="editorContent" lay-verify="message" id="message" placeholder="请输入内容" class="layui-textarea"></textarea>
                                                 </div>
                                                 <div class="layui-form-item">
-                                                    <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
+                                                    <button class="layui-btn" lay-submit="mseesage_sub" id='mseesage_sub' lay-filter="mseesage_sub">提交留言</button>
                                                 </div>
                                             </form>
-                                            <ul class="blog-comment"></ul>
+                                            <ul class="blog-comment">
+                                                {volist name='messageList' id='message'}
+                                                   <li>
+                                                        <div class="comment-parent">
+                                                            <img src="/uploads/{$message.head_portrait}">
+                                                            <div class="info">
+                                                              <span class="username">{$message.message_uname}</span>
+                                                            </div>
+                                                            <div class="content">
+                                                               {$message.message_content}
+                                                           </div>
+                                                            <p class="info">
+                                                                <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$message.message_time}</span>
+                                                                <span class="dh">
+                                                                    <a class="btn-reply" href="javascript:btnReplyClick('{$message.message_id}')" id="a_{$message.message_id}"> <img src="/static/index/img/huifu.png">
+                                                                    </img>回复</a>
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                        <hr>
+                                                        <div class='reply_list'>
+                                                            <!--回复列表-->
+                                                            {if !empty($message.reply_list)}
+                                                               {volist name='$message.reply_list' id='reply_list'}
+                                                                    <div class="comment-child">
+                                                                    <img src="{$reply_list.head_portrait}"  />
+                                                                    <div class="info">
+                                                                       <span class="username">{$reply_list.reply_uname}</span><span>{$reply_list.reply_content}</span>
+                                                                    </div>
+                                                                    <p class="info">
+                                                                        <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$reply_list.reply_time}</span>
+                                                                    </p>
+                                                                    <hr/>
+                                                                </div>
+
+                                                               {/volist}
+                                                            {/if}
+                                                        </div>
+                                                        <div class="replycontainer layui-hide" id="{$message.message_id}">
+                                                            <form class="layui-form" action="">
+                                                                <input type="hidden" name="reply_message_id" value="{$message.message_id}">
+                                                                <div class="layui-form-item"><textarea placeholder="请输入要回复的内容" name="reply_content" 
+                                                                    class="layui-textarea" style="min-height:80px;"></textarea>
+                                                                </div>
+                                                                <div class="layui-form-item">
+                                                                    <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </li>
+                                                {/volist}
+                                            </ul>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -145,3 +196,61 @@
 {include file='public/footer'}
 <!-- 本页脚本 -->
 {load href='__JS__/about.js'}
+<!--js脚本所需要的数据-->
+<script>
+    var messageAddUrl    = "{:url('About/messageAdd')}";
+    var replyMessageUrl  = "{:url('About/replyMessage')}";
+</script>
+{if !empty($userInfo)}
+<script>
+    var userInfo = "{$userInfo.user_id}";
+</script>
+{/if}
+<!--layui模板引擎渲染-->
+<!--渲染留言列表-->
+<script id="messageList" type="text/html">
+    <li>
+        <div class="comment-parent">
+            <img src="{{d.head_portrait}}">
+            <div class="info">
+              <span class="username">{{d.message_uname}}</span>
+            </div>
+            <div class="content">
+               {{d.message_content}}
+           </div>
+            <p class="info">
+                <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.message_time}} </span>
+                <span class="dh">
+                    <a class="btn-reply" href="javascript:btnReplyClick('{{d.message_id}}')" id="a_{{d.message_id}}"> <img src="/static/index/img/huifu.png">
+                    </img>回复</a>
+                </span>
+            </p>
+        </div>
+        <hr>
+        <div class="replycontainer layui-hide" id="{{d.message_id}}">
+            <form class="layui-form" action="">
+                <input type="hidden" name="isYe" value="{{d.message_id}}">
+                <div class="layui-form-item">
+                    <textarea name="replyContent" lay-verify="replyContent"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
+                    </textarea>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                </div>
+            </form>
+        </div>
+    </li>
+</script>
+<!--渲染留言列表-->
+<script id='replyMessageList' type='text/html'>
+   <div class="comment-child">
+        <img src="{{d.head_portrait}}"  />
+        <div class="info">
+           <span class="username">{{d.reply_uname}}</span><span>{{d.reply_content}}</span>
+        </div>
+        <p class="info">
+            <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.reply_time}}</span>
+        </p>
+        <hr/>
+    </div>
+</script>

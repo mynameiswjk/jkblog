@@ -81,9 +81,10 @@ layui.use(['form', 'layedit','jquery','laytpl'], function(){
     //回复留言
     form.on('submit(formReply)',function(data){
          if(typeof(userInfo) == 'undefined'){
-                layer.msg('登陆之后才能评论',{anim:6,icon:5});
+                layer.msg('登陆之后才能回复',{anim:6,icon:5});
                 return false;
          }
+
          if (data.field.reply_content.length == 0) {
             layer.msg("请输入回复的内容",{anim:6,icon:5});
             return false;
@@ -111,6 +112,39 @@ layui.use(['form', 'layedit','jquery','laytpl'], function(){
                 }
           },'json');
           return false;
+    });
+    //默认从第二页开始
+    var page = 2;
+    //分页数据
+    $('#comment_more').on('click',function(res){
+        var index = layer.load(1);
+       //使用layui模板引擎进行页面渲染
+       var laytpl = layui.laytpl;
+       var getTpl = messageData.innerHTML;
+       $.post(getMessageUrl,{
+          page       : page
+       },function(res){
+          if(res.messageData.length == 0){
+            //没有数据
+            layer.close(index);
+            layer.msg('没有留言啦',{anim:6,icon:5});
+            $("#comment_more").html('没有留言啦');                  
+            $("#comment_more").unbind();                  
+          }else if(res.lastPge){
+            layer.close(index);
+            laytpl(getTpl).render(res.messageData, function(html){
+                $('.blog-comment').append(html);
+            });
+            $("#comment_more").html('没有留言啦');                  
+            $("#comment_more").unbind(); 
+          }else{
+            layer.close(index);
+            page = ++page;
+            laytpl(getTpl).render(res.messageData, function(html){
+                $('.blog-comment').append(html);
+            });
+          }
+       },'json'); 
     });
 });
 function btnReplyClick(elem) {

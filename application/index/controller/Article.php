@@ -108,7 +108,7 @@ class Article extends Base
 		}
 	}
 	/**
-	* 判断当前文章分类是否是最后一页
+	* 判断当前文章评论是否是最后一页
 	*/	
 	public function isLastCommentPage($article_id,$page=1)
 	{

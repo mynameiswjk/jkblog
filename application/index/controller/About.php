@@ -7,6 +7,7 @@
 namespace app\index\controller;
 use think\Cache;
 use think\Request;
+use think\Model;
 class About extends Base
 {
 	public function index()
@@ -72,24 +73,18 @@ class About extends Base
 	* @return data
 	*/ 
 	public function getMessage()
-	{
-		$messageData = db('message')->order(['message_time'=>'desc'])->select();
-		//作者信息获取
-		foreach ($messageData as $k => $v) {
-			$userInfo = db('user')->where(['user_id'=>$v['message_uid']])->find();
-			$messageData[$k]['message_uname'] = $userInfo['user_name'];
-			$messageData[$k]['head_portrait'] = $userInfo['user_head_portrait'];
-			$messageData[$k]['message_time']  = empty($v['message_time']) ? '暂无' : date('Y-m-d H:i:s',$v['message_time']);
-			//查找该留言是否有回复
-			$messageData[$k]['reply_list']    = db('reply_message')->where(['reply_message_id'=>$v['message_id']])->order(['reply_time'=>'desc'])->select();
-			foreach ($messageData[$k]['reply_list'] as $kk => $vv) {
-				$messageData[$k]['reply_list'][$kk]['reply_time']  =  empty($vv['reply_time']) ? '暂无' : date('Y-m-d H:i:s',$vv['reply_time']);
-				$userData = db('user')->where(['user_id'=>$vv['reply_uid']])->find();
-				$messageData[$k]['reply_list'][$kk]['reply_uname']   = $userData['user_name'];
-				$messageData[$k]['reply_list'][$kk]['head_portrait'] = '/uploads/'.$userData['user_head_portrait'];
-			}
+	{	
+		if(request()->isPOst()){
+			//分页数据获取
+			$page = input('param.page');
+			$messageData = model('Message')->getMessageList($page);
+			die(json_encode(['code'=>200,'messageData'=>$messageData['messageData'],'lastPge'=>$messageData['lastPge']]));
+		}else{
+			//默认进入页面数据
+			$messageData = model('Message')->getMessageList();
+			$this->assign('messageList',$messageData['messageData']);
+			$this->assign('lastPge',$messageData['lastPge']);
 		}
-		$this->assign('messageList',$messageData);
 	}
 	/** 
 	* 留言数据添加

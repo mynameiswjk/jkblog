@@ -133,7 +133,7 @@
                                                 {volist name='messageList' id='message'}
                                                    <li>
                                                         <div class="comment-parent">
-                                                            <img src="/uploads/{$message.head_portrait}">
+                                                            <img src="{$message.head_portrait}">
                                                             <div class="info">
                                                               <span class="username">{$message.message_uname}</span>
                                                             </div>
@@ -181,6 +181,13 @@
                                                     </li>
                                                 {/volist}
                                             </ul>
+                                                {if count($messageList) eq 0}
+                                                     <div class="layui-flow-more"><a href="javascript:;"><cite>没有留言啦</cite></a></div>
+                                                {elseif $lastPge}
+                                                      <div class="layui-flow-more"><a href="javascript:;"><cite>没有留言啦</cite></a></div>
+                                                {else}
+                                                    <div class="layui-flow-more"><a href="javascript:;"  id='comment_more'><cite>加载更多</cite></a></div>
+                                                {/if}
                                         </div>
                                     </div>
                                 </fieldset>
@@ -200,6 +207,7 @@
 <script>
     var messageAddUrl    = "{:url('About/messageAdd')}";
     var replyMessageUrl  = "{:url('About/replyMessage')}";
+    var getMessageUrl    = "{:url('About/getMessage')}";
 </script>
 {if !empty($userInfo)}
 <script>
@@ -227,12 +235,14 @@
             </p>
         </div>
         <hr>
+        <div class='reply_list'>
+
+        </div>
         <div class="replycontainer layui-hide" id="{{d.message_id}}">
             <form class="layui-form" action="">
-                <input type="hidden" name="isYe" value="{{d.message_id}}">
+                <input type="hidden" name="reply_message_id" value="{{d.message_id}}">
                 <div class="layui-form-item">
-                    <textarea name="replyContent" lay-verify="replyContent"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
-                    </textarea>
+                <textarea name="reply_content" lay-verify="reply_content"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;"></textarea>
                 </div>
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
@@ -253,4 +263,54 @@
         </p>
         <hr/>
     </div>
+</script>
+<!---留言分页-->
+<script id='messageData' type='text/html'>
+ {{#  layui.each(d, function(index, d){ }}
+    <li>
+        <div class="comment-parent">
+            <img src="{{d.head_portrait}}">
+            <div class="info">
+              <span class="username">{{d.message_uname}}</span>
+            </div>
+            <div class="content">
+               {{d.message_content}}
+           </div>
+            <p class="info">
+                <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.message_time}} </span>
+                <span class="dh">
+                    <a class="btn-reply" href="javascript:btnReplyClick('{{d.message_id}}')" id="a_{{d.message_id}}"> <img src="/static/index/img/huifu.png">
+                    </img>回复</a>
+                </span>
+            </p>
+        </div>
+        <hr>
+        <div class='reply_list'>
+           {{#  layui.each(d.reply_list, function(index, reply_list){ }}
+                 <div class="comment-child">
+                    <img src="{{reply_list.head_portrait}}"  />
+                    <div class="info">
+                       <span class="username">{{reply_list.reply_uname}}</span><span>{{reply_list.reply_content}}</span>
+                    </div>
+                    <p class="info">
+                        <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{reply_list.reply_time}}</span>
+                    </p>
+                    <hr/>
+                </div>         
+           {{#  }); }}
+        </div>
+        <div class="replycontainer layui-hide" id="{{d.message_id}}">
+            <form class="layui-form" action="">
+                <input type="hidden" name="message_id" value="{{d.message_id}}">
+                <div class="layui-form-item">
+                    <textarea name="reply_content" lay-verify="reply_content"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
+                    </textarea>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                </div>
+            </form>
+        </div>
+    </li>
+ {{#  }); }}
 </script>

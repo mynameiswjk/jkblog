@@ -71,11 +71,13 @@ class Article extends Model
 		return $similarityData;
 	}
 	//获得当前文章的评论
-	public function getArticleComment($article_id)
+	public function getArticleComment($article_id,$page = 1,$limit=6)
 	{
 	    $where ['article_id'] = $article_id;
-	    $articleCommentData = db('comment')->where($where)->order(['comment_time'=>'desc'])->select();
+	    $articleCommentData = db('comment')->where($where)->page($page)->limit($limit)->order(['comment_time'=>'desc'])->select();
 	    if($articleCommentData){
+	    	//判断当前用户是否登录
+	    	$userInfo = session('userInfo');
 		    foreach ($articleCommentData as $k => $v) {
 				$articleCommentData[$k]['comment_time'] = empty($v['comment_time']) ? '暂无' : date('Y-m-d H:i:s',$v['comment_time']);
 				$articleCommentData[$k]['content'] = unserialize($v['content']);
@@ -84,7 +86,51 @@ class Article extends Model
 				$articleCommentData[$k]['from_uname'] = db('user')->where(['user_id'=>$v['from_uid']])->value('user_name');
 				//获得回复评论列表
 				$articleCommentData[$k]['reply_list'] = db('reply_comment')->where(['reply_comment_id'=>$v['comment_id']])->order(['reply_time'=>'desc'])->select();
+				//是否对该条评论点过赞
+				if(!empty($userInfo)){
+					if($v['praise_user']){
+						//有用户对该评论点赞，判断当前用户是否对该评论点赞
+						$isZan = db('comment')
+								->where(['comment_id'=>$v['comment_id']])
+								->where("FIND_IN_SET({$userInfo['user_id']},praise_user)")
+								->value('praise_user');
+						if($isZan) {
+							//如果存在数据说明当前用户已经对该评论点过赞了不能再进行点赞
+							$articleCommentData[$k]['is_zan']  = false;
+						}else{
+							//该用户没有对该评论点过赞
+							$articleCommentData[$k]['is_zan']  = true;
+						}
+						
+					}else{
+						//说明该条评论没有用户点赞可以点赞 true
+						$articleCommentData[$k]['is_zan'] = true;
+ 					}
+				}else{
+						$articleCommentData[$k]['is_zan'] = 1;
+				}
 				foreach ($articleCommentData[$k]['reply_list'] as $kk => $vv) {
+					if(!empty($userInfo)){
+						if($vv['praise_user']){
+							//有用户对该评论点赞，判断当前用户是否对该评论点赞
+							$isZan = db('reply_comment')
+									->where(['reply_id'=>$vv['reply_id']])
+									->where("FIND_IN_SET({$userInfo['user_id']},praise_user)")
+									->value('praise_user');
+							if($isZan) {
+								//如果存在数据说明当前用户已经对该评论点过赞了不能再进行点赞
+								$articleCommentData[$k]['reply_list'][$kk]['is_zan']  = false;
+							}else{
+								//该用户没有对该评论点过赞
+								$articleCommentData[$k]['reply_list'][$kk]['is_zan']  = true;
+							}
+						}else{
+							//说明该条评论没有用户点赞可以点赞 true
+							$articleCommentData[$k]['reply_list'][$kk]['is_zan'] = true; 
+						}
+					}else{
+							$articleCommentData[$k]['reply_list'][$kk]['is_zan'] = 1; 
+					}
 					$articleCommentData[$k]['reply_list'][$kk]['reply_time'] = empty($vv['reply_time']) ? '暂无' : date('Y-m-d H:i:s',$vv['reply_time']);
 					//获得评论回复列表用户的姓名和头像
 					$articleCommentData[$k]['reply_list'][$kk]['reply_content'] = unserialize($vv['reply_content']);

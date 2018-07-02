@@ -61,8 +61,10 @@
                                     <p class="info">
                                         <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$comment.comment_time}</span>
                                         <span class="dh">
-                                            <a class="btn-dzan" href="javascript:dzan('{$comment.comment_id}');" id="dzan_{$comment.comment_id}">
-                                            <img src="/static/index/img/zan.png">{$comment.praise_num}</a>
+                                            <a class="btn-dzan"  {if $comment.is_zan}onclick="dzan('{$comment.comment_id}','comment',this);"{else}
+                                            onclick="return layer.msg('您已经点过赞了',{anim:6,icon:5})"{/if}
+                                            href="javascript:;" id="dzan_{$comment.comment_id}">
+                                            <img src="{if $comment.is_zan}/static/index/img/zan.png{else}/static/index/img/zan_d.png{/if}"><span>{$comment.praise_num}</span></a>
                                             <a class="btn-reply" href="javascript:btnReplyClick('{$comment.comment_id}')" id="a_{$comment.comment_id}"> <img src="/static/index/img/huifu.png">
                                             </img>回复</a>
                                         </span>
@@ -80,7 +82,8 @@
                                                 <p class="info">
                                                     <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{$reply_list.reply_time}</span>
                                                     <span class="dh">
-                                                         <a class="btn-dzan" href="javascript:dzan('{$reply_list.reply_id}');" id="dzan_{$reply_list.reply_id}"><img src="/static/index/img/zan.png"></img>{$reply_list.praise_num}</a>
+                                                         <a class="btn-dzan" {if $reply_list.is_zan}onclick="dzan('{$reply_list.reply_id}','reply',this);"{else} onclick="return layer.msg('您已经点过赞了',{anim:6,icon:5})" {/if}
+                                                         href="javascript:;" id="dzan_{$reply_list.reply_id}"><img src="{if $reply_list.is_zan}/static/index/img/zan.png{else}/static/index/img/zan_d.png{/if}"></img><span>{$reply_list.praise_num}</span></a>
                                                     </span>
                                                 </p>
                                                 <hr/>
@@ -102,6 +105,11 @@
                             </li>
                            {/volist}
                         </ul>
+                        {if count($articleComment) eq 0}
+                             <div class="layui-flow-more"><a href="javascript:;"><cite>没有评论啦</cite></a></div>
+                        {else}
+                            <div class="layui-flow-more"><a href="javascript:;"  id='comment_more'><cite>加载更多</cite></a></div>
+                        {/if}
                     </div>
                 </div>
                 <!--右边小栏目-->
@@ -143,7 +151,9 @@
     var img_path ="__IMG__";
     var addCommentUrl = "{:url('Comment/addComment')}";
     var article_id = "{$article.article_id}";
-    var replyCommentUrl = "{:url('Comment/replyComment')}"
+    var replyCommentUrl = "{:url('Comment/replyComment')}";
+    var getCommentListUrl = "{:url('Article/getArticleCommentList')}";
+    var likeUrl= "{:url('Comment/Like')}";
 </script>
 {if !empty($userInfo)}
 <!--用户信息传递给js脚本-->
@@ -152,14 +162,80 @@
 </script>
 {else}
 <script>
-
     var redirect =encodeURIComponent("{:url('Article/articleedit')}?article_id="+article_id);
         redirect = "{:url('Login/index')}?redirect="+redirect;
 </script>
 {/if}
 {load href='__JS__/message.js'}
 <!--layui模板引擎渲染-->
-<!--渲染评论列表-->
+<!--加载更多评论数据-->
+<script id='commentData' type='text/html'>
+{{#  layui.each(d, function(index, d){ }}
+    <li>
+        <div class="comment-parent">
+            <img src="/uploads/{{d.from_headPortrait}}">
+            <div class="info">
+              <span class="username">{{d.from_uname}}</span>
+            </div>
+            <div class="content">
+               {{d.content}}
+           </div>
+            <p class="info">
+                <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.comment_time}} </span>
+                <span class="dh">
+                    <a class="btn-dzan" {{#  if(d.is_zan){ }}onclick="dzan('{{d.comment_id}}','comment',this);"{{# }else{ }}onclick="return layer.msg('您已经点过赞了',{anim:6,icon:5})"{{#  } }} href="javascript:;" id="dzan_{{d.comment_id}}">
+                    <img src="{{#  if(d.is_zan){ }}/static/index/img/zan.png{{# }else{ }}/static/index/img/zan_d.png{{#  } }}"><span>{{d.praise_num}}</span></a>
+                    <a class="btn-reply" href="javascript:btnReplyClick('{{d.comment_id}}')" id="a_{{d.comment_id}}"> <img src="/static/index/img/huifu.png">
+                    </img>回复</a>
+                </span>
+            </p>
+        </div>
+        <hr>
+       <div class='reply_list'>
+           {{#  layui.each(d.reply_list, function(index, reply_list){ }}
+                 <div class="comment-child">
+                    <img src="{{reply_list.reply_headPortrait}}"  />
+                    <div class="info">
+                       <span class="username">{{reply_list.reply_uname}}</span><span>{{reply_list.reply_content}}</span>
+                    </div>
+                    <p class="info">
+                        <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{reply_list.reply_time}}</span>
+                        <span class="dh">
+                             <a class="btn-dzan" href="javascript:;" 
+                             {{#  if(reply_list.is_zan){ }}
+                              onclick="dzan('{{reply_list.reply_id}}','reply',this);" 
+                              {{# }else{ }}
+                              onclick="return layer.msg('您已经点过赞了',{anim:6,icon:5})"
+                              {{#  } }}
+                              id="dzan_{{reply_list.reply_id}}">
+                             {{#  if(reply_list.is_zan){ }}
+                              <img src="/static/index/img/zan.png">
+                              {{# }else{ }}
+                              <img src="/static/index/img/zan_d.png">
+                              {{#  } }}
+                          </img><span>{{reply_list.praise_num}}</span></a>
+                        </span>
+                    </p>
+                    <hr/>
+                </div>         
+           {{#  }); }}
+        </div>
+        <div class="replycontainer layui-hide" id="{{d.comment_id}}">
+            <form class="layui-form" action="">
+                <input type="hidden" name="reply_comment_id" value="{{d.comment_id}}">
+                <div class="layui-form-item">
+                    <textarea name="reply_content" lay-verify="reply_content"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
+                    </textarea>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-mini" lay-submit="formReply" lay-filter="formReply">提交</button>
+                </div>
+            </form>
+        </div>
+    </li>
+{{#  }); }}
+</script>
+<!--渲染评论数据-->
 <script id="commentList" type="text/html">
     <li>
         <div class="comment-parent">
@@ -173,19 +249,22 @@
             <p class="info">
                 <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.comment_time}} </span>
                 <span class="dh">
-                    <a class="btn-dzan" href="javascript:dzan('{{d.comment_id}}');" id="dzan_{{d.comment_id}}">
-                    <img src="/static/index/img/zan.png">{{d.praise_num}}</a>
+                    <a class="btn-dzan" onclick="dzan('{{d.comment_id}}','comment',this);" href="javascript:;" id="dzan_{{d.comment_id}}">
+                    <img src="/static/index/img/zan.png"><span>{{d.praise_num}}</span></a>
                     <a class="btn-reply" href="javascript:btnReplyClick('{{d.comment_id}}')" id="a_{{d.comment_id}}"> <img src="/static/index/img/huifu.png">
                     </img>回复</a>
                 </span>
             </p>
         </div>
         <hr>
+        <div class='reply_list'>
+
+        </div>
         <div class="replycontainer layui-hide" id="{{d.comment_id}}">
             <form class="layui-form" action="">
-                <input type="hidden" name="isYe" value="{{d.comment_id}}">
+                <input type="hidden" name="reply_comment_id" value="{{d.comment_id}}">
                 <div class="layui-form-item">
-                    <textarea name="replyContent" lay-verify="replyContent"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
+                    <textarea name="reply_content" lay-verify="reply_content"  placeholder="请输入回复内容" class="layui-textarea" style="min-height:80px;">
                     </textarea>
                 </div>
                 <div class="layui-form-item">
@@ -205,7 +284,7 @@
         <p class="info">
             <span class="time"><i class="fa fa-clock-o"></i>&nbsp;{{d.reply_time}}</span>
             <span class="dh">
-                 <a class="btn-dzan" href="javascript:dzan('{{d.reply_id}}');" id="dzan_{{d.reply_id}}"><img src="/static/index/img/zan.png"></img>{{d.praise_num}}</a>
+                 <a class="btn-dzan" href="javascript:;"  onclick="dzan('{{d.reply_id}}','reply',this);" id="dzan_{{d.reply_id}}"><img src="/static/index/img/zan.png"></img><span>{{d.praise_num}}</span></a>
             </span>
         </p>
         <hr/>

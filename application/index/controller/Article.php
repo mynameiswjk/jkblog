@@ -88,4 +88,21 @@ class Article extends Base
 			
 		}		
 	}
+
+	/**
+	* 返回搜索文章的数据
+	*/
+	public function getArticleCommentList()
+	{
+		if(request()->isAjax()){
+			$article_id = input('param.article_id');
+			$page 		= input('param.page');
+			//获得总的页码数
+			$commentCount =  db('comment')->where(['article_id'=>$article_id])->count();
+	   		$pageCount = ceil($commentCount / 6);
+	   		//是否是最后一页
+	   		$lastPge = $page == $pageCount  ? true : false;
+			die(json_encode(['code'=>200,'commentList'=>model('Article')->getArticleComment($article_id,$page),'lastPge'=>$lastPge]));
+		}
+	}
 }

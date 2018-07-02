@@ -15,7 +15,7 @@ class Comment extends Base
 	public function addComment()
 	{
 		if(request()->isAjax()){
-			$data = input('post.','','htmlspecialchars');
+			$data = input('post.');
 			$userInfo = session('userInfo');
 			$data['from_uid']     = $userInfo['user_id'];
 			$data['comment_time'] = time();
@@ -60,6 +60,25 @@ class Comment extends Base
 				die(json_encode(['code'=>200,'msg'=>'回复成功','replyData'=>$replyData]));
 			}else{
 				die(json_encode(['code'=>500, 'msg'=>'回复失败']));
+			}
+		}
+	}
+
+   /** 
+	* 评论点赞
+	* @access public 
+	*/ 
+	public function Like()
+	{
+		if(request()->isPost()){
+			if(!$userInfo = session('userInfo'))  die(json_encode(['code'=>500,'msg'=>'登陆之后才能点赞哦']));
+			$comment_id = input('param.comment_id');
+			$likeType   = input('param.like_type');
+			//回复评论点赞
+			if($praise_num = model('Comment')->setIncPraise($comment_id,$likeType,$userInfo['user_id'])){
+				die(json_encode(['code'=>200, 'msg'=>'点赞成功','praise_num'=>$praise_num]));
+			}else{
+				die(json_encode(['code'=>500, 'msg'=>'点赞失败']));
 			}
 		}
 	}

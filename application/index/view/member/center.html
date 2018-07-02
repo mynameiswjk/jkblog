@@ -1,0 +1,130 @@
+{include file='public/header'}
+<!-- 本页样式表 -->
+{load href='__CSS__/user.css'}
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <div class="blog-container">
+        	<input id="token" type="hidden">
+			<input id="uid" type="hidden">
+            <blockquote class="layui-elem-quote sitemap layui-breadcrumb shadow">
+                <a href="index.html" title="网站首页">网站首页</a>
+                <a><cite>个人中心</cite></a>
+            </blockquote>
+            <div class="blog-main">
+           		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+		    	<ul class="layui-tab-title">
+		    		<li class="layui-this" id="myInfo">我的资料</li>
+		    		<li>我的消息</li>
+		    		<li>我的回复</li>
+		    		<li>头像</li>
+		    		<li>密码</li>
+		    		<li id="activeEmail" style="display: none">激活邮箱</li>
+		    	</ul>
+		    	<div class="layui-tab-content">
+		    		<!-- 我的资料 -->
+		    		<div class="layui-tab-item layui-show">
+			    		<form class="layui-form layui-form-pane" method="post">
+			    			<div class="layui-form-item">
+						    	<label class="layui-form-label">邮箱</label>
+					    		<div class="layui-input-inline">
+					        		<input id="email" type="text" name="email" required  lay-verify="email" autocomplete="off" class="layui-input">
+					        	</div>
+					        	<div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下,变更了邮箱,需要<a class="link" id="activaEmailBtn">重新激活邮箱。</a></div>
+					    	</div>
+					    	<div class="layui-form-item">
+						    	<label class="layui-form-label">昵称</label>
+					    		<div class="layui-input-inline">
+					        		<input id="name" type="text" name="name" required  lay-verify="required" autocomplete="off" class="layui-input">
+					        	</div>
+				            	<div class="layui-input-inline">
+						    		<input type="radio" name="sex" value="0" title="男">
+						    		<input type="radio" name="sex" value="1" title="女">
+						    	</div>
+					    	</div>
+					    	<div class="layui-form-item">
+						    	<label class="layui-form-label">城市</label>
+					    		<div class="layui-input-inline">
+					        		<input id="city" type="text" name="city" autocomplete="off" class="layui-input">
+					        	</div>
+					    	</div>
+					    	<div class="layui-form-item layui-form-text">
+						    	<label class="layui-form-label">个性签名</label>
+						    	<div class="layui-input-block">
+						    		<textarea id="sign" name="sign" placeholder="随便写些什么刷下存在感" class="layui-textarea" style="max-height: 200px" ></textarea>
+						    	</div>
+					   		</div>
+					   		<div class="layui-form-item">
+						   		<div class="layui-input-inline">
+									<button class="layui-btn" lay-submit lay-filter="formInfo">确认修改</button>
+								</div>
+					   		</div>
+						</form>
+		    		</div>
+		    		<!-- 我的消息 -->
+    				<div class="layui-tab-item" id="myMessage">
+    					<div class="layui-tab layui-tab-brief" lay-filter="user">
+	    					<button class="layui-btn layui-btn-danger" id="LAY_msg">清空全部消息</button>
+	    					<div id="LAY_minemsg" style="margin-top: 10px;">
+		    					<ul class="mine-msg msgs">
+		    				    </ul>
+	    				     </div>
+    				    </div>
+    				</div>
+    				<!-- 我的回复 -->
+    				<div class="layui-tab-item" id="myMessage">
+    					<div class="layui-tab layui-tab-brief" lay-filter="user">
+	    					<div id="LAY_minemsg" style="margin-top: 10px;">
+		    					<ul class="revs">
+		    				     </ul>
+	    				     </div>
+    				    </div>
+    				</div>
+		    		<!-- 头像 -->
+    				<div class="layui-tab-item">
+    					<div class="pic">
+    						<p>建议尺寸168*168,支持jpg,png,gif,最大不能超过50kb</p>
+    						<button class="layui-btn upload-img" id="upload"><i class="layui-icon">&#xe67c;</i>上传图像</button>
+    						<form enctype="multipart/form-data" id="upload-form">
+    							<input class="layui-upload-file" name="file" type="file" id="upload-file">
+    						</form>
+    						<img id="upload-img" src="/uploads/{$userInfo.user_head_portrait}">
+    					</div>
+    				</div>
+    				<!-- 密码 -->
+    				<div class="layui-tab-item">
+    					<form class="layui-form layui-form-pane" method="post">
+    						<div class="layui-form-item">
+						    	<label class="layui-form-label">新密码</label>
+					    		<div class="layui-input-inline">
+					        		<input type="password" name="pwd" required  lay-verify="required" autocomplete="off" class="layui-input">
+					        	</div>
+					        	<div class="layui-form-mid layui-word-aux">6到18个字符</div>
+					   		</div>
+					   		<div class="layui-form-item">
+						    	<label class="layui-form-label">确认密码</label>
+					    		<div class="layui-input-inline">
+					        		<input type="password" name="repwd" required  lay-verify="required" autocomplete="off" class="layui-input">
+					        	</div>
+					        <div class="layui-form-mid layui-word-aux"></div>
+					    	</div>
+					    	<div class="layui-form-item">
+						   		<div class="layui-input-inline">
+									<button class="layui-btn" lay-submit lay-filter="formPwd">确认修改</button>
+								</div>
+					   		</div>
+    					</form>
+    				</div>
+    				<!-- 激活邮箱 -->
+    				<div class="layui-tab-item" id="activeEmaliShow">
+    				
+    				</div>
+    				<!-- END -->    
+            	</div>
+            </div>
+           </div> 
+          </div>
+    </div>
+<!-- 页脚 -->
+{include file='public/footer'}
+<!-- 本页脚本 -->
+{load href='__JS__/user.js'}

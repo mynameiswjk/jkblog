@@ -20,13 +20,14 @@
         <div class="blog-container">
             <!-- 用户登陆 -->
             <div class="blog-user">
-                <a href="{:url('Login/index')}"><i class="fa fa-user-circle-o"></i></a>
                 {if empty($userInfo)}
+                <a href="{:url('Login/index')}"><i class="fa fa-user-circle-o"></i></a>
                     <a href="{:url('Login/index')}">登陆</a>
                     <a href="{:url('Login/register')}">注册</a>
                 {else}
-                     <a href="{:url('Member/center')}">个人中心</a>
-                     <a href="{:url('Base/logout')}">退出</a>
+                     <a href="{:url('Member/center')}"><img src='/uploads/{$userInfo.user_head_portrait}'></i></a>
+                     <a href="{:url('Member/center')}"><i class="fa fa-cog"></i></a>
+                     <a href="{:url('Base/logout')}"><i class="fa fa-sign-out"></i></a>
                 {/if}
             </div>
             <!-- zuoqy -->

@@ -3,7 +3,7 @@ layui.use(['jquery','form','util'], function () {
     $ = layui.jquery;
     var util = layui.util;
     //获取用户信息
-    var user = MyLocalStorage.get("user");
+   /* var user = MyLocalStorage.get("user");
     if (user!=null && user!='') {
     	user = JSON.parse(user);
     	$("#email").val(user.email);
@@ -17,10 +17,10 @@ layui.use(['jquery','form','util'], function () {
     } else {
     	layer.msg('会话已过期,请先去登陆',{anim:6});
     	location.href = _contextPath + "/login.html";
-    }
+    }*/
     
     // 我的消息-我的回复
-    $.ajax({
+ /*   $.ajax({
 		type: 'get',
 		data: {"uid":user.uid},
 		async:true,
@@ -74,7 +74,7 @@ layui.use(['jquery','form','util'], function () {
 			}
 		}
 	});
-    
+    */
     var form = layui.form;
     // 修改个人资料
     form.on('submit(formInfo)', function(data){

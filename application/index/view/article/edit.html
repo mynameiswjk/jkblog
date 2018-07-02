@@ -107,6 +107,8 @@
                         </ul>
                         {if count($articleComment) eq 0}
                              <div class="layui-flow-more"><a href="javascript:;"><cite>没有评论啦</cite></a></div>
+                        {elseif $isLastCommentPage}
+                              <div class="layui-flow-more"><a href="javascript:;"><cite>没有评论啦</cite></a></div>
                         {else}
                             <div class="layui-flow-more"><a href="javascript:;"  id='comment_more'><cite>加载更多</cite></a></div>
                         {/if}

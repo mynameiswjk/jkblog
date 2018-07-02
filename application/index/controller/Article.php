@@ -52,6 +52,8 @@ class Article extends Base
 		$this->assign('articleRecommend',$articleRecommend);
 		//获得当前文章的评论
 		$this->assign('articleComment',model('Article')->getArticleComment($article_id));
+		//判断当前文章评论是否是最后一页
+		$this->assign('isLastCommentPage',$this->isLastCommentPage($article_id));
 		//视图渲染
 		return view("edit",['article'=>$articleInfo]);
 	}
@@ -104,5 +106,16 @@ class Article extends Base
 	   		$lastPge = $page == $pageCount  ? true : false;
 			die(json_encode(['code'=>200,'commentList'=>model('Article')->getArticleComment($article_id,$page),'lastPge'=>$lastPge]));
 		}
+	}
+	/**
+	* 判断当前文章分类是否是最后一页
+	*/	
+	public function isLastCommentPage($article_id,$page=1)
+	{
+		$dataCount = db('comment')->where(['article_id'=>$article_id])->count();
+		$pageCount = ceil($dataCount / 6);
+		//是否是最后一页
+		$lastPge = $page == $pageCount  ? true : false;
+		return $lastPge;
 	}
 }

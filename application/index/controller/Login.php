@@ -34,6 +34,11 @@ class Login extends Base
 			$userInfo = db('user')->where(['user_name'=>$data['user_name']])->find();
 			session('userInfo',$userInfo); 
 			$redirect = empty($data['redirect']) ? url('Member/center') : urldecode($data['redirect']);
+			//更新最后登陆时间和ip
+			$update['user_last_login_time']  =  time();
+			$request = Request::instance();
+			$update['user_last_login_ip']  =  $request->ip();
+			db('user')->where(['user_id'=>$userInfo['user_id']])->update($update);			
 			die(json_encode(['code'=>'200','msg'=>'登录成功','redirect'=>$redirect]));
 		}
 		$redirect = input('param.redirect');

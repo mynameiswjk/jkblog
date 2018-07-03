@@ -122,7 +122,6 @@ layui.use(['jquery','form'], function () {
         //阻止表单提交
     	return false;
     });
-    
     /*忘记密码*/
     $("#forgetPwd").click(function(){
     	$("#forgetPwdTit").css('display','');
@@ -157,5 +156,13 @@ function get_verify(className = '')
 }
 //页面加载完成获取注册图片验证码
 $(document).ready(function(){
-    get_verify('register_verify')
+    $className = page_title == 'login' ?  'login_verify' : 'register_verify';
+    get_verify($className)
+});
+//因为后台验证码只能存一个缓存所以验证码在js文件动态获取
+$('#login_tab').on('click',function(){
+    if($(this).attr('class') != 'layui-this')  get_verify('login_verify');
+});
+$('#reg_tab').on('click',function(){
+    if($(this).attr('class') != 'layui-this')  get_verify('register_verify');
 });

@@ -11,8 +11,8 @@
             <div class="blog-main">
            		<div class="layui-tab layui-tab-brief shadow">
 					<ul class="layui-tab-title">
-					    <li {if $page_title eq 'login'}class="layui-this"{/if}>登陆</li>
-					    <li {if $page_title eq 'register'}class="layui-this"{/if}>注册</li>
+					    <li {if $page_title eq 'login'}class="layui-this"{/if}   id='login_tab'>登陆</li>
+					    <li {if $page_title eq 'register'}class="layui-this"{/if} id='reg_tab'>注册</li>
 					    <li id="forgetPwdTit" style="display: none">忘记密码</li>
 				    </ul>
 					<div class="layui-tab-content">
@@ -37,7 +37,7 @@
 								      <input type="text" name="verify" required lay-verify="verify" maxlength='5' autocomplete="off" placeholder="请回答后面问题" class="layui-input">
 								    </div>
 								    <div class="captcha_img login_verify">
-								    	{:captcha_img()}
+								    	
 								    </div>
 							    </div>
 						        <div class="layui-form-item">
@@ -133,6 +133,7 @@
 	var getVerifyUrl = "{:url('Login/get_verify')}";
 	//注册表单提交url
 	var regUrl 		 = "{:url('Login/register')}";
+	var page_title   = "{$page_title}"; 
 </script>
 {if !empty($redirect)}
 	<script>

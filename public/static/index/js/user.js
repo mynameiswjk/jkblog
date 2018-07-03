@@ -76,25 +76,37 @@ layui.use(['jquery','form','util'], function () {
 	});
     */
     var form = layui.form;
+    //验证个人资料表单
+    form.verify({
+    	nick_name : function(value){
+    		if(value.length == 0) return '请填写您的昵称';
+    	},
+    	user_city : function(value){
+    		if(value.length == 0 ) return '请填写城市名称';
+    	}
+    });
     // 修改个人资料
     form.on('submit(formInfo)', function(data){
+    	//组织表单提交
     	data = data.field;
-    	data.uid=$("#uid").val();
-    	data.token=$("#token").val();
-    	$.ajax({
-    		type: 'post',
-    		data: data,
-    		async:true,
-    		url: _contextPath+"/user/set/info.do",
-    		success:function(result) {
-    			if (result.code==1) {
-    				MyLocalStorage.put("user", JSON.stringify(result.item), 360*24*3);
-    				layer.msg("修改成功!",{icon:1});
-    			} else {
-    				layer.msg(result.msg,{anim:6});
-    			}
+    	//数据提交
+    	$.post(setUserInfoUrl,{
+    		user_email :　data.user_email,
+    		nick_name  :　data.nick_name,
+    		user_city  :　data.user_city,
+    		user_sign  :　data.user_sign,
+    		sex		   : data.sex,
+    	},function(res){
+    		if(res.code == 200){
+    			//修改成功
+    			layer.msg(res.msg,{icon:1,time:1000},function(){
+    				location.reload();
+    			});
+    		}else{
+    			//修改失败
+    			layer.msg(res.msg,{anim:6,icon:5});
     		}
-    	});
+    	},'json');
     	return false;
     });
     
@@ -161,19 +173,6 @@ layui.use(['jquery','form','util'], function () {
 	$("#activaEmailBtn").click(function(){
 		$("#activeEmail").css('display','');
 		$("#activeEmail").click();
-		if (user.isActive=='Y') {
-			$("#activeEmaliShow").append("<br />"+"<p>您的邮箱："+user.email+"&nbsp;<i style=\"color: #B1B1B1\">(已成功激活)</i></p><br/><br/><br/><br/>");
-		} else {
-			$("#activeEmaliShow").append("<br />"+
-    						"<p>您的邮箱："+user.email+"&nbsp;<i style=\"color: red\">(尚未激活)</i></p>"+
-							"<br /><br /><br /><br />"+
-    						"<p>1.如果您未收到邮件，或激活链接失效，您可以<a class=\"link\" href=\"javascript:sendEmail()\">重新发送邮件</a>，或者<a href=\"javascript:updateEmail()\" class=\"link\">更换邮箱； </a></p>"+
-    						"<br />"+
-    						"<p>2. 如果您始终没有收到 zuoqy博客 发送的邮件，请注意查看您邮箱中的垃圾邮件；</p>"+
-    						"<br />"+
-    						"<p>3. 如果你实在无法激活邮件，您还可以联系：zuoqy@zuoqy.cn </p>"+
-    						"<br/><br/><br/><br/>");
-		}
 	});
 	
 	// 清空全部消息
@@ -200,23 +199,10 @@ function msgDel(mid) {
 
 //更换邮箱
 function updateEmail() {
-	location.href = _contextPath + "/user.html";
+	location.href ="/index/member/center.html";
 }
 
 //发送邮件-激活邮箱
 function sendEmail() {
-	var user = JSON.parse(MyLocalStorage.get("user"));
-	$.ajax({
-		type: 'post',
-		data: {uid:user.uid,token:user.token},
-		async:true,
-		url: _contextPath+"/usre/activeEmail/send.do",
-		success:function(result) {
-			if (result.code==1) {
-				layer.alert('已将激活邮箱地址发至您的邮箱,请注意查收', {icon: 1,anim: 1});
-			} else {
-				layer.msg(result.msg,{anim:6});
-			}
-		}
-	});
+	layer.msg('发送邮件');
 }

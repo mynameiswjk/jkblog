@@ -27,30 +27,36 @@
 			    			<div class="layui-form-item">
 						    	<label class="layui-form-label">邮箱</label>
 					    		<div class="layui-input-inline">
-					        		<input id="email" type="text" name="email" required  lay-verify="email" autocomplete="off" class="layui-input">
+					        		<input id="user_email" type="text" name="user_email"  value="{$user.user_email}" lay-verify="email" autocomplete="off" class="layui-input">
 					        	</div>
-					        	<div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下,变更了邮箱,需要<a class="link" id="activaEmailBtn">重新激活邮箱。</a></div>
+					 			{if empty($user.user_email)}
+					 				<div class="layui-form-mid layui-word-aux">您还未设置邮箱，请您尽快设置邮箱。</div>
+					 			{elseif $user.is_email_activate eq 0 }
+					 			<div class="layui-form-mid layui-word-aux">您还未激活邮箱,请您 <a class="link" id="activaEmailBtn"> 激活邮箱。</a></div>
+					 			{elseif $user.is_email_activate eq 1}
+					 				<div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下,变更了邮箱,需要<a class="link" id="activaEmailBtn">重新激活邮箱。</a></div>
+					 			{/if}
 					    	</div>
 					    	<div class="layui-form-item">
 						    	<label class="layui-form-label">昵称</label>
 					    		<div class="layui-input-inline">
-					        		<input id="name" type="text" name="nick_name" id='nick_name'  lay-verify="nick_name" autocomplete="off" class="layui-input">
+					        		<input id="name" type="text" name="nick_name" id="nick_name"  value="{$user.nick_name}" lay-verify="nick_name" autocomplete="off" class="layui-input">
 					        	</div>
 				            	<div class="layui-input-inline">
-						    		<input type="radio" name="sex" value="0" {if $userInfo['sex'] eq '0'}checked{/if} title="男">
-						    		<input type="radio" name="sex" value="1" {if $userInfo['sex'] eq '1'}checked{/if} title="女">
+						    		<input type="radio" name="sex" value="0" {if $user['sex'] eq '0'}checked{/if} title="男">
+						    		<input type="radio" name="sex" value="1" {if $user['sex'] eq '1'}checked{/if} title="女">
 						    	</div>
 					    	</div>
 					    	<div class="layui-form-item">
 						    	<label class="layui-form-label">城市</label>
 					    		<div class="layui-input-inline">
-					        		<input id="city" type="text" name="city" autocomplete="off" class="layui-input">
+					        		<input id="user_city" type="text" name="user_city" value="{$user.user_city}" maxlength="20" lay-verify='user_city' autocomplete="off" class="layui-input">
 					        	</div>
 					    	</div>
 					    	<div class="layui-form-item layui-form-text">
 						    	<label class="layui-form-label">个性签名</label>
 						    	<div class="layui-input-block">
-						    		<textarea id="sign" name="sign" placeholder="随便写些什么刷下存在感" class="layui-textarea" style="max-height: 200px" ></textarea>
+						    		<textarea id="user_sign" name="user_sign" placeholder="随便写些什么刷下存在感" class="layui-textarea" style="max-height: 200px" >{$user.user_sign}</textarea>
 						    	</div>
 					   		</div>
 					   		<div class="layui-form-item">
@@ -116,7 +122,20 @@
     				</div>
     				<!-- 激活邮箱 -->
     				<div class="layui-tab-item" id="activeEmaliShow">
-    				
+    				 {if $user.is_email_activate eq 0}
+    				 <!--未激活-->
+	    				<p>您的邮箱：{$user.user_email}&nbsp;<i style="color: red">(尚未激活)</i></p>
+						<br /><br /><br /><br />
+						<p>1.如果您未收到邮件，或激活链接失效，您可以<a class="link" href="javascript:sendEmail()">重新发送邮件</a>，或者<a href="javascript:updateEmail()" class="link">更换邮箱； </a></p>
+						<br />
+						<p>2. 如果您始终没有收到 阿康博客 发送的邮件，请注意查看您邮箱中的垃圾邮件；</p>
+						<br />
+						<p>3. 如果你实在无法激活邮件，您还可以联系QQ：920218459 </p>
+						<br/><br/><br/><br/>
+    				 {elseif $user.is_email_activate eq 1}
+    				 <!--已经激活-->
+    				 	<p>您的邮箱：{$user.user_email}&nbsp;<i style="color: #B1B1B1">(已成功激活)</i></p><br/><br/><br/><br/>
+    				 {/if}
     				</div>
     				<!-- END -->    
             	</div>
@@ -128,3 +147,7 @@
 {include file='public/footer'}
 <!-- 本页脚本 -->
 {load href='__JS__/user.js'}
+<!--定义js脚本所需要的信息-->
+<script>
+	var setUserInfoUrl = "{:url('Member/setUserInfo')}";
+</script>

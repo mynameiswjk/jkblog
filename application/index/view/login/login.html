@@ -11,13 +11,13 @@
             <div class="blog-main">
            		<div class="layui-tab layui-tab-brief shadow">
 					<ul class="layui-tab-title">
-					    <li class="layui-this">登陆</li>
-					    <li>注册</li>
+					    <li {if $page_title eq 'login'}class="layui-this"{/if}>登陆</li>
+					    <li {if $page_title eq 'register'}class="layui-this"{/if}>注册</li>
 					    <li id="forgetPwdTit" style="display: none">忘记密码</li>
 				    </ul>
 					<div class="layui-tab-content">
 						<!-- 登陆 -->
-						<div class="layui-tab-item layui-show">
+						<div class="layui-tab-item {if $page_title eq 'login'}layui-show{/if}">
 					    	<form class="layui-form layui-form-pane" method="post">
 					    		<div class="layui-form-item">
 								    <label class="layui-form-label">账号</label>
@@ -28,15 +28,15 @@
 							    <div class="layui-form-item">
 								    <label class="layui-form-label">密码框</label>
 								    <div class="layui-input-inline">
-								      <input type="password" name="password"  lay-verify="password" maxlength='22' placeholder="请输入您的密码" autocomplete="off" class="layui-input">
+								      <input type="password" name="password"  lay-verify="password" maxlength='18' placeholder="请输入您的密码" autocomplete="off" class="layui-input">
 								    </div>
 							  </div>
 							  	<div class="layui-form-item">
 								    <label class="layui-form-label" >验证码</label>
 								    <div class="layui-input-inline">
-								      <input type="text" name="verify" required lay-verify="verify" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
+								      <input type="text" name="verify" required lay-verify="verify" maxlength='5' autocomplete="off" placeholder="请回答后面问题" class="layui-input">
 								    </div>
-								    <div class="captcha_img">
+								    <div class="captcha_img login_verify">
 								    	{:captcha_img()}
 								    </div>
 							    </div>
@@ -50,41 +50,42 @@
 				    	</div>
 				    	<!-- 登陆结束 -->
 				    	<!-- 注册 -->
-		    			<div class="layui-tab-item">
+		    			<div class="layui-tab-item {if $page_title eq 'register'}layui-show{/if}">
 		    				<form class="layui-form layui-form-pane" method="post">
 					    		<div class="layui-form-item">
-								    <label class="layui-form-label">邮箱</label>
+								    <label class="layui-form-label">账号</label>
 							    	<div class="layui-input-inline">
-							        	<input type="email" name="email" required  lay-verify="email" autocomplete="off" class="layui-input">
+							        	<input type="text" name="register_user_name"  maxlength='22' id='register_user_name' lay-verify="register_user_name" autocomplete="off" class="layui-input" placeholder="请输入您的手机号或邮箱">
 							        </div>
 							        <div class="layui-form-mid layui-word-aux">将会成为您唯一的登陆名</div>
 							    </div>
 							    <div class="layui-form-item">
 								    <label class="layui-form-label">昵称</label>
 								    <div class="layui-input-inline">
-								      <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input">
+								      <input type="text" name="register_nick_name"  maxlength='16' id='register_nick_name'  lay-verify="register_nick_name" autocomplete="off" class="layui-input">
 								    </div>
 							   </div>
 							    <div class="layui-form-item">
 								    <label class="layui-form-label">密码</label>
 								    <div class="layui-input-inline">
-								      <input type="password" name="pwd" required lay-verify="required" autocomplete="off" class="layui-input">
+								      <input type="password" name="register_password" maxlength='18' id='register_password' lay-verify="register_password" autocomplete="off" class="layui-input">
 								    </div>
 								    <div class="layui-form-mid layui-word-aux">6到18个字符</div>
 							    </div>
 							    <div class="layui-form-item">
 								    <label class="layui-form-label">确认密码</label>
 								    <div class="layui-input-inline">
-								      <input type="password" name="repwd" required lay-verify="required" autocomplete="off" class="layui-input">
+								      <input type="password" name="register_affirm_password"   
+								      id='register_affirm_password'  maxlength='18' lay-verify="register_affirm_password" autocomplete="off" class="layui-input">
 								    </div>
 							    </div>
 							    <div class="layui-form-item">
-								    <label class="layui-form-label">人类验证</label>
+								    <label class="layui-form-label">验证码</label>
 								    <div class="layui-input-inline">
-								      <input type="text" name="verify" required lay-verify="required" autocomplete="off" placeholder="请回答后面问题" class="layui-input">
+								      <input type="text" name="register_verify" id='register_verify' lay-verify="register_verify" autocomplete="off" maxlength='5' placeholder="请输入 验证码" class="layui-input">
 								    </div>
-								    <div class="layui-form-mid">
-								    	<span style="color:#c00" class="verift-text"></span>
+								    <div class="captcha_img register_verify">
+
 								    </div>
 							    </div>
 						        <div class="layui-form-item">
@@ -122,15 +123,17 @@
             </div>
         </div>
     </div>
-    <!-- 页脚 -->
-    {include file='public/footer'}
-    <!-- 本页脚本 -->
-	{load href='__JS__/login.js'}
-	<!--定义表单提交页面-->
-	<script>
-		var loginUrl     = "{:url('Login/index')}";
-		var getVerifyUrl = "{:url('Login/get_verify')}";
-	</script>
+<!-- 页脚 -->
+{include file='public/footer'}
+<!-- 本页脚本 -->
+{load href='__JS__/login.js'}
+<!--定义表单提交页面-->
+<script>
+	var loginUrl     = "{:url('Login/index')}";
+	var getVerifyUrl = "{:url('Login/get_verify')}";
+	//注册表单提交url
+	var regUrl 		 = "{:url('Login/register')}";
+</script>
 {if !empty($redirect)}
 	<script>
 		var redirect = "{$redirect}";

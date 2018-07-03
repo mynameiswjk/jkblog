@@ -2,23 +2,6 @@ var $;
 layui.use(['jquery','form','util'], function () {
     $ = layui.jquery;
     var util = layui.util;
-    //获取用户信息
-   /* var user = MyLocalStorage.get("user");
-    if (user!=null && user!='') {
-    	user = JSON.parse(user);
-    	$("#email").val(user.email);
-    	$("#name").val(user.name);
-    	$("#city").val(user.city);
-    	$("#sign").val(user.sign);
-    	$("#token").val(user.token);
-    	$("#uid").val(user.uid);
-    	$("#upload-img").attr('src',_contextPath + "/images"+user.img);
-    	$(".layui-form-radio").get(user.sex==null || user.sex=='' || user.sex=='undefined' ? 0 : user.sex ).click();
-    } else {
-    	layer.msg('会话已过期,请先去登陆',{anim:6});
-    	location.href = _contextPath + "/login.html";
-    }*/
-    
     // 我的消息-我的回复
  /*   $.ajax({
 		type: 'get',
@@ -78,11 +61,21 @@ layui.use(['jquery','form','util'], function () {
     var form = layui.form;
     //验证个人资料表单
     form.verify({
+    	//个人资料
     	nick_name : function(value){
     		if(value.length == 0) return '请填写您的昵称';
     	},
     	user_city : function(value){
     		if(value.length == 0 ) return '请填写城市名称';
+    	},
+    	//修改密码
+    	password : function(value){
+    		if(value.length == 0) return '请填写新密码';
+    		if(value.length < 6 || value.length >18) return '新密码必须在6到18位之间';
+    	},
+    	confirm_password : function(value){
+    		 if(value.length == 0) return '请在次输入密码';
+    		 if(value != $("input[name='password']").val()) return '两次输入密码不一致';
     	}
     });
     // 修改个人资料
@@ -121,20 +114,19 @@ layui.use(['jquery','form','util'], function () {
     		type: 'post',
     		data: data,
     		async:true,
-    		url: _contextPath+"/user/upload.do?token="+$("#token").val()+"&uid="+$("#uid").val(),
+    		url: uploadFileUrl,
     		cache: false,  
             contentType: false,  
             processData: false,
+            dataType:'json',
     		success:function(result) {
-    			if (result.code==1) {
-    				MyLocalStorage.put("user", JSON.stringify(result.item), 360*24*3);
-    				var user = result.item;
+    			if (result.code == 200) {
     				layer.close(index);
-    				layer.msg("上传成功!",{icon:1});
-    				$("#upload-img").attr("src",_contextPath+"/images"+user.img+"?"+Math.random());
-    				$(".blog-user img").attr("src",_contextPath+"/images"+user.img+"?"+Math.random());
+    				layer.msg(result.msg,{icon:1});
+    				$("#upload-img").attr("src",'/uploads/'+result.file_url);
+    				$(".blog-user img").attr("src",/uploads/+result.file_url);
     			} else {
-    				layer.msg(result.msg,{anim:6});
+    				layer.msg(result.msg,{anim:6,icon:5});
     				layer.close(index);
     			}
     		}
@@ -143,29 +135,19 @@ layui.use(['jquery','form','util'], function () {
 	// 修改密码
     form.on('submit(formPwd)', function(data){
     	data = data.field;
-    	if (data.pwd.length<6 || data.pwd.length>18) {
-    		layer.msg("密码必须6到18个字符",{anim:6});
-    		return false;
-    	}
-    	if (data.pwd!=data.repwd) {
-    		layer.msg("两次密码输入不一致",{anim:6});
-    		return false;
-    	}
-    	data.token = $("#token").val();
-    	data.uid = $("#uid").val();
-    	$.ajax({
-    		type: 'post',
-    		data: data,
-    		async:true,
-    		url: _contextPath+"/user/set/pwd.do",
-    		success:function(result) {
-    			if (result.code==1) {
-    				layer.msg("修改成功!",{icon:1});
-    			} else {
-    				layer.msg(result.msg,{anim:6});
-    			}
-    		}
-    	});
+    	$.post(updateUserPasswordUrl,{
+    		password : data.password,
+    		confirm_password : data.confirm_password,
+    	},function(res){
+			if(res.code == 200){
+    			layer.msg(res.msg,{icon:1});
+    			$("input[name='password']").val('');
+    			$("input[name='confirm_password']").val('');
+    		}else{
+    			layer.msg(res.msg,{icon:5,anim:6});
+    		}    		
+    	},'json');
+    	//阻止表单提交
     	return false;
     });
     

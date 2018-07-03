@@ -93,7 +93,11 @@
     						<form enctype="multipart/form-data" id="upload-form">
     							<input class="layui-upload-file" name="file" type="file" id="upload-file">
     						</form>
-    						<img id="upload-img" src="/uploads/{$userInfo.user_head_portrait}">
+    						{if empty($user.user_head_portrait)}
+	    						<img id="upload-img" src="__IMG/user/face.png">
+    						{else}
+	    						<img id="upload-img" src="/uploads/{$user.user_head_portrait}">
+    						{/if}
     					</div>
     				</div>
     				<!-- 密码 -->
@@ -102,14 +106,14 @@
     						<div class="layui-form-item">
 						    	<label class="layui-form-label">新密码</label>
 					    		<div class="layui-input-inline">
-					        		<input type="password" name="pwd" required  lay-verify="required" autocomplete="off" class="layui-input">
+					        		<input type="password" name="password"  id="password" lay-verify="password" autocomplete="off" class="layui-input">
 					        	</div>
 					        	<div class="layui-form-mid layui-word-aux">6到18个字符</div>
 					   		</div>
 					   		<div class="layui-form-item">
 						    	<label class="layui-form-label">确认密码</label>
 					    		<div class="layui-input-inline">
-					        		<input type="password" name="repwd" required  lay-verify="required" autocomplete="off" class="layui-input">
+					        		<input type="password" name="confirm_password" id="confirm_password"  lay-verify="confirm_password" autocomplete="off" class="layui-input">
 					        	</div>
 					        <div class="layui-form-mid layui-word-aux"></div>
 					    	</div>
@@ -149,5 +153,10 @@
 {load href='__JS__/user.js'}
 <!--定义js脚本所需要的信息-->
 <script>
-	var setUserInfoUrl = "{:url('Member/setUserInfo')}";
+//用户信息设置URL
+var setUserInfoUrl = "{:url('Member/setUserInfo')}";
+//文件上传URL
+var uploadFileUrl = "{:url('Member/uploadFile')}";
+//修改密码的url
+var updateUserPasswordUrl = "{:url('Member/updateUserPassword')}";
 </script>

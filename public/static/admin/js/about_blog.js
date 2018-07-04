@@ -53,7 +53,6 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
   //监听提交
   form.on('submit(demo2)', function(data){
     var field           = data.field;
-    console.log(layedit.getContent(editIndex))
     $.post(setblogUrl,{
         blog_name      : field.blog_name,
         blog_intro     : field.blog_intro,

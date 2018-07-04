@@ -52,7 +52,7 @@ class AboutBlog extends Base
 					}
 					die(json_encode(['code'=>200,'msg'=>'修改博客成功']));
 				}else{
-					die(json_encode(['code'=>200,'msg'=>'修改博客失败']));
+					die(json_encode(['code'=>500,'msg'=>'修改博客失败']));
 				}
 			}
 		}

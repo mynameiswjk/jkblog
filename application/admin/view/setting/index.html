@@ -1,0 +1,70 @@
+<!--引入后台公共头文件-->
+{include file='public/admin_header'}
+<body>
+  <blockquote class="layui-elem-quote layui-text" id='blockquote'>
+  网站设置
+</blockquote>
+<form class="layui-form layui-form-pane" action=""> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">网站名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="website_name"  value='{$websiteData.website_name}' autocomplete="off" lay-verify="website_name" placeholder="请输入网站名称" class="layui-input">
+    </div>
+  </div> 
+ <div class="layui-form-item">
+  <label class="layui-form-label">seo标题</label>
+  <div class="layui-input-block">
+    <input type="text" name="seo_title"  value='{$websiteData.seo_title}' autocomplete="off" lay-verify="seo_title" placeholder="请输入seo标题" class="layui-input">
+  </div>
+</div> 
+ <div class="layui-form-item">
+  <label class="layui-form-label">seo关键字</label>
+  <div class="layui-input-block">
+    <input type="text" name="seo_keyword"  value='{$websiteData.seo_keyword}' autocomplete="off" lay-verify="seo_keyword" placeholder="请输入seo关键字" class="layui-input">
+  </div>
+</div> 
+ <div class="layui-form-item">
+  <label class="layui-form-label">seo描述</label>
+  <div class="layui-input-block">
+    <input type="text" name="seo_description"  value='{$websiteData.seo_description}' autocomplete="off" lay-verify="seo_description" placeholder="请输入seo描述" class="layui-input">
+  </div>
+</div> 
+ <div class="layui-form-item">
+  <label class="layui-form-label">ICP证书号</label>
+  <div class="layui-input-block">
+    <input type="text" name="icp_certificate"  value='{$websiteData.icp_certificate}' autocomplete="off" lay-verify="icp_certificate" placeholder="请输入ICP证书号" class="layui-input">
+  </div>
+</div> 
+<div class="layui-form-item layui-form-text">
+  <label class="layui-form-label">网站版权信息</label>
+  <div class="layui-input-block">
+    <textarea placeholder="请输入网站版权信息" name='copyright' class="layui-textarea">{$websiteData.copyright}</textarea>
+  </div>
+</div>
+ <div class="layui-form-item" pane="">
+    <label class="layui-form-label">网站状态</label>
+    <div class="layui-input-block">
+      <input type="radio" name="website_status" value="1" title="开启" {if $websiteData.website_status eq 1} checked="checked" {/if}>
+      <input type="radio" name="website_status" value="0" title="关闭" {if $websiteData.website_status eq 0} checked="checked" {/if}>
+    </div>
+  </div> 
+<div class="layui-form-item layui-form-text">
+  <label class="layui-form-label">网站关闭原因</label>
+  <div class="layui-input-block">
+    <textarea placeholder="如果关闭网站请填写网站关闭原因" name='website_close_cause' class="layui-textarea"></textarea>
+  </div>
+</div>
+<div class="layui-form-item">
+  <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
+</div>
+</form>
+<!--公共底部-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/site_setting.js'}
+<!--JS所需要的参数-->
+<script>
+  var setWebSiteUrl = "{:url('Setting/setWebSite')}";
+</script>
+</body>
+</html>

@@ -50,7 +50,7 @@ class Base extends Controller
 				$seo_title = '|时光轴';
 				break;
 			case 'About':
-				$seo_title = '|关于我们';
+				$seo_title = '|关于本站';
 				break;
 			case 'Member':
 				$seo_title = '|用户中心';

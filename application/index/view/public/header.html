@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; Charset=utf-8">
     <meta http-equiv="Content-Language" content="zh-CN">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>{$website_setting.seo_title}</title>
+    <title>{$website_setting.seo_title}{if !empty($seo_title)}{$seo_title}{/if}</title>
     <!--seo关键字-->
     <meta name="keywords" content="{$website_setting.seo_keyword}">
     <!--seo描述-->

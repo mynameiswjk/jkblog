@@ -13,9 +13,8 @@ class Article extends Model
 
 	protected $resultSetType = 'collection';
 	//文章列表数据
-	public function getArticle($article_type_id = FALSE,$page = 1,$limit = 6)
+	public function getArticle($where,$page = 1,$limit = 6)
 	{
-		if($article_type_id) $where['article_type_id'] = $article_type_id;
 		$where['article_is_show'] = 1;
 		//文章列表
 		$articleData =  $this
@@ -32,6 +31,8 @@ class Article extends Model
 			$articleData[$k]['Author'] = '阿康';
 			//获取文章分类
 			$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');	
+			//获取文章总评论数
+			$articleData[$k]['commentCount']  = db('comment')->where(['article_id'=>$v['article_id']])->count(); 
 		}
 		//总记录数
 		$articleCount = $this->where($where)->count();

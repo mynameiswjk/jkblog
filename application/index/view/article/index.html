@@ -12,33 +12,7 @@
             <div class="blog-main">
                 <!--左边文章列表-->
                 <div class="blog-main-left animated slideInLeft" id='article_list'>
-                    {if $article}
-                    {volist name='article' id='article'}
-                        <div class="article shadow animated fadeInLeft">
-                            <div class="article-left ">
-                                <img src="{$article.article_surface}" alt="{$article.article_title}"/>
-                            </div>
-                            <div class="article-right">
-                                <div class="article-title">
-                                    <a href="{:url('Article/articleEdit')}?article_id={$article.article_id}"><i class="layui-icon">&#xe609;</i>{$article.article_title}</a>
-                                </div>
-                                <div class="article-abstract">
-                                 {$article.article_abstract}
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                            <div class="article-footer">
-                                <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{$article.article_addtime}</span>
-                                <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;{$article.Author}</span>
-                                <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> {$article.type_name}</a></span>
-                                <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{$article.article_page_view}</span>
-                                <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                            </div>
-                        </div>
-                    {/volist}
-                    {else}
-                        <div class="layui-flow-more">没有更多的文章了~QAQ</div>
-                    {/if}
+                   
                 </div>
                 <!--右边小栏目-->
                 <div class="blog-main-right">
@@ -47,7 +21,7 @@
 	                    <form class="layui-form" action="">
 	                        <div class="layui-form-item">
 	                            <div class="search-keywords  shadow">
-	                                <input type="text" name="article_title" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+	                                <input type="text" name="keyword" {if $keyword}value="{$keyword}"{/if} placeholder="请输入关键字" autocomplete="off" class="layui-input">
 	                            </div>
 	                            <div class="search-submit  shadow">
 	                                <a class="search-btn" lay-submit="formSearch" lay-filter="formSearch"><i class="fa fa-search"></i></a>
@@ -59,7 +33,7 @@
                 	<div class="article-category shadow " id='category'>
                         <div class="article-category-title">分类导航</div>
                         {volist name='articleType' id='articleType'}
-                             <a href="javascript:void(0);"   class='{if $article_type_id}{if $articleType.type_id eq $article_type_id}active{/if}{/if}' onclick='articleType(this,"{$articleType.type_id}");'>{$articleType.type_name}</a>
+                             <a href="{:url('Article/index')}?type_id={$articleType.type_id}"   class='{if $article_type_id}{if $articleType.type_id eq $article_type_id}active{/if}{/if}'>{$articleType.type_name}</a>
                         {/volist}
                         <div class="clear"></div>
                     </div>
@@ -107,34 +81,15 @@
     </div>
 <!--定义JS需要的路径-->
 <script>
-var getArticleDataUrl = "{:url('article/getArticleData')}";
+//搜索文章
+var articleUrl  = "{:url('article/index')}";
+//ajax获取文章列表数据
+var ajaxGetArticleData = "{:url('Article/ajaxGetArticleData')}";
+//文章详情Url
+var articleEditUrl     = "{:url('Article/articleEdit')}";
+var type_id = "{$article_type_id}";
+var keyword = "{$keyword}";
 </script>
 {include file='public/footer'}
 <!--本页样式表-->
 {load href='__JS__/article_index.js'}
-<!--layui模板引擎渲染-->
-<script id="articlelist" type="text/html">
-{{#  layui.each(d, function(index, article){ }}
-    <div class="article shadow animated fadeInLeft">
-        <div class="article-left ">
-            <img src="{{article.article_surface}}" alt="{{article.article_title}}"/>
-        </div>
-        <div class="article-right">
-            <div class="article-title">
-                <a href="{:url('Article/articleEdit')}?article_id={{article.article_id}}"><i class="layui-icon">&#xe609;</i>{{article.article_title}}</a>
-            </div>
-            <div class="article-abstract">
-             {{article.article_abstract}}
-            </div>
-        </div>
-        <div class="clear"></div>
-        <div class="article-footer">
-            <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{{article.article_addtime}}</span>
-            <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;{{article.Author}}</span>
-            <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> {{article.type_name}}</a></span>
-            <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{{article.article_page_view}}</span>
-            <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-        </div>
-    </div>
-{{#  }); }}
-</script>

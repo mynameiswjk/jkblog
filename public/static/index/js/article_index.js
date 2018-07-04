@@ -1,48 +1,44 @@
-layui.use(['laytpl','jquery'], function () {
+layui.use(['laytpl','jquery','flow'], function () {
 	var $ = layui.jquery;
 	$('.search-btn').on('click',function(){
-		 var article_title = $("input[name='article_title']").val();
- 		 var datatype 	   = 'search'; 
- 		 if(article_title.length == 0) return layer.msg('请输入关键字',{icon:2});
-		$.post(getArticleDataUrl,{where:article_title,datatype:datatype},function(res){
-		 	//eval() 函数可计算某个字符串，并执行其中的的 JavaScript 代码。
-		 	res=eval("("+res+")");
-		 	$('#article_list').html('');
-		 	//使用layui模板引擎进行页面渲染
-		 	var laytpl = layui.laytpl;
-		 	var getTpl = articlelist.innerHTML;
-		 	laytpl(getTpl).render(res, function(html){
-		 		if(!res.length == 0){
-		 			 article_list.innerHTML = html;
-		 			}else{
-		 				$("#article_list").html('<div class="layui-flow-more">没有更多的文章了~QAQ</div>');
-		 			}
-			});
-		 });
+		 var keyword = $("input[name='keyword']").val();
+		  location.href = articleUrl+'?keyword='+keyword;
 	});
+	//流加载获取文章数据
+    var flow = layui.flow;
+    type_id  = type_id.length == 0 ? '' : type_id;
+    keyword  = keyword.length == 0 ? '' : keyword;
+    flow.load({
+      elem: '.blog-main-left', //流加载容器
+      isAuto: true,
+      end: '没有更多的文章了',
+      done: function(page,next) {
+         var lis = [];
+         $.get(ajaxGetArticleData+'?page='+page+'&type_id='+type_id+'&keyword='+keyword
+          ,function(res){
+            if(res.articleCount == 0) {
+                lis.push('');
+            }else{
+               layui.each(res.articleData, function(index, article){
+                 lis.push('<div class="article shadow animated fadeInLeft">'+
+                           '<div class="article-left ">'+
+                            '<img src="'+article.article_surface+'" alt="'+article.article_title+'"/></div>'+
+                            '<div class="article-right">'+
+                            '<div class="article-title">'+
+                            '<a href="'+articleEditUrl+'?article_id='+article.article_id+'"><i class="layui-icon">&#xe609;</i>'+article.article_title+'</a>'+
+                            ' </div><div class="article-abstract">'+article.article_abstract+'</div></div>'+
+                            '<div class="clear"></div>'+
+                            '<div class="article-footer">'+
+                            '<span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;'+article.article_addtime+'</span>'+
+                            '<span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;'+article.Author+'</span>'+
+                            '<span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> '+article.type_name+'</a></span>'+
+                            '<span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;'+article.article_page_view+'</span>'+
+                            '<span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;'+article.commentCount+'</span>'+
+                            '</div> </div>');
+                },'json'); 
+            } 
+              next(lis.join(''), page < res.articlePageCount);
+          },'json');
+      }
+    });
 });
-//ajax请求文章分类数据
-function articleType(th,type_id)
-{	
-	$(th).parent().find('a').removeClass('active')
-	$(th).addClass('active');
-    layui.use(['laytpl','jquery'], function () {
-		var $ = layui.jquery;
-	 	 var datatype 	   = 'search_type'; 
-		$.post(getArticleDataUrl,{where:type_id,datatype:datatype},function(res){
-		 	//eval() 函数可计算某个字符串，并执行其中的的 JavaScript 代码。
-		 	res=eval("("+res+")");
-		 	$('#article_list').html('');
-		 	//使用layui模板引擎进行页面渲染
-		 	var laytpl = layui.laytpl;
-		 	var getTpl = articlelist.innerHTML;
-		 	laytpl(getTpl).render(res, function(html){
-		 		if(!res.length == 0){
-		 			 article_list.innerHTML = html;
-		 			}else{
-		 				$("#article_list").html('<div class="layui-flow-more">没有更多的文章了~QAQ</div>');
-		 			}
-			});
-		});
-	});
-}

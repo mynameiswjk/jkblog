@@ -33,7 +33,6 @@
     }
 
     //流加载获取文章数据
-    // 流加载 图片
     var flow = layui.flow;
     flow.load({
       elem: '.blog-main-left', //流加载容器
@@ -60,7 +59,7 @@
                             '<span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;'+article.Author+'</span>'+
                             '<span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> '+article.type_name+'</a></span>'+
                             '<span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;'+article.article_page_view+'</span>'+
-                            '<span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>'+
+                            '<span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;'+article.commentCount+'</span>'+
                             '</div> </div>');
                 },'json'); 
             } 

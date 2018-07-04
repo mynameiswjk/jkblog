@@ -28,12 +28,7 @@ class Index extends Base
     	 $articleRecommend	=  model('Article')->getArticleRecommend();
     	//友情链接信息获取
     	 $this->getBlogrollData();
-         return view('index',
-         	[
-         		'article'=>false,
-         		'articleClickList'=>$articleClickList,
-         		'articleRecommend'=>$articleRecommend,
-        	 ]);
+         return view('index',['articleClickList'=>$articleClickList,'articleRecommend'=>$articleRecommend]);
     }
 	/** 
 	* 获取banner数据

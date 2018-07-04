@@ -24,7 +24,6 @@ class Base extends Controller
 		if(empty($website_setting)) $website_setting = db('site')->find();
 		if($website_setting['website_status'] == 0) die($website_setting['website_close_cause']);
 		$this->assign('website_setting',$website_setting);
-
 	}
 	//退出登录
 	function logout()

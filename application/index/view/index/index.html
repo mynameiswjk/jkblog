@@ -28,29 +28,7 @@
                 </div>
                 <!--左边文章列表-->
                 <div class="blog-main-left animated slideInLeft">
-                    {volist name='article' id='article'}
-                        <div class="article shadow animated fadeInLeft">
-                            <div class="article-left ">
-                                <img src="{$article.article_surface}" alt="{$article.article_title}"/>
-                            </div>
-                            <div class="article-right">
-                                <div class="article-title">
-                                    <a href="{:url('Article/articleEdit')}?article_id={$article.article_id}"><i class="layui-icon">&#xe609;</i>{$article.article_title}</a>
-                                </div>
-                                <div class="article-abstract">
-                                 {$article.article_abstract}
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                            <div class="article-footer">
-                                <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{$article.article_addtime}</span>
-                                <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;{$article.Author}</span>
-                                <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> {$article.type_name}</a></span>
-                                <span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;{$article.article_page_view}</span>
-                                <span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>
-                            </div>
-                        </div>
-                    {/volist}
+
                 </div>
                 <!--右边小栏目-->
                 <div class="blog-main-right">
@@ -129,3 +107,9 @@
     </div>
 {include file='public/footer'}
 {load file='__JS__/index.js'}
+<script>
+//ajax获取文章列表数据
+var ajaxGetArticleData = "{:url('Article/ajaxGetArticleData')}";
+//文章详情Url
+var articleEditUrl     = "{:url('Article/articleEdit')}";
+</script>

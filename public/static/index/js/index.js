@@ -1,6 +1,5 @@
-﻿layui.use(['jquery','carousel'], function () {
+﻿layui.use(['jquery','carousel','flow'], function () {
     var $ = layui.jquery;
-    
     var width = width || window.innerWeight || document.documentElement.clientWidth || document.body.clientWidth;
     width = width>1200 ? 1170 : (width > 992 ? 962 : width);
     var carousel = layui.carousel;
@@ -32,4 +31,53 @@
             $announcement.eq(index).stop(true, true).fadeIn().siblings('span').fadeOut();  //下标对应的图片显示，同辈元素隐藏
         }, interval);
     }
+
+    //流加载获取文章数据
+    // 流加载 图片
+    var flow = layui.flow;
+    flow.load({
+      elem: '.blog-main-left', //流加载容器
+      isAuto: true,
+      end: '没有更多的文章了',
+      done: function(page,next) {
+         var lis = [];
+         $.get(ajaxGetArticleData+'?page='+page
+          ,function(res){
+            if(res.articleCount == 0) {
+                lis.push(' <div class="layui-flow-more">没有更多的文章了~QAQ</div>');
+            }else{
+               layui.each(res.articleData, function(index, article){
+                 lis.push('<div class="article shadow animated fadeInLeft">'+
+                           '<div class="article-left ">'+
+                            '<img src="'+article.article_surface+'" alt="'+article.article_title+'"/></div>'+
+                            '<div class="article-right">'+
+                            '<div class="article-title">'+
+                            '<a href="'+articleEditUrl+'?article_id='+article.article_id+'"><i class="layui-icon">&#xe609;</i>'+article.article_title+'</a>'+
+                            ' </div><div class="article-abstract">'+article.article_abstract+'</div></div>'+
+                            '<div class="clear"></div>'+
+                            '<div class="article-footer">'+
+                            '<span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;'+article.article_addtime+'</span>'+
+                            '<span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;'+article.Author+'</span>'+
+                            '<span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a href="#"> '+article.type_name+'</a></span>'+
+                            '<span class="article-viewinfo"><i class="fa fa-eye"></i>&nbsp;'+article.article_page_view+'</span>'+
+                            '<span class="article-viewinfo"><i class="fa fa-commenting"></i>&nbsp;776</span>'+
+                            '</div> </div>');
+                },'json'); 
+            } 
+              next(lis.join(''), page < res.articlePageCount);
+          },'json');
+      }
+    });
 });
+
+
+                           
+                           
+                               
+                               
+                            
+                            
+                                
+                                
+                                
+                         

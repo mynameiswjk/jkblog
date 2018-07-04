@@ -118,4 +118,23 @@ class Article extends Base
 		$lastPge = $page == $pageCount  ? true : false;
 		return $lastPge;
 	}
+
+	/** 
+	* ajax获取文章数据
+	* @access public 
+	* @return view
+	*/ 
+	public function ajaxGetArticleData()
+	{
+		if(request()->isAjax()){
+			 $page = input('param.page');
+			 $limit = input('param.limit');
+			 //如果前端未提供limit 默认为6
+			 $limit = empty($limit) ? 6 : $limit;
+			//文章数据
+    		 $articleData 		=  model('Article')->getArticle(false,$page,$limit);
+    		 //数据返回
+    		 die(json_encode($articleData));
+		}
+	}
 }

@@ -22,8 +22,6 @@ class Index extends Base
     	 $this->getNotice();
     	//博主信息
     	 $this->getAuthorData();
-    	 //文章数据
-    	 $articleData 		=  model('Article')->getArticle();
     	 //获得点击排行
     	 $articleClickList	=  model('Article')->getArticleClickList();
     	//获得站长推荐站长推荐
@@ -32,7 +30,7 @@ class Index extends Base
     	 $this->getBlogrollData();
          return view('index',
          	[
-         		'article'=>$articleData,
+         		'article'=>false,
          		'articleClickList'=>$articleClickList,
          		'articleRecommend'=>$articleRecommend,
         	 ]);

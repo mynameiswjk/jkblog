@@ -19,7 +19,7 @@ class Photo extends Model
 	{
 		$data['photoData'] = $this->page($page)->limit($limit)->order($order)->select()->toArray();
 		$data['dataCount'] = $this->count();
-		$data['pageCount'] = ceil($data['dataCount']/12);
+		$data['pageCount'] = ceil($data['dataCount']/$limit);
 		return json_encode($data);
 	}
 

@@ -13,7 +13,7 @@ class Article extends Model
 
 	protected $resultSetType = 'collection';
 	//文章列表数据
-	public function getArticle($article_type_id = FALSE)
+	public function getArticle($article_type_id = FALSE,$page = 1,$limit = 6)
 	{
 		if($article_type_id) $where['article_type_id'] = $article_type_id;
 		$where['article_is_show'] = 1;
@@ -21,6 +21,8 @@ class Article extends Model
 		$articleData =  $this
 						->field('article_id,article_title,article_type_id,article_abstract,article_surface,article_page_view,article_addtime')
 						->where($where)
+						->page($page)
+						->limit($limit)
 						->order(['article_is_stick'=>'desc','article_addtime'=>'desc'])
 						->select()
 						->toArray();
@@ -31,7 +33,11 @@ class Article extends Model
 			//获取文章分类
 			$articleData[$k]['type_name'] 		= db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');	
 		}
-		return $articleData;
+		//总记录数
+		$articleCount = $this->where($where)->count();
+		//总页数 
+		$articlePageCount = ceil($articleCount / $limit);
+		return ['articleData'=>$articleData,'articleCount'=>$articleCount,'articlePageCount'=>$articlePageCount];
 	}
 	//获得文章点击排行
 	public function getArticleClickList()

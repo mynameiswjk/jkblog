@@ -31,7 +31,7 @@ class Setting extends Base
 	 	//数据库操作
 	 	if(!$site_id = db('site')->value('site_id')) {
 	 		//数据第一次添加
-	 		if(db('site')->insert($data)) {
+	 		if(db('site')->strict(false)-insert($data)) {
 					Cache::set('website_setting',$data);
 					die(json_encode(['code'=>200,'msg'=>'设置网站信息成功']));
 			}else{
@@ -39,7 +39,7 @@ class Setting extends Base
 			}
 	 	}else{
 	 		//数据修改
-	 		if(db('site')->where(['site_id'=>$site_id])->update($data) !== FALSE) {
+	 		if(db('site')->where(['site_id'=>$site_id])->strict(false)->update($data) !== FALSE) {
 	 			Cache::set('website_setting',$data);
 	 			die(json_encode(['code'=>200,'msg'=>'设置网站信息成功']));
 			}else{

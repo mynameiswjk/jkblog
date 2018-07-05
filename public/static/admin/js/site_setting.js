@@ -1,7 +1,8 @@
-layui.use(['form'], function(){
+layui.use(['form','upload'], function(){
   var form = layui.form
   ,layer = layui.layer
-   var $ = layui.jquery;
+   var $ = layui.jquery
+   ,upload = layui.upload;
   //自定义验证规则
   form.verify({
    website_name: function(value){
@@ -26,5 +27,27 @@ layui.use(['form'], function(){
       ,'json');
     return false;
   });
-
+//上传头像
+  var loading;
+  var uploadInst = upload.render({
+    elem: '#test1'
+    ,url: BloggerUploadUrl
+    ,before:function(){
+     loading = top.layer.msg('图片上传中',{icon: 16,time:false,shade:0.8});
+    }
+    ,done: function(res){
+      top.layer.close(loading);
+      if(res.code == 200) {
+          $("#site_logo").attr('src',res.file_url);
+          $("input[name='site_logo']").val(res.file_url);
+      }else{
+          layer.msg(res.msg,{icon:2});
+      }
+    }
+    ,error: function(){
+      //演示失败状态，并实现重传
+   
+    },exts: 'png|jpg|jpeg'
+     ,size : 10240
+  });
 });

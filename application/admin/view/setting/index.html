@@ -11,6 +11,17 @@
       <input type="text" name="website_name"  value='{$websiteData.website_name}' autocomplete="off" lay-verify="website_name" placeholder="请输入网站名称" class="layui-input">
     </div>
   </div> 
+<div class="layui-upload" style='margin:0 0 20px 15px;'>
+  <div class="layui-upload-list" style='width: 100px;height: 100px;margin: 0 10px 10px 0;border:1px solid #8072725e;'>
+    {if !empty($websiteData.site_logo)}
+       <img class="layui-upload-img" id="site_logo"  src="{$websiteData.site_logo}" style='whdth:100%;height:100%;'>
+    {else}
+       <img class="layui-upload-img" id="site_logo"  style='whdth:100%;height:100%;'>
+    {/if}
+  </div>
+ <button type="button" class="layui-btn" id="test1">上传网站Logo</button>
+ <input type='hidden' name='site_logo'  value='{$websiteData.site_logo}'/>
+</div>   
  <div class="layui-form-item">
   <label class="layui-form-label">seo标题</label>
   <div class="layui-input-block">
@@ -65,6 +76,7 @@
 <!--JS所需要的参数-->
 <script>
   var setWebSiteUrl = "{:url('Setting/setWebSite')}";
+  var  BloggerUploadUrl         = '{:url("AboutAuthor/bloggerUpload")}';
 </script>
 </body>
 </html>

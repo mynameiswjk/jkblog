@@ -11,7 +11,7 @@
 					<i class="layui-icon" data-icon="&#xe63a;">&#xe63a;</i>
 				</div>
 				<div class="panel_word newMessage">
-					<span></span>
+					<span>{$messageCount}</span>
 					<cite>新消息</cite>
 				</div>
 			</a>
@@ -22,7 +22,7 @@
 					<i class="iconfont icon-dongtaifensishu" data-icon="icon-dongtaifensishu"></i>
 				</div>
 				<div class="panel_word userAll">
-					<span></span>
+					<span>{$newUserCount}</span>
 					<cite>新增人数</cite>
 				</div>
 			</a>
@@ -33,7 +33,7 @@
 					<i class="layui-icon" data-icon="&#xe613;">&#xe613;</i>
 				</div>
 				<div class="panel_word userAll">
-					<span></span>
+					<span>{$memberCount}</span>
 					<cite>用户总数</cite>
 				</div>
 			</a>
@@ -44,7 +44,7 @@
 					<i class="layui-icon" data-icon="&#xe64a;">&#xe64a;</i>
 				</div>
 				<div class="panel_word imgAll">
-					<span></span>
+					<span>{$photoCount}</span>
 					<cite>图片总数</cite>
 				</div>
 			</a>
@@ -66,7 +66,7 @@
 					<i class="iconfont icon-text" data-icon="icon-text"></i>
 				</div>
 				<div class="panel_word allNews">
-					<span></span>
+					<span>{$articleCount}</span>
 					<em>文章总数</em>
 					<cite>文章列表</cite>
 				</div>
@@ -74,7 +74,7 @@
 		</div>
 	</div>
 	<div class="row">
-				<div class="sysNotice col">
+		<div class="sysNotice col">
 			<blockquote class="layui-elem-quote title">系统基本参数</blockquote>
 			<table class="layui-table">
 				<colgroup>
@@ -120,7 +120,15 @@
 					<col>
 					<col width="110">
 				</colgroup>
-				<tbody class="hot_news"><tr><td align="left">css3用transition实现边框动画效果</td><td>2017-04-14</td></tr><tr><td align="left">自定义的模块名称可以包含/吗</td><td>2017-04-14</td></tr><tr><td align="left">layui.tree如何ajax加载二级菜单</td><td>2017-04-14</td></tr><tr><td align="left">layui.upload如何带参数？像jq的data:{}那样</td><td>2017-04-14</td></tr><tr><td align="left">表单元素长度应该怎么调整才美观</td><td>2017-04-14</td></tr></tr><tr><td align="left">表单元素长度应该怎么调整才美观</td><td>2017-04-14</td></tr></tr><tr><td align="left">表单元素长度应该怎么调整才美观</td><td>2017-04-14</td></tr></tbody>
+				<tbody class="hot_news">
+					{volist name='articleData' id='article'}
+						<tr>
+							<td align="left">{$article.article_title}</td>
+							<td>{$article.article_addtime|date="Y-m-d",###}</td>
+						</tr>
+						
+					{/volist}
+				</tbody>
 			</table>
 		</div>
 	</div>

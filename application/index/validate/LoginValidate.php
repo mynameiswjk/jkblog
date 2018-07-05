@@ -13,7 +13,7 @@ class LoginValidate extends Validate
 	//规则验证
 	protected $rule   = [
 			//登陆字段
-			'user_name' 		=> 'require|check_user',
+			'user_name' 		=> 'require|check_user|check_isAllowLogin',
 			'password'		    => 'require|check_password',
 			'verify'			=> 'require|check_verify',
 			 //注册字段
@@ -56,6 +56,12 @@ class LoginValidate extends Validate
     protected function check_user($value,$rule,$data)
     {
     	if(!db('user')->where(['user_name'=>$value])->value('user_name')) return '用户名不存在';
+    	return true; 
+    }
+    //验证该账户是否被禁止登录
+    protected function check_isAllowLogin($value,$rule,$data)
+    {
+    	if(db('user')->where(['user_name'=>$value])->value('is_allow_login') == 0) return '该账号已被禁止登录';
     	return true; 
     }
     //验证密码是否正确

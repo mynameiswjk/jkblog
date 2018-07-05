@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 use think\Validate;
 use think\Controller;
+use think\Session;
 
 class Login extends Controller
 {
@@ -70,7 +71,7 @@ class Login extends Controller
 	*/ 
 	public function logout()
 	{
-		session('adminInfo',NULL);
+		Session::delete('adminInfo');
 		$this->success('退出成功','Login/index');
 	}
 }

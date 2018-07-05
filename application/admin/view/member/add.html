@@ -1,0 +1,80 @@
+<!--引入后台公共头文件-->
+{include file='public/admin_header'}
+<body>
+  <blockquote class="layui-elem-quote layui-text" id='blockquote'>
+  添加会员
+</blockquote>
+<form class="layui-form layui-form-pane" action=""> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户名</label>
+    <div class="layui-input-block">
+      <input type="text" name="user_name"  value=''  maxlength='20' autocomplete="off" lay-verify="user_name" placeholder="请输入用户名" class="layui-input">
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户昵称</label>
+    <div class="layui-input-block">
+      <input type="text" name="nick_name"  value='' maxlength='20'  autocomplete="off" lay-verify="nick_name" placeholder="请输入用户昵称" class="layui-input">
+    </div>
+  </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">邮箱</label>
+    <div class="layui-input-block">
+      <input type="text" name="user_email"  value='' maxlength='20'  autocomplete="off" lay-verify="" placeholder="请输入用户昵称" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" pane="">
+    <label class="layui-form-label">邮箱激活</label>
+    <div class="layui-input-block">
+      <input type="radio" name="is_email_activate" value="0" title="未激活" checked='checked' >
+      <input type="radio" name="is_email_activate" value="1" title="已激活" >
+    </div>
+  </div> 
+   <div class="layui-form-item" pane="">
+    <label class="layui-form-label">性别</label>
+    <div class="layui-input-block">
+      <input type="radio" name="sex" value="0" title="男" checked='checked' >
+      <input type="radio" name="sex" value="1" title="女" >
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">密码</label>
+    <div class="layui-input-block">
+      <input type="password"  name="password"  value=''   maxlength='18' autocomplete="off" lay-verify="password" placeholder="请输入密码" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">确认密码</label>
+    <div class="layui-input-block">
+      <input type="password" name="confirm_password" maxlength='18' value='' autocomplete="off" lay-verify="confirm_password" placeholder="请再次输入密码" class="layui-input">
+    </div>
+  </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">所在城市</label>
+    <div class="layui-input-block">
+      <input type="text" name="user_city"  value='' autocomplete="off" lay-verify="user_city" placeholder="" class="layui-input">
+    </div>
+  </div>
+
+ <div class="layui-form-item" pane="">
+    <label class="layui-form-label">允许登陆</label>
+    <div class="layui-input-block">
+      <input type="radio" name="is_allow_login" value="1" title="允许" checked='checked' >
+      <input type="radio" name="is_allow_login" value="0" title="禁止" >
+    </div>
+  </div> 
+<div class="layui-form-item">
+  <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
+</div>
+</form>
+<!--公共底部-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/member_add.js'}
+<!--JS所需要的参数-->
+<script>
+  var  addMemberUrl     = "{:url('Member/addMember')}";
+  var  BloggerUploadUrl = '{:url("AboutAuthor/bloggerUpload")}';
+</script>
+</body>
+</html>

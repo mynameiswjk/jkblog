@@ -1,0 +1,21 @@
+<script type="text/javascript">
+//定义JS所需要的参数
+var getMemberUrl = "{:url('Member/getMemberData')}";
+var addMemberUrl = "{:url('Member/addMember')}";
+var delMemberUrl = "{:url('Member/delMember')}";
+var editMemberUrl = "{:url('Member/editMember')}";
+var updateMemberStatusUrl = "{:url('Member/updateMemberStatus')}"; 
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="edit" onclick="member_edit('{{d.user_id}}')">编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del"  onclick="member_del('{{d.user_id}}')">删除</a>
+</script>
+<script type="text/html" id="is_allow_login">
+            <input type="checkbox" 
+           {{#  if(d.is_allow_login == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="is_allow_login"  lay-skin="switch" lay-filter="is_allow_login" user_id='{{d.user_id}}'  lay-text="是|否" >
+            <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

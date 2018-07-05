@@ -35,7 +35,7 @@ class MemberValidate extends Validate
 	//验证场景
 	protected $scene   = [
 	        'add'    =>   ['user_name','password','nick_name','confirm_password','user_email'],
-	        'edit'    =>   ['nick_name','user_email'],
+	        'edit'   =>   ['nick_name','user_email'],
     ];
     //检测添加用户名是否存在
     protected function check_user($value,$rule,$data)

@@ -43,7 +43,7 @@
          $.get(ajaxGetArticleData+'?page='+page
           ,function(res){
             if(res.articleCount == 0) {
-                lis.push(' <div class="layui-flow-more">没有更多的文章了~QAQ</div>');
+                lis.push('');
             }else{
                layui.each(res.articleData, function(index, article){
                  lis.push('<div class="article shadow animated fadeInLeft">'+

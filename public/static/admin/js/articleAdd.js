@@ -67,8 +67,9 @@ layui.use(['form','layer','layedit','laydate','upload'],function(){
     })
     form.on("submit(addArticle)",function(data){
         /*//截取文章内容中的一部分文字放入文章摘要
-
+        
         var abstract = layedit.getText(editIndex).substring(0,50);*/
+   
         //弹出loading
         var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
         var article_type_id = $("input[name='article_type_id']:checked").val();

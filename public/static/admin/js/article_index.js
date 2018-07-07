@@ -17,7 +17,7 @@ layui.use(['table', 'form', 'layer', 'vip_table','jquery'], function () {
         , cols: [[                  //标题栏
             {checkbox: true, sort: true, fixed: true, space: true}
             , {field: 'article_id', title: '文章ID', width: 80}
-            , {field: 'article_title', title: '文章标题', width: 120}
+            , {field: 'article_title', title: '文章标题', width: 180}
             , {field: 'article_type', title: '文章分类', width: 120}
             , {field: 'article_author', title: '文章作者', width: 110,'align':'center'}
             , {field: 'article_surface', title: '封面图', width: 150,'align':'center',height:50,toolbar: '#article_surface'}

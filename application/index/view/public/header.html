@@ -36,7 +36,7 @@
                 {/if}
             </div>
             <!-- zuoqy -->
-            <a class="blog-logo" href="{:url('Index/index')}"><img src="__IMG__/logo.png" width="64px" height="64px"></a>
+            <a class="blog-logo" href="{:url('Index/index')}"><img src="{$website_setting.site_logo}" width="64px" height="64px"></a>
             <!-- 导航菜单 -->
             <ul class="layui-nav" lay-filter="nav">
                 <li class="layui-nav-item {if request()->controller() eq 'Index'}layui-this{/if}">

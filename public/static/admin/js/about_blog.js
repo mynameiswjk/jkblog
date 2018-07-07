@@ -57,7 +57,6 @@ layui.use(['form', 'layedit', 'laydate','upload'], function(){
         blog_name      : field.blog_name,
         blog_intro     : field.blog_intro,
         blog_introduce : layedit.getContent(editIndex),
-        blog_logo      : field.blog_logo,
     },function(res){
           if(res.code == 200) {
             layer.msg(res.msg,{icon:1,time:2000},function(){

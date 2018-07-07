@@ -47,9 +47,12 @@ class Article extends Model
 		return $articleClickList;
 	}
 	//获得站长推荐文章数据
-	public function getArticleRecommend()
+	public function getArticleRecommend($article_id = '')
 	{
-		$articleRecommend = $this->where(['article_is_show'=>1,'article_recommend'=>'1'])->order(['article_addtime'=>'desc'])->limit('5')->select()->toArray();
+		$where['article_is_show']   = 1;
+		$where['article_recommend'] = 1;
+		if($article_id) $where['article_id'] = ['neq',$article_id];
+		$articleRecommend = $this->where($where)->order(['article_addtime'=>'desc'])->limit('5')->select()->toArray();
 		return $articleRecommend;
 	}
 	//修改文章浏览量

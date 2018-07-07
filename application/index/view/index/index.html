@@ -62,7 +62,7 @@
 		                            <li>
                                         <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
                                         <a href="{:url('Article/articleEdit')}?article_id={$articleClickList.article_id}">
-                                           {$articleClickList.article_title}
+                                            <i class="layui-icon">&#xe609;</i>{$articleClickList.article_title}
                                         </a>
                                     </li>
                                     {/volist}

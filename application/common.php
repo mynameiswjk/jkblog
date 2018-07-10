@@ -14,7 +14,6 @@ use think\Config;
 */  
 function getVersionsInfo()
 {		
-
 		$request = Request::instance();
 		//当前域名
 		$data['domain']   = $request->domain();

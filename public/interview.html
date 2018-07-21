@@ -36,14 +36,44 @@ body
 1.PHP
 	PHP语言的一大优势是跨平台，什么是跨平台？
 		PHP的运行环境最优搭配为Apache+MySQL+PHP，此运行环境可以在不同操作系统（例如windows、Linux等）上配置，不受操作系统的限制，所以叫跨平台。
-	十个处理数组的函数？
-
-	5个处理字符串的函数？
-	
+	常用处理数组的函数？
+		in_array : 判断某个数据值是否在某个数组中。
+		is_array : 函数用于检测变量是否是一个数组。
+		array_values : 获得数组的值。
+		array_keys   : 获得数组的键名。
+		array_shift  : 删除数组的第一项。
+		array_pop	 : 删除数组的最后一项。
+		array_unshift: 在数组最前面添加一项。
+		array_push	 : 在数组最后面添加一项。
+		array_key_exists:判断某个键(下标)是否在某个数组中。
+		sort:将数组的值按正序排序。
+		array_merge：合并数组
+		implode :将数组组合成字符串
+	常用处理字符串的函数？
+		substr :字符串截取。
+		mb_sustr：中文字符串截取。
+		strlen  : 返回字符串的长度。
+		str_replace：字符串替换。
+		str_split：将字符串分割到数组当中。
+		trim：取出字符串首尾处的空格。
+		str_pad：把字符串填充为新的长度。
+		str_repeat：重复一个字符串。
+		strpos：查找第二个参数在第一个参数中出现的位置。
+		strrpos：计算指定字符串在目标字符串中最后一次出现的位置。
+		ucfirst：字符串首字母大写。
+		strtolower：将字符串转换为小写。
 	include 和 require的区别？
-
-	include和include_one的区别、include 和 include_once的区别？
-
+		include : 载入文件失败时会报一个错误然后继续执行后续的代码。
+		Require: 载入文件失败时会报一个错误然后完全终止后续代码。
+		include是包含,如果程序执行到这行没有找到文件会警告
+		require是引用资源.如果资源文件没有找到.程序会致命错误并且终止执行
+		加载失败的处理方式不同
+			include与require除了在处理引入文件的方式不同外，最大的区别就是：
+			include在引入不存文件时产生一个警告且脚本还会继续执行，
+			require则会导致一个致命性错误且脚本停止执行。
+	include和include_one的区别、require 和 require_once的区别？
+		include会完全载入所指定的文件,不考虑该文件是否在代码的前面曾经载入过(include可能会出现重复载入一个文件多次)。
+	require_once 同include 和 include_once的区别。
 	echo print print_r var_dump 的区别？
 
 	POST和GET的区别？

@@ -7,6 +7,7 @@
 namespace app\admin\controller;
 use think\Validate;
 use think\Loader;
+use think\Cache;
 class Timeline extends Base
 {
 	/** 
@@ -74,6 +75,37 @@ class Timeline extends Base
 		
 			//入库处理
 			if(db('timeline')->insert($data)) {
+				//数据处理存入缓存
+				$timelineData =model('Timeline')->getTimeline();
+				//年份
+				$year  = model('Timeline')->getYear();
+				//月份
+				$month = model('Timeline')->getMonth();
+				//年份加月份
+				$year_month = [];
+				foreach ($year as $k => $v) {
+					$year_month[$k] = $v;
+					foreach ($month as $kk => $vv) {
+						if($v['year'] == $vv['year']){
+							$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
+						}
+					}
+		 		}
+				//变量保存起来
+				$timeline = $year_month;
+				foreach ($timelineData as $k => $v) {
+					foreach ($year_month as $kk => $vv) {
+						if($v['year'] == $vv['year']) {
+							foreach ($vv['month'] as $kkk => $vvv) {
+								if($v['month'] == $vvv['month_name']) {
+									$v['timeline_content'] = unserialize($v['timeline_content']);
+		 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
+								}		
+							}					
+						}
+					}
+				}
+				 Cache::set('timeline',$timeline,0);
 				die(json_encode(['code'=>200,'msg'=>'添加数据成功']));
 			}else{
 				die(json_encode(['code'=>500,'msg'=>'添加数据失败']));

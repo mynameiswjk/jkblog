@@ -9,7 +9,6 @@ use think\Validate;
 use think\Model;
 use think\Loader;
 use think\Cache;
-use app\index\model;
 class Timeline extends Base
 {
 	/** 
@@ -18,6 +17,8 @@ class Timeline extends Base
 	*/ 
 	public function index()
 	{
+		dump(new  app\index\model\Timeline());
+
 		//视图展示
 		return view('index');
 	}

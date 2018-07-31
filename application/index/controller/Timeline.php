@@ -6,6 +6,7 @@
 // +----------------------------------------------------------------------
 namespace app\index\controller;
 use think\Model;
+use app\index\model\Timeline;
 use think\Cache;
 class Timeline extends Base
 {	

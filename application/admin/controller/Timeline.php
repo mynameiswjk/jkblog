@@ -6,9 +6,9 @@
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
 use think\Validate;
+use think\Model;
 use think\Loader;
 use think\Cache;
-use think\Model;
 class Timeline extends Base
 {
 	/** 

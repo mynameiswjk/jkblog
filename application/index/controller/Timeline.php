@@ -6,6 +6,7 @@
 // +----------------------------------------------------------------------
 namespace app\index\controller;
 use think\Model;
+use think\Cache;
 class Timeline extends Base
 {	
 	public function index()
@@ -19,36 +20,38 @@ class Timeline extends Base
 	* @return data 
 	*/ 
 	public function getTimeline()
-	{
-		$timelineData =model('Timeline')->getTimeline();
-		//年份
-		$year  = model('Timeline')->getYear();
-		//月份
-		$month = model('Timeline')->getMonth();
-		//年份加月份
-		$year_month = [];
-		foreach ($year as $k => $v) {
-			$year_month[$k] = $v;
-			foreach ($month as $kk => $vv) {
-				if($v['year'] == $vv['year']){
-					$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
+	{	
+		if(!$timeline  = Cache::get('timeline')){
+			$timelineData =model('Timeline')->getTimeline();
+			//年份
+			$year  = model('Timeline')->getYear();
+			//月份
+			$month = model('Timeline')->getMonth();
+			//年份加月份
+			$year_month = [];
+			foreach ($year as $k => $v) {
+				$year_month[$k] = $v;
+				foreach ($month as $kk => $vv) {
+					if($v['year'] == $vv['year']){
+						$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
+					}
+				}
+	 		}
+			//变量保存起来
+			$timeline = $year_month;
+			foreach ($timelineData as $k => $v) {
+				foreach ($year_month as $kk => $vv) {
+					if($v['year'] == $vv['year']) {
+						foreach ($vv['month'] as $kkk => $vvv) {
+							if($v['month'] == $vvv['month_name']) {
+								$v['timeline_content'] = unserialize($v['timeline_content']);
+	 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
+							}		
+						}					
+					}
 				}
 			}
- 		}
-		//变量保存起来
-		$timeline = $year_month;
-		foreach ($timelineData as $k => $v) {
-			foreach ($year_month as $kk => $vv) {
-				if($v['year'] == $vv['year']) {
-					foreach ($vv['month'] as $kkk => $vvv) {
-						if($v['month'] == $vvv['month_name']) {
-							$v['timeline_content'] = unserialize($v['timeline_content']);
- 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
-						}		
-					}					
-				}
-			}
-		}
+		 }
 		$this->assign('timeline',$timeline);
 	}
 }

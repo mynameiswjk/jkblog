@@ -9,6 +9,7 @@ use think\Validate;
 use think\Model;
 use think\Loader;
 use think\Cache;
+use app\index\model;
 class Timeline extends Base
 {
 	/** 

@@ -17,8 +17,6 @@ class Timeline extends Base
 	*/ 
 	public function index()
 	{
-		dump(new  app\index\model\Timeline());
-
 		//视图展示
 		return view('index');
 	}

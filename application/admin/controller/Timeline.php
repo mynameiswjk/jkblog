@@ -9,6 +9,7 @@ use think\Validate;
 use think\Model;
 use think\Loader;
 use think\Cache;
+use app\index\model\Timeline as TimelineModel;
 class Timeline extends Base
 {
 	/** 
@@ -76,12 +77,13 @@ class Timeline extends Base
 		
 			//入库处理
 			if(db('timeline')->insert($data)) {
+				$TimelineModel = new TimelineModel();
 				//数据处理存入缓存
-				$timelineData =model('Timeline')->getTimeline();
+				$timelineData =$TimelineModel->getTimeline();
 				//年份
-				$year  = model('Timeline')->getYear();
+				$year  		  = $TimelineModel->getYear();
 				//月份
-				$month = model('Timeline')->getMonth();
+				$month 		  = $TimelineModel->getMonth();
 				//年份加月份
 				$year_month = [];
 				foreach ($year as $k => $v) {
@@ -141,13 +143,15 @@ class Timeline extends Base
 			$data['time'] 			  = date('H:i:s',$data['timeline_time']);
 			$data['year_month'] 	  = date('Y-n',$data['timeline_time']);
 			//数据修改
-			if(db('timeline')->where(['timeline_id'=>$data['timeline_id']])->update($data) === FALSE) {
+			
+			if(!db('timeline')->where(['timeline_id'=>$data['timeline_id']])->update($data) === FALSE) {
 				//数据处理存入缓存
-				$timelineData =model('Timeline')->getTimeline();
+				$TimelineModel = new TimelineModel();
+				$timelineData =$TimelineModel->getTimeline();
 				//年份
-				$year  = model('Timeline')->getYear();
+				$year  = $TimelineModel->getYear();
 				//月份
-				$month = model('Timeline')->getMonth();
+				$month = $TimelineModel->getMonth();
 				//年份加月份
 				$year_month = [];
 				foreach ($year as $k => $v) {
@@ -173,9 +177,9 @@ class Timeline extends Base
 					}
 				}
 				Cache::set('timeline',$timeline,0);
-				die(json_encode(['code'=>500,'msg'=>'数据修改失败']));
-			}else{
 				die(json_encode(['code'=>200,'msg'=>'数据修改成功']));
+			}else{
+				die(json_encode(['code'=>500,'msg'=>'数据修改失败']));
 			}	
 		}
 		//视图展示

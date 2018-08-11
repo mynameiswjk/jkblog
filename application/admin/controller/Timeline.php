@@ -12,6 +12,12 @@ use think\Cache;
 use app\index\model\Timeline as TimelineModel;
 class Timeline extends Base
 {
+	protected $TimelineModel;
+	public function _initialize()
+	{
+		parent::_initialize();
+		$this->TimelineModel = new TimelineModel();
+	}
 	/** 
 	* 时光轴首页
 	* @access public 
@@ -77,38 +83,8 @@ class Timeline extends Base
 		
 			//入库处理
 			if(db('timeline')->insert($data)) {
-				$TimelineModel = new TimelineModel();
-				//数据处理存入缓存
-				$timelineData =$TimelineModel->getTimeline();
-				//年份
-				$year  		  = $TimelineModel->getYear();
-				//月份
-				$month 		  = $TimelineModel->getMonth();
-				//年份加月份
-				$year_month = [];
-				foreach ($year as $k => $v) {
-					$year_month[$k] = $v;
-					foreach ($month as $kk => $vv) {
-						if($v['year'] == $vv['year']){
-							$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
-						}
-					}
-		 		}
-				//变量保存起来
-				$timeline = $year_month;
-				foreach ($timelineData as $k => $v) {
-					foreach ($year_month as $kk => $vv) {
-						if($v['year'] == $vv['year']) {
-							foreach ($vv['month'] as $kkk => $vvv) {
-								if($v['month'] == $vvv['month_name']) {
-									$v['timeline_content'] = unserialize($v['timeline_content']);
-		 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
-								}		
-							}					
-						}
-					}
-				}
-				 Cache::set('timeline',$timeline,0);
+				//缓存数据更新
+				$this->CacheTimeline();
 				die(json_encode(['code'=>200,'msg'=>'添加数据成功']));
 			}else{
 				die(json_encode(['code'=>500,'msg'=>'添加数据失败']));
@@ -145,38 +121,8 @@ class Timeline extends Base
 			//数据修改
 			
 			if(!db('timeline')->where(['timeline_id'=>$data['timeline_id']])->update($data) === FALSE) {
-				//数据处理存入缓存
-				$TimelineModel = new TimelineModel();
-				$timelineData =$TimelineModel->getTimeline();
-				//年份
-				$year  = $TimelineModel->getYear();
-				//月份
-				$month = $TimelineModel->getMonth();
-				//年份加月份
-				$year_month = [];
-				foreach ($year as $k => $v) {
-					$year_month[$k] = $v;
-					foreach ($month as $kk => $vv) {
-						if($v['year'] == $vv['year']){
-							$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
-						}
-					}
-		 		}
-				//变量保存起来
-				$timeline = $year_month;
-				foreach ($timelineData as $k => $v) {
-					foreach ($year_month as $kk => $vv) {
-						if($v['year'] == $vv['year']) {
-							foreach ($vv['month'] as $kkk => $vvv) {
-								if($v['month'] == $vvv['month_name']) {
-									$v['timeline_content'] = unserialize($v['timeline_content']);
-		 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
-								}		
-							}					
-						}
-					}
-				}
-				Cache::set('timeline',$timeline,0);
+				//缓存数据更新
+				$this->CacheTimeline();
 				die(json_encode(['code'=>200,'msg'=>'数据修改成功']));
 			}else{
 				die(json_encode(['code'=>500,'msg'=>'数据修改失败']));
@@ -226,10 +172,47 @@ class Timeline extends Base
 				 $where['timeline_id']=$timeline_id;
 			}
 			if(db('timeline')->where($where)->delete()) {
+				//缓存数据更新
+				$this->CacheTimeline();
 				die(json_encode(['code'=>'200','msg'=>'数据删除成功']));
 			}else{
 				die(json_encode(['code'=>'500','msg'=>'数据删除失败']));
 			}
 		}		
+	}
+	//将数据库中时光轴中的数据组成特定的数据格式存入缓存
+	public function CacheTimeline()
+	{
+		//数据处理存入缓存
+		$timelineData =$this->TimelineModel->getTimeline();
+		//年份
+		$year  = $this->TimelineModel->getYear();
+		//月份
+		$month = $this->TimelineModel->getMonth();
+		//年份加月份
+		$year_month = [];
+		foreach ($year as $k => $v) {
+			$year_month[$k] = $v;
+			foreach ($month as $kk => $vv) {
+				if($v['year'] == $vv['year']){
+					$year_month[$k]['month'][$kk]['month_name'] = $vv['month'];
+				}
+			}
+ 		}
+		//变量保存起来
+		$timeline = $year_month;
+		foreach ($timelineData as $k => $v) {
+			foreach ($year_month as $kk => $vv) {
+				if($v['year'] == $vv['year']) {
+					foreach ($vv['month'] as $kkk => $vvv) {
+						if($v['month'] == $vvv['month_name']) {
+							$v['timeline_content'] = unserialize($v['timeline_content']);
+ 							$timeline[$kk]['month'][$kkk]['day'][] = $v;
+						}		
+					}					
+				}
+			}
+		}
+		Cache::set('timeline',$timeline,0);
 	}
 }

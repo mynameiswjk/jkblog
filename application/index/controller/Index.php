@@ -15,7 +15,7 @@ class Index extends Base
 	* @return view
 	*/ 
     public function index()
-    {
+    {	
     	//首页Banner
     	 $this->getBanner();
     	//首页公告

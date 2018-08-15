@@ -83,4 +83,11 @@ class Index extends Base
 		$blogrollData = db('blogroll')->where(['is_show'=>'1'])->order(['blogroll_addtime'=>'desc'])->limit(6)->select();
 		$this->assign('blogroll',$blogrollData);
 	}
+	/**
+	 * websoket在线聊天
+	 */
+	public function swoole()
+	{
+		
+	}
 }

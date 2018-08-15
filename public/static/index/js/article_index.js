@@ -25,7 +25,7 @@ layui.use(['laytpl','jquery','flow'], function () {
                             '<img src="'+article.article_surface+'" alt="'+article.article_title+'"/></div>'+
                             '<div class="article-right">'+
                             '<div class="article-title">'+
-                            '<a href="'+articleEditUrl+'?article_id='+article.article_id+'">'+article.article_title+'</a>'+
+                            '<a href="'+articleDetailUrl+'?article_id='+article.article_id+'">'+article.article_title+'</a>'+
                             ' </div><div class="article-abstract">'+article.article_abstract+'</div></div>'+
                             '<div class="clear"></div>'+
                             '<div class="article-footer">'+

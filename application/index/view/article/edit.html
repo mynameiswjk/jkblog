@@ -130,7 +130,7 @@
                         <div class="blog-module-title">相似文章</div>
                         <ul class="fa-ul blog-module-ul">
                             {volist name='similarity' id='similarity'}
-                            <li><i class="fa-li fa fa-hand-o-right"></i><a target="_blank" href="{:url('Article/articleEdit')}?article_id={$similarity.article_id}">{$similarity.article_title}</a></li>
+                            <li><i class="fa-li fa fa-hand-o-right"></i><a target="_blank" href="{:url('Article/articleDetail')}?article_id={$similarity.article_id}">{$similarity.article_title}</a></li>
                             {/volist}
                         </ul>
                     </div>
@@ -138,7 +138,7 @@
                         <div class="blog-module-title">随便看看</div>
                         <ul class="fa-ul blog-module-ul">
                             {volist name='articleRecommend' id='articleRecommend'}
-                            <li><i class="fa-li fa fa-hand-o-right"></i><a target="_blank" href="{:url('Article/articleEdit')}?article_id={$articleRecommend.article_id}">{$articleRecommend.article_title}</a></li>
+                            <li><i class="fa-li fa fa-hand-o-right"></i><a target="_blank" href="{:url('Article/articleDetail')}?article_id={$articleRecommend.article_id}">{$articleRecommend.article_title}</a></li>
                             {/volist}
                         </ul>
                     </div>
@@ -164,7 +164,7 @@
 </script>
 {else}
 <script>
-    var redirect =encodeURIComponent("{:url('Article/articleedit')}?article_id="+article_id);
+    var redirect =encodeURIComponent("{:url('Article/articleDetail')}?article_id="+article_id);
         redirect = "{:url('Login/index')}?redirect="+redirect;
 </script>
 {/if}

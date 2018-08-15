@@ -61,7 +61,7 @@
                                     {volist name='articleClickList' id='articleClickList' key='k'}
 		                            <li>
                                         <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
-                                        <a href="{:url('Article/articleEdit')}?article_id={$articleClickList.article_id}">
+                                        <a href="{:url('Article/articleDetail')}?article_id={$articleClickList.article_id}">
                                             <i class="layui-icon">&#xe609;</i>{$articleClickList.article_title}
                                         </a>
                                     </li>
@@ -75,7 +75,7 @@
                                     {volist name='articleRecommend' id='articleRecommend' key='k'}
                                     <li>
                                         <i class="layui-badge-rim {if $k eq 1}layui-bg-red{elseif $k eq 2}layui-bg-orange{elseif $k eq 3}layui-bg-green{/if}">{$k}</i>&nbsp;&nbsp;
-                                        <a href="{:url('Article/articleEdit')}?article_id={$articleRecommend.article_id}">
+                                        <a href="{:url('Article/articleDetail')}?article_id={$articleRecommend.article_id}">
                                             <i class="layui-icon">&#xe609;</i>{$articleRecommend.article_title}
                                         </a>
                                     </li>
@@ -96,7 +96,7 @@
                         <div class="blog-module-title"><i class="fa fa-link"></i>&nbsp;友情链接</div>
                         <ul class="blogroll">
                             {volist name='blogroll'  id='blogroll'}
-                            <li><a target="_blank" href="{$blogroll.blogroll_url}" title="Layui">{$blogroll.blogroll_name}</a></li>
+                                 <li><a target="_blank" href="{$blogroll.blogroll_url}" title="Layui">{$blogroll.blogroll_name}</a></li>
                             {/volist}
                         </ul>
                     </div>    
@@ -111,5 +111,5 @@
 //ajax获取文章列表数据
 var ajaxGetArticleData = "{:url('Article/ajaxGetArticleData')}";
 //文章详情Url
-var articleEditUrl     = "{:url('Article/articleEdit')}";
+var articleDetailUrl   = "{:url('Article/articleDetail')}";
 </script>

@@ -28,7 +28,7 @@ class Article extends Base
 	* 文章详情
 	* @access public 
 	*/ 
-	public function articleEdit()
+	public function articleDetail()
 	{	
 		//获得当前文章详情信息
 		$article_id = input('param.article_id');

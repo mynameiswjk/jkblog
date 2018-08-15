@@ -15,6 +15,15 @@ class Photo extends Base
 	*/ 
 	public function index()
 	{	
+		//获取图片数据
+		if(request()->isAjax()) {
+			$data = db('photo')->order(['photo_addtime'=>'desc'])->select();
+			$photoCount =count($data) ;
+			$info['title'] = '图片管理';
+			$info['id']    = 'Images';
+			$info['data']  = $data;
+			die(json_encode($info));
+		}
 		return view('index');
 	}
 
@@ -50,7 +59,7 @@ class Photo extends Base
 		return view('add');
 	}
 	/** 
-	*  获取图片数据
+	*  图片删除
 	* @access public 
 	*/ 
 	public function delete()
@@ -66,21 +75,6 @@ class Photo extends Base
 			die(json_encode(['code'=>200,'msg'=>'图片删除成功']));
 		}else{
 			die(json_encode(['code'=>200,'msg'=>'图片删除失败']));
-		}
-	}
-	/** 
-	*  获取图片数据
-	* @access public 
-	*/ 
-	public function getPhotoData()
-	{
-		if(request()->isAjax()) {
-			$data = db('photo')->order(['photo_addtime'=>'desc'])->select();
-			$photoCount =count($data) ;
-			$info['title'] = '图片管理';
-			$info['id']    = 'Images';
-			$info['data']  = $data;
-			die(json_encode($info));
 		}
 	}
 

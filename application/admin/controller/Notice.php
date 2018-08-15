@@ -15,17 +15,8 @@ class Notice extends Base
 	* @return view
 	*/  
 	public function index()
-	{
-		return view('index');
-	}
-
-	/** 
-	* 公告首页数据获取
-	* @access public 
-	* @return DATA
-	*/
-	public function getNoticeData()
-	{
+	{	
+		//公告首页数据获取
 		if(request()->isAjax())
 		{
 			$search_name = input('get.search_name');
@@ -51,6 +42,7 @@ class Notice extends Base
 			$data['data']  = $noticeData;
 			die(json_encode($data));
 		}
+		return view('index');
 	}
 	/** 
 	* 公告添加

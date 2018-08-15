@@ -23,17 +23,8 @@ class Timeline extends Base
 	* @access public 
 	*/ 
 	public function index()
-	{
-		//视图展示
-		return view('index');
-	}
-
-	/** 
-	* 时光轴列表数据获取
-	* @access public 
-	*/ 
-	public function getTimelineData()
-	{
+	{	
+		//时光轴列表数据获取
 		if(request()->isAjax()) {
 			$page 		 = input('get.page'); 
 			$limit 		 = input('get.limit');
@@ -52,9 +43,10 @@ class Timeline extends Base
 			$data['count'] = $timelineCount;
 			$data['data']  = $timelineData;
 			die(json_encode($data));
-		}	
+		}
+		//视图展示
+		return view('index');
 	}
-
 	/** 
 	* 时光轴列表数据添加
 	* @access public 

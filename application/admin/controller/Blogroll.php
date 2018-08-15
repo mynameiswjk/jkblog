@@ -15,14 +15,6 @@ class Blogroll extends Base
 	*/
 	public function index()
 	{
-		return view('index');
-	}
-	/** 
-	* 获取友情链接列表数据
-	* @access public 
-	*/
-	public function getBlogrollData()
-	{
 		if(request()->isAjax()) {
 			$search_name = input('get.search_name');
 			$where =[];
@@ -47,6 +39,7 @@ class Blogroll extends Base
 			$data['data']  = $blogrollData;
 			die(json_encode($data));
 		}
+		return view('index');
 	}
 	/** 
 	* 修改友情链接的一些状态

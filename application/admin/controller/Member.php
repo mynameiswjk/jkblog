@@ -15,17 +15,8 @@ class Member extends Base
 	* @access public 
 	*/ 
 	public function index()
-	{
-		//用户列表视图展示
-		return view('index');
-	}
-
-	/** 
-	* 网站用户列表数据获取
-	* @access public 
-	*/ 
-	public function getMemberData()
-	{
+	{	
+		//列表数据获取
 		if(request()->isAjax()) {
 			$search_name = input('get.search_name');
 			$where =[];
@@ -58,7 +49,18 @@ class Member extends Base
 			$data['count'] = $memberCount;
 			$data['data']  = $memberData;
 			die(json_encode($data));		
-		}
+		}		
+		//用户列表视图展示
+		return view('index');
+	}
+
+	/** 
+	* 网站用户列表数据获取
+	* @access public 
+	*/ 
+	public function getMemberData()
+	{
+
 	}
 
 	/** 

@@ -15,6 +15,34 @@ class Article extends Base
 	*/ 
 	public function index()
 	{	
+		if(request()->isAjax()) {
+			//文章列表数据获取
+			$search_name = input('get.search_name');
+			$where =[];
+			if(!empty($search_name)) {
+				$where['article_title'] = ["like","%{$search_name}%"];
+			}
+			$page 		 = input('get.page'); 
+			$limit 		 = input('get.limit');
+			$ArticleCount= db('article')->where($where)->count();
+			$ArticleData = db("article")
+							->where($where)
+						    ->page($page)
+							->limit($limit)
+							->order(['article_id'=>'desc'])
+							->select();
+			foreach($ArticleData as $k=>$v) {
+				$ArticleData[$k]['article_type']    = db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');
+				$ArticleData[$k]['article_content'] = unserialize($v['article_content']);
+				$ArticleData[$k]['article_author']  = db('admin')->where(['admin_id'=>$v['article_author']])->value('admin_name');
+				$ArticleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
+			}
+			$data['code']  = 0;
+			$data['msg']   = '';
+			$data['count'] = $ArticleCount;
+			$data['data']  = $ArticleData;
+			die(json_encode($data));
+		}
 		return view('index');
 	}
 	/** 
@@ -89,41 +117,6 @@ class Article extends Base
 		$articleTypeData = db('article_type')->order(['order'=>'asc'])->select();
 		//视图展示
 		return view('edit',['article'=>$articleInfo,'articleTypeData'=>$articleTypeData]);
-	}
-	/** 
-	* 文章列表页通过Ajax请求获取数据
-	* @access public 
-	* @return ArticleData
-	*/ 
-	public function getArticleData()
-	{
-		if(request()->isAjax()) {
-			$search_name = input('get.search_name');
-			$where =[];
-			if(!empty($search_name)) {
-				$where['article_title'] = ["like","%{$search_name}%"];
-			}
-			$page 		 = input('get.page'); 
-			$limit 		 = input('get.limit');
-			$ArticleCount= db('article')->where($where)->count();
-			$ArticleData = db("article")
-							->where($where)
-						    ->page($page)
-							->limit($limit)
-							->order(['article_id'=>'desc'])
-							->select();
-			foreach($ArticleData as $k=>$v) {
-				$ArticleData[$k]['article_type']    = db('article_type')->where(['type_id'=>$v['article_type_id']])->value('type_name');
-				$ArticleData[$k]['article_content'] = unserialize($v['article_content']);
-				$ArticleData[$k]['article_author']  = db('admin')->where(['admin_id'=>$v['article_author']])->value('admin_name');
-				$ArticleData[$k]['article_addtime'] = date('Y-m-d H:i:s',$v['article_addtime']);
-			}
-			$data['code']  = 0;
-			$data['msg']   = '';
-			$data['count'] = $ArticleCount;
-			$data['data']  = $ArticleData;
-			die(json_encode($data));
-		}
 	}
 	/** 
 	* 文章删除

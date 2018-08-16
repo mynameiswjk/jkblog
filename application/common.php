@@ -52,5 +52,18 @@ function uploadFile($file)
 	    } else { 
 	      	return false;
 		} 
+}
 
+/** 
+* 封装一个函数用于json提示信息返回
+* @access public 
+* @return code msg 
+*/ 
+function json($type,$msg)
+{
+	if($type == 'success'){
+		 die(json_encode(['code'=>200,'msg'=>$msg]));
+	}else{
+		die(json_encode(['code'=>500,'msg'=>$msg]));
+	}
 }

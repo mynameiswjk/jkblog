@@ -1,0 +1,32 @@
+<!--表格页面公用头文件-->
+{include file='public/table_header'}
+<body class="body">
+<!-- 工具集 -->
+<div class="my-btn-box">
+    <span class="fl">
+        <a class="layui-btn layui-btn-danger radius btn-delect" id="btn-delete-all">批量删除</a>
+        <a class="layui-btn btn-add btn-default" id="admin_add">添加</a>
+        <a class="layui-btn btn-add btn-default" id="btn-refresh"><i class="layui-icon">&#x1002;</i></a>
+    </span>
+    <div class="fr">
+        <span class="layui-form-label">管理员ID：</span>
+        <div class="layui-input-inline" style="float: left;">
+            <input type="text" autocomplete="off" id='admin_id' placeholder="" class="layui-input">
+        </div>
+        <span class="layui-form-label">用户名：</span>
+        <div class="layui-input-inline"  style="float: left;">
+            <input type="text" autocomplete="off" id='admin_name' placeholder="请输入文章标题" class="layui-input">
+        </div>
+        <button class="layui-btn mgl-20" id="admin_search" style="margin-left: 5px;">查询</button>
+    </div>
+</div>
+<!-- 表格 -->
+<table id="dateTable" lay-filter="vessel"></table>
+<!--公共脚本文件-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/vip_common.js'}
+{load href='__JS__/admin.js'}
+{include file='script/admin_index'}
+</body>
+</html> 

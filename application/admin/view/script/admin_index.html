@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    //定义js所需要端数据
+    var  getAdminData      = "{:url('Admin/index')}";
+    var  adminAddUrl       = "{:url('Admin/add')}";
+    var  adminEditUrl      = "{:url('Admin/edit')}";
+    var  adminDelUrl       = "{:url('Admin/del')}";
+</script>
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="admin_edit"  >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="admin_del('{{d.admin_id}}')" {{#  if(d.admin_id == "1"){ }}  style='display: none;' {{#  }}}>删除</a>
+</script>
+<script type="text/html" id="article_surface">
+    <a href="<?php echo request()->domain(); ?>{{d.admin_portrait}}" target='_blank'><img src='{{d.admin_portrait}}' height='100%'></a>
+</script>
+<script type="text/html" id="stick">
+            <input type="checkbox" 
+           {{#  if(d.article_is_stick == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="article_is_stick"  lay-skin="switch" lay-filter="article_is_stick" article_id='{{d.article_id}}'  lay-text="是|否" >
+      <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

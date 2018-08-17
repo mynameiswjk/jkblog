@@ -1,0 +1,32 @@
+<!--引入后台公共头文件-->
+{include file='public/admin_header'}
+<body>
+<form class="layui-form layui-form-pane" action=""> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="title"  value=''  maxlength='20' autocomplete="off" lay-verify="title" placeholder="请输入名称" class="layui-input">
+    </div>
+  </div> 
+ <div class="layui-form-item" pane="">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <input type="radio" name="status" value="1" title="显示" checked='checked' >
+      <input type="radio" name="status" value="0" title="隐藏" >
+    </div>
+  </div> 
+<div class="layui-form-item">
+  <button class="layui-btn" lay-submit="" lay-filter="demo2">提交</button>
+</div>
+</form>
+<!--公共底部-->
+{include file='public/admin_footer'}
+<!--本页脚本文件-->
+{load href='__JS__/authGroupAdd.js'}
+<!--JS所需要的参数-->
+<script>
+  var  addAuthGroup    = "{:url('AuthGroup/add')}";
+  var  TopLay           = top.layer;
+</script>
+</body>
+</html>

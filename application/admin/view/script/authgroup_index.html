@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    //定义js所需要端数据
+    var  getGroupData      = "{:url('AuthGroup/index')}";
+    var  addGroupUrl       = "{:url('AuthGroup/add')}";
+    var  editGroupUrl      = "{:url('AuthGroup/edit')}";
+    var  delGroupUrl       = "{:url('AuthGroup/del')}";
+    var  updateGroupUrl    = "{:url('AuthGroup/updateAuthGroupStatus')}";
+</script> 
+<!-- 表格操作按钮集 -->
+<script type="text/html" id="barOption" >
+    <a class="layui-btn layui-btn-mini layui-btn-normal" lay-event="group_edit"  >编辑</a>
+    <a class="layui-btn layui-btn-mini layui-btn-danger" lay-event="del" onclick="group_del('{{d.id}}')" >删除</a>
+</script>
+<script type="text/html" id="status">
+         <input type="checkbox" 
+           {{#  if(d.status == "1"){ }}
+                 checked="checked" 
+           {{#  }}}
+             name="status"  lay-skin="switch" lay-filter="status" id='{{d.id}}'  lay-text="显示|隐藏" >
+      <div class="layui-unselect layui-form-switch layui-form-onswitch" lay-skin="_switch"><em>ON</em><i></i></div>
+</script>

@@ -36,9 +36,9 @@
  <div class="layui-form-item" pane="">
     <label class="layui-form-label">组别</label>
     <div class="layui-input-block">
-      <input type="checkbox" name="group_id[]" lay-skin="primary" title="超级管理员" >
-      <input type="checkbox" name="group_id[]" lay-skin="primary" title="中级管理员">
-      <input type="checkbox" name="group_id[]" lay-skin="primary" title="低级管理员">
+      {volist name='groupData' id='groupData'}
+        <input type="checkbox" name="group_id" value='{$groupData.id}' lay-skin="primary" title="{$groupData.title}">
+      {/volist}
     </div>
   </div>
  <div class="layui-form-item" pane="">

@@ -44,10 +44,22 @@ class Admin extends Base
 						    ->page($page)
 							->limit($limit)
 							->order(['admin_id'=>'desc'])
-							->select();	
-			foreach($adminData as $k=>$v) {
+							->select();
+			//查出所有的组别信息
+            $group_access = db("auth_group_access")
+                            ->alias('gr')
+                            ->field('gr.*,ga.title')
+                            ->join('LEFT JOIN ')
+                            ->select();
+			foreach($adminData as $k => $v) {
+			    //获得管理员所属组别
+                foreach ($group_access as $kk => $vv){
+                    if($v['admin_id'] = $vv['uid']){
+                        $adminData[$k]['group_name']  = $vv['']
+                    }
+                }
 				$adminData[$k]['last_login_time'] = empty($v['last_login_time']) ? '暂未登陆' : date('Y-m-d H:i:s',$v['last_login_time']);
-				$adminData[$k]['last_login_ip'] = empty($v['last_login_ip']) ? '暂无' :$v['last_login_ip'];
+				$adminData[$k]['last_login_ip']   = empty($v['last_login_ip']) ? '暂无' :$v['last_login_ip'];
 			}
 			$data['code']  = 0;
 			$data['msg']   = '';
@@ -74,14 +86,21 @@ class Admin extends Base
 			}
 			//验证通过数据入库
 			$data['admin_pass'] = md5($data['admin_pass']);
-			if(db("admin")->strict(false)->insert($data)){
+			if($admin_id = db("admin")->strict(false)->insertGetId($data)){
+			    //管理员添加成功，添加对应的角色组到表中。
+                 $group['uid'] = $admin_id;
+                 $group['group_id'] = $data['group_id'];
+                 //存角色组数据库
+                    db('auth_group_access')->insert($group);
 				 json('success','管理员添加成功');
 			}else{
 				 json('error','管理员添加失败');
 			}
 		}
+		//获得所有的角色组
+        $groupData = model("AuthGroup")->getGroupData();
 		//视图展示
-		return  $this->fetch('add');
+		return  $this->fetch('add',['groupData'=>$groupData]);
 	}
 
 	/** 
